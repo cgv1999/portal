@@ -1,2 +1,2 @@
 # ПОРТАЛ
-WORK: Data analytics for the company's board of directors
+WORK: Data analytics for the company's board of directors.
