@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTAL Analytics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <div class="container">
+        <div id="main"></div>
+        <div class="buttons-container">
+            <div class="buttons-row">
+                <button class="portal-button" onclick="loadAnalytics('analytics1')">Аналитика 1</button>
+                <button class="portal-button" onclick="loadAnalytics('analytics2')">Аналитика 2</button>
+                <button class="portal-button" onclick="loadAnalytics('analytics3')">Аналитика 3</button>
+            </div>
+            <div class="buttons-row">
+                <button class="portal-button" onclick="loadAnalytics('analytics4')">Аналитика 4</button>
+                <button class="portal-button" onclick="loadAnalytics('analytics5')">Аналитика 5</button>
+            </div>
+        </div>
+        <div class="subtitle">data-driven analytics from Egor Konorov's team</div>
+    </div>
+
+    <!-- КОНТЕЙНЕР ДЛЯ ЗАГРУЗКИ АНАЛИТИКИ -->
+    <div id="analytics-container" style="display: none;">
+        <button class="back-button" onclick="returnToMain()">← Назад в ПОРТАЛ</button>
+        <iframe id="analytics-frame" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
