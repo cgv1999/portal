@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сравнение юнитов по неделям</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <h3>Сравнение юнитов по неделям</h3>
+        </div>
+        
+        <div class="filters" id="filters" style="display: none;">
+            <div class="filter-group">
+                <label for="weekSelect">Недели (множественный выбор):</label>
+                <select id="weekSelect" multiple>
+                    <option value="all">Все недели</option>
+                </select>
+                <div class="filter-info">Ctrl+Click для выбора нескольких недель</div>
+                <div class="selected-items" id="weekSelected">Все</div>
+            </div>
+            <div class="filter-group">
+                <label for="addressSelect">Адреса (множественный выбор):</label>
+                <select id="addressSelect" multiple>
+                    <option value="all">Все адреса</option>
+                </select>
+                <div class="filter-info">Ctrl+Click для выбора нескольких адресов</div>
+                <div class="selected-items" id="addressSelected">Все</div>
+            </div>
+        </div>
+        
+        <div class="info" id="companyFileInfo">Анализ финансовых показателей по неделям</div>
+        <div class="stats" id="statsInfo"></div>
+        <div id="companyChart"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
