@@ -38981,6 +38981,50 @@ function formatCurrency(value) {
     return value.toLocaleString('ru-RU', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 }
 
+// Функция для определения минимальной и максимальной даты из всех данных
+function getDateRangeFromData() {
+    let minDate = null;
+    let maxDate = null;
+    
+    // 1. Проверяем данные оплат
+    paymentsData.forEach(row => {
+        const dateStr = row['дата'] || row['Дата оплаты'] || '';
+        if (dateStr) {
+            const date = parseDate(dateStr);
+            if (date) {
+                if (!minDate || date < minDate) minDate = date;
+                if (!maxDate || date > maxDate) maxDate = date;
+            }
+        }
+    });
+    
+    // 2. Проверяем P&L данные
+    plData.forEach(row => {
+        const dateStr = row['Дата'] || row['Date'] || row['DATE'] || row['дата'] || '';
+        if (dateStr) {
+            const date = parseDate(dateStr);
+            if (date) {
+                if (!minDate || date < minDate) minDate = date;
+                if (!maxDate || date > maxDate) maxDate = date;
+            }
+        }
+    });
+    
+    // 3. Проверяем данные зарплаты офиса
+    expensesData.forEach(row => {
+        const dateStr = row['Дата'] || row['дата'] || '';
+        if (dateStr) {
+            const date = parseDate(dateStr);
+            if (date) {
+                if (!minDate || date < minDate) minDate = date;
+                if (!maxDate || date > maxDate) maxDate = date;
+            }
+        }
+    });
+    
+    return { minDate, maxDate };
+}
+
 // Функция для получения всех дат в заданном периоде
 function getAllDatesInPeriod() {
     const dateFrom = document.getElementById('dateFrom').value;
@@ -39007,6 +39051,31 @@ function getAllDatesInPeriod() {
     return dates;
 }
 
+// Функция для определения категории по статье и наименованию
+function determineCategory(article, name) {
+    const articleLower = (article || '').toLowerCase();
+    const nameLower = (name || '').toLowerCase();
+    const searchText = articleLower + ' ' + nameLower;
+    
+    // Ключевые слова для каждой категории
+    const categoryKeywords = {
+        'Маркетинг и реклама': ['маркетинг', 'реклама', 'маркет.', 'реклам', 'продвижение', 'контекст', 'таргет', 'консалтинговые'],
+        'Оборудование для мойки': ['оборудование', 'оборуд.', 'щетка', 'щетки', 'инвентарь', 'инструмент', 'насос', 'транспортные услуги', 'илосос'],
+        'Материалы робота': ['робот', 'робота', 'расход', 'расх.', 'материал', 'салфетки', 'хоз.', 'канцелярия', 'химия', 'автохимия']
+    };
+    
+    // Проверяем каждую категорию
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+        for (const keyword of keywords) {
+            if (searchText.includes(keyword)) {
+                return category;
+            }
+        }
+    }
+    
+    return null;
+}
+
 // Функция для обработки данных оплат
 function processPaymentsData() {
     const categories = {};
@@ -39023,7 +39092,8 @@ function processPaymentsData() {
 
     // Обрабатываем каждую строку данных оплат
     paymentsData.forEach(row => {
-        const paymentDateStr = row['Дата оплаты'];
+        // Используем правильные ключи из данных
+        const paymentDateStr = row['дата'] || row['Дата оплаты'];
         if (!paymentDateStr) return;
 
         const paymentDate = parseDate(paymentDateStr);
@@ -39034,27 +39104,21 @@ function processPaymentsData() {
         // Проверяем, что дата в списке всех дат (в периоде)
         if (!allDates.includes(formattedDate)) return;
 
-        const article = row['Статья'] || '';
-        const amount = Math.abs(parseAmount(row['Сумма'] || 0));
+        // Используем правильные ключи из данных
+        const article = row['статья'] || row['Статья'] || '';
+        const amount = Math.abs(parseAmount(row['сумма'] || row['Сумма'] || 0));
         
         if (amount === 0) return;
 
-        let matchedCategory = null;
-
-        // Проверяем категории
-        if (article.includes('Маркетинг') || article.includes('Реклама')) {
-            matchedCategory = 'Маркетинг и реклама';
-        } else if (article.includes('Оборудование')) {
-            matchedCategory = 'Оборудование для мойки';
-        } else if ((article.includes('Расх') && article.includes('робот')) || 
-                  (article.includes('материалы') && article.includes('робот'))) {
-            matchedCategory = 'Материалы робота';
-        }
+        // Определяем категорию
+        const matchedCategory = determineCategory(article, row['наименование'] || row['Наименование'] || '');
 
         if (!matchedCategory) return;
 
         // Добавляем сумму к категории на эту дату
-        categories[matchedCategory][formattedDate] += amount;
+        if (categories[matchedCategory]) {
+            categories[matchedCategory][formattedDate] = (categories[matchedCategory][formattedDate] || 0) + amount;
+        }
     });
 
     // Удаляем пустые категории
@@ -39095,17 +39159,17 @@ function processSalaryData() {
         // Проверяем, что дата в списке всех дат (в периоде)
         if (!allDates.includes(formattedDate)) return;
 
-        // Получаем зарплату из P&L
+        // Получаем зарплату из P&L (используем абсолютное значение, так как в данных отрицательные значения)
         const salary = Math.abs(parseAmount(row['Зарплата'] || 0));
         
         if (salary > 0) {
-            salaryData[formattedDate] += salary;
+            salaryData[formattedDate] = (salaryData[formattedDate] || 0) + salary;
         }
     });
 
     // 2. Обрабатываем данные зарплаты офиса
     expensesData.forEach(row => {
-        const dateStr = row['Дата'];
+        const dateStr = row['Дата'] || row['дата'];
         if (!dateStr) return;
 
         const rowDate = parseDate(dateStr);
@@ -39116,10 +39180,10 @@ function processSalaryData() {
         // Проверяем, что дата в списке всех дат (в периоде)
         if (!allDates.includes(formattedDate)) return;
 
-        // Получаем з/п офис
+        // Получаем з/п офис (используем абсолютное значение)
         const officeSalary = Math.abs(parseAmount(row['З/п офис'] || 0));
         if (officeSalary > 0) {
-            salaryData[formattedDate] += officeSalary;
+            salaryData[formattedDate] = (salaryData[formattedDate] || 0) + officeSalary;
         }
     });
 
@@ -39323,6 +39387,13 @@ function autoUpdateChart() {
             
             if (Object.keys(combinedData.categories).length > 0 && combinedData.allDates.length > 0) {
                 buildExpenseChart(combinedData);
+            } else {
+                console.log('Нет данных для отображения');
+                if (currentChart) {
+                    currentChart.dispose();
+                    currentChart = null;
+                }
+                document.getElementById('statsInfo').innerHTML = '<div class="stat-item">Нет данных для отображения</div>';
             }
         } catch (error) {
             console.error('Ошибка при обновлении графика:', error);
@@ -39332,9 +39403,34 @@ function autoUpdateChart() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Устанавливаем значения по умолчанию для дат
-    document.getElementById('dateFrom').value = '2025-11-10';
-    document.getElementById('dateTo').value = '2025-12-09';
+    // Получаем диапазон дат из данных
+    const dateRange = getDateRangeFromData();
+    
+    if (dateRange.minDate && dateRange.maxDate) {
+        // Форматируем даты для input type="date" (формат YYYY-MM-DD)
+        const formatForInput = (date) => {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        
+        // Устанавливаем значения по умолчанию для дат
+        document.getElementById('dateFrom').value = formatForInput(dateRange.minDate);
+        document.getElementById('dateTo').value = formatForInput(dateRange.maxDate);
+        
+        console.log(`Автоматически установлен диапазон дат: ${formatForInput(dateRange.minDate)} - ${formatForInput(dateRange.maxDate)}`);
+    } else {
+        // Если не удалось определить даты, устанавливаем дефолтные значения
+        const today = new Date();
+        const defaultFrom = new Date(today);
+        defaultFrom.setDate(today.getDate() - 30); // 30 дней назад
+        
+        document.getElementById('dateFrom').value = defaultFrom.toISOString().split('T')[0];
+        document.getElementById('dateTo').value = today.toISOString().split('T')[0];
+        
+        console.log('Не удалось определить даты из данных, установлены значения по умолчанию');
+    }
     
     // Добавляем обработчики изменения дат для автоматического обновления
     document.getElementById('dateFrom').addEventListener('change', autoUpdateChart);
