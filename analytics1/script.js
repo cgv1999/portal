@@ -45972,6 +45972,77 @@ const addressMapping = {
     "Общий расход": "Общий расход"
 };
 
+// Функция для стандартизации адреса (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
+function standardizeAddress(address) {
+    if (!address) return "Общий расход";
+    const addressStr = String(address).trim();
+    return addressMapping[addressStr] || "Общий расход";
+}
+
+// Функция для определения объекта по адресу (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
+function getObjectByAddress(address) {
+    const objectMapping = {
+        "ДМИТРОВСКОЕ": "Козубенко Денис",
+        "ПЯТНИЦКОЕ": "Козубенко Денис",
+        "Пятницкое шоссе 20": "Козубенко Денис",
+        "ХИМКИ": "Козубенко Денис",
+        "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
+        "МИЧУРИНСКИЙ": "Сенатов Кирилл",
+        "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
+        "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
+        "РУБЛЕВКА91": "Сенатов Кирилл",
+        "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
+        "Минская": "Сенатов Кирилл",
+        "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
+        "Носовихинское": "Большаков Максим",
+        "Пр Мира 94 А": "Большаков Максим",
+        "ТТК": "Большаков Максим",
+        "МЫТИЩИ": "Большаков Максим",
+        "ВЕРНАДСКОГО": "Мозговой Филипп",
+        "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
+        "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
+        "Дзержинский, Угрешская": "Мозговой Филипп",
+        "ЗАГОРОДНОЕ": "Данилов Алексей",
+        "ПРИВОЛЬНАЯ": "Данилов Алексей",
+        "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
+        "Каспийская": "Данилов Алексей",
+        "КАШИРСКОЕ 24": "Данилов Алексей",
+        "Коломенский пр-д": "Данилов Алексей",
+        "ВДНХ": "Ичко Роман",
+        "ПЛЕЩЕЕВА": "Ичко Роман",
+        "Куликовская": "Юрлов Денис",
+        "Чертановская": "Юрлов Денис",
+        "СПб, Маршала Жукова": "Юрлов Денис",
+        "ПАПЕРНИКА вл.22": "Юрлов Денис",
+        "Франшиза отдел продаж": "Франшиза отдел продаж",
+        "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+        "Развитие": "Развитие"
+    };
+
+    return objectMapping[address] || "Общий расход";
+}
+
+// Функция для получения недели из даты (КАК В ПЕРВОМ КОДЕ)
+function getWeekFromDate(dateStr) {
+    try {
+        const date = new Date(dateStr.split('.').reverse().join('-'));
+        // Начальная дата для расчета недель - 06.01.2025
+        const startDate = new Date('2025-01-06');
+        const diffTime = date - startDate;
+        const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+
+        const weekStart = new Date(startDate);
+        weekStart.setDate(startDate.getDate() + diffWeeks * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+
+        return `${weekStart.toLocaleDateString('ru-RU')} - ${weekEnd.toLocaleDateString('ru-RU')}`;
+    } catch (e) {
+        console.error('Ошибка обработки даты:', dateStr, e);
+        return null;
+    }
+}
+
 // Функция для автоматической загрузки данных при старте
 function loadEmbeddedData() {
     try {
@@ -45980,11 +46051,21 @@ function loadEmbeddedData() {
         otherExpensesData = embeddedData.expensesData || [];
         salaryOfficeData = embeddedData.salaryData || [];
 
-        // ОБРАБОТКА ЗАРПЛАТ: парсим период из названия файла если нет в данных
-        salaryOfficeData = processSalaryData(salaryOfficeData);
+        // ОБРАБОТКА ДАННЫХ ОПЛАТ (ВАЖНО: добавляем объект к каждой записи)
+        otherExpensesData = otherExpensesData.map(expense => {
+            // Определяем объект для каждой записи оплат
+            const объект = getObjectByAddress(expense.мойка);
+            // Добавляем поле недели для фильтрации по датам
+            const неделя = getWeekFromDate(expense.дата);
+            return {
+                ...expense,
+                объект: объект,
+                неделя: неделя
+            };
+        });
 
-        // Обновляем интерфейс
-        const totalRecords = allData.length + otherExpensesData.length + salaryOfficeData.length;
+        // ОБРАБОТКА ЗАРПЛАТ
+        salaryOfficeData = processSalaryData(salaryOfficeData);
 
         // Заполняем фильтры и применяем
         if (allData.length > 0) {
@@ -46091,42 +46172,6 @@ function getPredominantMonthForWeek(weekStr) {
         console.error('Ошибка определения месяца для недели:', weekStr, e);
     }
     return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
-}
-
-function extractWeekFromFileName(fileName) {
-    if (!fileName) return 'Неизвестная неделя';
-
-    const patterns = [
-        /(\d{2}\.\d{2}\.\d{2})\s*-\s*(\d{2}\.\d{2}\.\d{2})/,
-        /(\d{2}\.\d{2}\.\d{4})\s*-\s*(\d{2}\.\d{2}\.\d{4})/,
-        /(\d{2}-\d{2}-\d{4})\s*-\s*(\d{2}-\d{2}-\d{4})/,
-    ];
-
-    for (const pattern of patterns) {
-        const match = fileName.match(pattern);
-        if (match) {
-            const weekPart1 = match[1].replace(/-/g, '.');
-            const weekPart2 = match[2].replace(/-/g, '.');
-
-            // Форматируем даты в стандартный вид ДД.ММ.ГГГГ
-            const formatDatePart = (datePart) => {
-                const parts = datePart.split('.');
-                if (parts.length === 3) {
-                    const day = parts[0].padStart(2, '0');
-                    const month = parts[1].padStart(2, '0');
-                    let year = parts[2];
-                    if (year.length === 2) {
-                        year = '20' + year;
-                    }
-                    return `${day}.${month}.${year}`;
-                }
-                return datePart;
-            };
-
-            return `${formatDatePart(weekPart1)} - ${formatDatePart(weekPart2)}`;
-        }
-    }
-    return 'Неизвестная неделя';
 }
 
 function calculateSalaryForPeriod() {
@@ -46266,7 +46311,18 @@ function getIndivisibleExpenseForDateRange(selectedObject, selectedAddresses) {
             }
 
             if (selectedAddresses && selectedAddresses.length > 0) {
-                if (!selectedAddresses.includes(rowAddress)) return false;
+                const rowStandardizedAddress = standardizeAddress(row.Адрес);
+                let addressMatches = false;
+                
+                for (const selectedAddr of selectedAddresses) {
+                    const selectedStandardizedAddr = standardizeAddress(selectedAddr);
+                    if (rowStandardizedAddress === selectedStandardizedAddr) {
+                        addressMatches = true;
+                        break;
+                    }
+                }
+                
+                if (!addressMatches) return false;
             }
 
             return true;
@@ -46311,6 +46367,7 @@ function getFilteredIndivisibleExpenses() {
     });
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ getFilteredGeneralExpenseExpenses()
 function getFilteredGeneralExpenseExpenses() {
     const selectedObject = getSelectedObject();
     const selectedAddresses = getSelectedAddresses();
@@ -46320,22 +46377,127 @@ function getFilteredGeneralExpenseExpenses() {
     return otherExpensesData.filter(expense => {
         if (expense.мойка !== "Общий расход") return false;
         if (expense.команда && expense.команда.trim() !== '') return false;
+        
         if (dateFrom && dateTo) {
             const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
             const fromDate = new Date(dateFrom);
             const toDate = new Date(dateTo);
             if (expenseDate < fromDate || expenseDate > toDate) return false;
         }
+        
+        // ДЛЯ "ОБЩЕГО РАСХОДА" ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
+        if (selectedObject) {
+            const expenseObject = getObjectByAddress(expense.мойка);
+            
+            if (selectedObject === 'all_retail') {
+                if (!retailObjects.includes(expenseObject)) {
+                    return false;
+                }
+            } else if (expenseObject !== selectedObject) {
+                return false;
+            }
+        }
+        
+        // Для "Общего расхода" фильтрация по адресам не применяется
+        // так как expense.мойка всегда будет "Общий расход"
+        if (selectedAddresses) {
+            // "Общий расход" не должен фильтроваться по адресам
+            // так как это общефирменные расходы
+            return true;
+        }
+        
+        return true;
+    });
+}
+
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ getFilteredOtherExpenses()
+function getFilteredOtherExpenses() {
+    const selectedObject = getSelectedObject();
+    const selectedAddresses = getSelectedAddresses();
+    const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+
+    console.log('=== ФИЛЬТРАЦИЯ "ПРОЧИХ" РАСХОДОВ ===');
+    console.log('Период:', dateFrom, '-', dateTo);
+    console.log('Объект:', selectedObject);
+    console.log('Адреса:', selectedAddresses);
+    console.log('Всего записей в expensesData:', otherExpensesData.length);
+
+    return otherExpensesData.filter(expense => {
+        // 1. Проверяем, относится ли это к "Неделимому расходу"
+        const isIndivisible = expense.мойка === "Общий расход" &&
+            expense.команда &&
+            String(expense.команда).toLowerCase() === 'розница';
+        
+        // 2. Проверяем, относится ли это к "Общему расходу"
+        const isGeneralExpense = expense.мойка === "Общий расход" &&
+            (!expense.команда || expense.команда.trim() === '');
+
+        // Если это "Неделимый" или "Общий расход" - исключаем из "Прочих"
+        if (isIndivisible || isGeneralExpense) {
+            return false;
+        }
+
+        // Фильтрация по дате
+        if (dateFrom && dateTo) {
+            try {
+                const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+                const fromDate = new Date(dateFrom);
+                const toDate = new Date(dateTo);
+                if (expenseDate < fromDate || expenseDate > toDate) {
+                    return false;
+                }
+            } catch (e) {
+                console.error('Ошибка обработки даты:', expense.дата, e);
+                return false;
+            }
+        }
+
+        // ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
         if (selectedObject) {
             if (selectedObject === 'all_retail') {
-                if (!retailObjects.includes(expense.объект)) return false;
+                // Проверяем, относится ли объект к рознице
+                if (!retailObjects.includes(expense.объект)) {
+                    return false;
+                }
             } else if (expense.объект !== selectedObject) {
                 return false;
             }
         }
-        if (selectedAddresses && !selectedAddresses.includes(expense.мойка)) {
+
+        // ФИЛЬТРАЦИЯ ПО АДРЕСАМ
+        if (selectedAddresses && selectedAddresses.length > 0) {
+            // Для "Прочих" учитываем только записи с конкретной мойкой
+            if (!expense.мойка || expense.мойка === "Общий расход") {
+                // Если у записи нет мойки или это "Общий расход" - исключаем
+                return false;
+            }
+            
+            // Стандартизируем адрес для сравнения
+            const expenseStandardizedAddress = standardizeAddress(expense.мойка);
+            
+            let addressMatches = false;
+            for (const selectedAddr of selectedAddresses) {
+                const selectedStandardizedAddr = standardizeAddress(selectedAddr);
+                if (expenseStandardizedAddress === selectedStandardizedAddr) {
+                    addressMatches = true;
+                    break;
+                }
+            }
+            
+            if (!addressMatches) {
+                return false;
+            }
+        }
+
+        // ДОПОЛНИТЕЛЬНЫЕ ПРОВЕРКИ
+        // Исключаем записи с пустой статьей или нулевой суммой
+        if (!expense.статья || expense.статья.trim() === '' || 
+            !expense.наименование || expense.наименование.trim() === '' || 
+            Math.abs(expense.сумма) < 0.01) {
             return false;
         }
+
         return true;
     });
 }
@@ -46814,38 +46976,6 @@ function showSalaryOfficeDetails() {
     modal.style.display = 'block';
 }
 
-function getFilteredOtherExpenses() {
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-
-    return otherExpensesData.filter(expense => {
-        if (expense.мойка === "Общий расход") {
-            return false;
-        }
-        if (dateFrom && dateTo) {
-            const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-            const fromDate = new Date(dateFrom);
-            const toDate = new Date(dateTo);
-            if (expenseDate < fromDate || expenseDate > toDate) return false;
-        }
-        if (selectedObject) {
-            if (selectedObject === 'all_retail') {
-                if (!retailObjects.includes(expense.объект)) {
-                    return false;
-                }
-            } else if (expense.объект !== selectedObject) {
-                return false;
-            }
-        }
-        if (selectedAddresses && !selectedAddresses.includes(expense.мойка)) {
-            return false;
-        }
-        return true;
-    });
-}
-
 function populateFilters(data) {
     // Отфильтровываем строки с "Франшиза роялти" в адресе
     const filteredData = data.filter(row => {
@@ -47031,6 +47161,7 @@ function updateSelectedInfo(containerId, selectElement) {
     }
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ updateAddressFilter() ДЛЯ КОРРЕКТНОЙ РАБОТЫ
 function updateAddressFilter(selectedObject, data) {
     const addressSelect = document.getElementById('addressSelect');
     const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
@@ -47076,6 +47207,7 @@ function getSelectedAddresses() {
     return selectedAddresses.length > 0 ? selectedAddresses : null;
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ applyFilters() (ОДНА ВЕРСИЯ!)
 function applyFilters() {
     const selectedObject = getSelectedObject();
     const selectedAddresses = getSelectedAddresses();
@@ -47112,8 +47244,21 @@ function applyFilters() {
         }
     }
 
-    if (selectedAddresses) {
-        filteredData = filteredData.filter(row => selectedAddresses.includes(row.Адрес));
+    // ИСПРАВЛЕННАЯ ФИЛЬТРАЦИЯ ПО АДРЕСАМ
+    if (selectedAddresses && selectedAddresses.length > 0) {
+        // Используем стандартизированные адреса для сравнения
+        filteredData = filteredData.filter(row => {
+            const rowStandardizedAddress = standardizeAddress(row.Адрес);
+            
+            // Проверяем, совпадает ли стандартизированный адрес строки с любым из выбранных адресов
+            for (const selectedAddr of selectedAddresses) {
+                const selectedStandardizedAddr = standardizeAddress(selectedAddr);
+                if (rowStandardizedAddress === selectedStandardizedAddr) {
+                    return true;
+                }
+            }
+            return false;
+        });
     }
 
     updateSelectionInfo(dateFrom, dateTo, selectedObject, selectedAddresses, filteredData.length);
@@ -47139,6 +47284,7 @@ function updateSelectionInfo(dateFrom, dateTo, object, addresses, count) {
     document.getElementById('fileInfo').textContent = info;
 }
 
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ buildChart() (ОДНА ВЕРСИЯ!)
 function buildChart(data, object, addresses) {
     if (currentChart) {
         currentChart.dispose();
@@ -47192,6 +47338,7 @@ function buildChart(data, object, addresses) {
         categories.splice(insertIndex, 0, "Общий расход", "З/п офис");
     }
 
+    // ВАЖНОЕ ИСПРАВЛЕНИЕ: ПРАВИЛЬНЫЙ РАСЧЕТ "ПРОЧИЕ"
     const values = categories.map(cat => {
         switch (cat) {
             case "Выручка":
@@ -47220,6 +47367,7 @@ function buildChart(data, object, addresses) {
             case "НДС":
                 return -Math.abs(aggregated['НДС'] || 0);
             case "Прочие":
+                // ИСПОЛЬЗУЕМ ИСПРАВЛЕННУЮ ФУНКЦИЮ
                 const filteredOtherExpenses = getFilteredOtherExpenses();
                 return filteredOtherExpenses.reduce((sum, item) => sum + item.сумма, 0);
             case "Неделимый расход":
@@ -47674,11 +47822,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Автоматически загружаем данные
     loadEmbeddedData();
 
-    // Обновляем счетчик данных
-    const totalRecords = (embeddedData.mainData?.length || 0) +
-        (embeddedData.expensesData?.length || 0) +
-        (embeddedData.salaryData?.length || 0);
-
     // Настраиваем модальные окна
     const modals = [
         'expensesModal',
@@ -47746,4 +47889,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Настраиваем обработчики для фильтров
     document.getElementById('dateFrom').addEventListener('change', applyFilters);
     document.getElementById('dateTo').addEventListener('change', applyFilters);
+    document.getElementById('objectSelect').addEventListener('change', applyFilters);
+    document.getElementById('addressSelect').addEventListener('change', applyFilters);
 });
