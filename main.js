@@ -1,6 +1,10 @@
+// Версия для контроля кэширования
+// main.js?v=1.2
+
 // ИНИЦИАЛИЗАЦИЯ ГЛАВНОЙ АНИМАЦИИ
 const chartDom = document.getElementById('main');
 const myChart = echarts.init(chartDom);
+let animationCompleted = false;
 
 // Определение мобильного устройства
 function isMobile() {
@@ -64,6 +68,35 @@ function getChartOptions() {
     };
 }
 
+// Функция для показа кнопок после анимации
+function showButtons() {
+    if (animationCompleted) return;
+    
+    animationCompleted = true;
+    
+    // Скрываем анимацию NDA
+    setTimeout(() => {
+        chartDom.style.opacity = '0';
+        chartDom.style.pointerEvents = 'none';
+        
+        // Показываем кнопки с анимацией
+        const buttonsContainer = document.getElementById('buttons-container');
+        const subtitle = document.getElementById('subtitle');
+        
+        if (buttonsContainer) {
+            buttonsContainer.style.opacity = '1';
+            buttonsContainer.style.transform = 'translateY(0)';
+        }
+        
+        if (subtitle) {
+            setTimeout(() => {
+                subtitle.style.opacity = '1';
+                subtitle.style.transform = 'translateY(0)';
+            }, 300);
+        }
+    }, 800); // Задержка после завершения анимации
+}
+
 // Применяем настройки
 myChart.setOption(getChartOptions());
 
@@ -76,7 +109,16 @@ if (isMobile()) {
 // ОТСЛЕЖИВАНИЕ ЗАВЕРШЕНИЯ АНИМАЦИИ
 myChart.on('finished', function() {
     console.log('Анимация NDA завершена');
+    setTimeout(showButtons, 500); // Задержка перед показом кнопок
 });
+
+// Альтернатива: если анимация не сработала, показать кнопки через 3 секунды
+setTimeout(() => {
+    if (!animationCompleted) {
+        console.log('Автоматический показ кнопок (таймаут)');
+        showButtons();
+    }
+}, 3500);
 
 // ФУНКЦИЯ ЗАГРУЗКИ АНАЛИТИКИ
 function loadAnalytics(analyticsName) {
@@ -87,9 +129,6 @@ function loadAnalytics(analyticsName) {
         navigator.vibrate(50);
     }
     
-    // Показываем индикатор загрузки
-    showLoading();
-    
     // Скрываем главный экран
     document.querySelector('.container').style.display = 'none';
     
@@ -99,12 +138,12 @@ function loadAnalytics(analyticsName) {
     
     container.style.display = 'block';
     
-    // Загружаем аналитику в iframe
-    frame.onload = function() {
-        hideLoading();
-    };
+    // Добавляем параметр времени для обхода кэширования
+    const timestamp = new Date().getTime();
+    const analyticsUrl = `${analyticsName}/index.html?t=${timestamp}`;
     
-    frame.src = `${analyticsName}/index.html`;
+    // Загружаем аналитику в iframe
+    frame.src = analyticsUrl;
     
     console.log(`Аналитика "${analyticsName}" загружена`);
 }
@@ -119,16 +158,43 @@ function returnToMain() {
     // Скрываем контейнер с аналитикой
     document.getElementById('analytics-container').style.display = 'none';
     
-    // Очищаем iframe
-    document.getElementById('analytics-frame').src = '';
+    // Очищаем iframe с параметром для очистки кэша
+    document.getElementById('analytics-frame').src = 'about:blank';
     
     // Показываем главный экран
-    document.querySelector('.container').style.display = 'flex';
+    const container = document.querySelector('.container');
+    container.style.display = 'flex';
     
-    // Перерисовываем главный график
+    // Возвращаем анимацию NDA
+    chartDom.style.opacity = '1';
+    chartDom.style.pointerEvents = 'auto';
+    
+    // Скрываем кнопки
+    const buttonsContainer = document.getElementById('buttons-container');
+    const subtitle = document.getElementById('subtitle');
+    
+    if (buttonsContainer) {
+        buttonsContainer.style.opacity = '0';
+        buttonsContainer.style.transform = 'translateY(20px)';
+    }
+    
+    if (subtitle) {
+        subtitle.style.opacity = '0';
+        subtitle.style.transform = 'translateY(10px)';
+    }
+    
+    // Сбрасываем флаг анимации
+    animationCompleted = false;
+    
+    // Перезапускаем анимацию
     setTimeout(() => {
         myChart.resize();
         myChart.setOption(getChartOptions(), true);
+        
+        // Запускаем показ кнопок через 3 секунды
+        setTimeout(() => {
+            showButtons();
+        }, 3000);
     }, 50);
     
     console.log('Возврат на главный экран');
@@ -143,50 +209,6 @@ window.addEventListener('resize', function() {
         myChart.setOption(getChartOptions(), true);
     }, 200);
 });
-
-// Функции индикатора загрузки
-function showLoading() {
-    let loading = document.getElementById('custom-loading');
-    if (!loading) {
-        loading = document.createElement('div');
-        loading.id = 'custom-loading';
-        loading.innerHTML = `
-            <div style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #ff5014;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 2000;
-                color: white;
-                font-size: ${isMobile() ? '18px' : '22px'};
-                text-align: center;
-                padding: 20px;
-            ">
-                <div style="font-size: ${isMobile() ? '40px' : '60px'}; margin-bottom: 20px;">📊</div>
-                <div>Загрузка аналитики...</div>
-                <div style="font-size: ${isMobile() ? '14px' : '16px'}; margin-top: 10px; opacity: 0.8;">
-                    Пожалуйста, подождите
-                </div>
-            </div>
-        `;
-        document.body.appendChild(loading);
-    } else {
-        loading.style.display = 'flex';
-    }
-}
-
-function hideLoading() {
-    const loading = document.getElementById('custom-loading');
-    if (loading) {
-        loading.style.display = 'none';
-    }
-}
 
 // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
 document.addEventListener('DOMContentLoaded', function() {
@@ -225,5 +247,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Улучшенная обработка для iOS
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
         document.body.style.cursor = 'pointer';
+    }
+});
+
+// Функция для обновления iframe без кэширования
+function refreshIframe(iframeId) {
+    const iframe = document.getElementById(iframeId);
+    if (iframe) {
+        const src = iframe.src;
+        const separator = src.indexOf('?') === -1 ? '?' : '&';
+        const newSrc = src + separator + 'nocache=' + new Date().getTime();
+        iframe.src = newSrc;
+    }
+}
+
+// Автоматический рефреш iframe при видимости (если вкладка была скрыта)
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        const container = document.getElementById('analytics-container');
+        if (container.style.display === 'block') {
+            refreshIframe('analytics-frame');
+        }
     }
 });
