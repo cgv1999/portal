@@ -1,24 +1,50 @@
-// Версия для контроля кэширования
-// main.js?v=1.2
+// Версия: 2.0
 
-// ИНИЦИАЛИЗАЦИЯ ГЛАВНОЙ АНИМАЦИИ
-const chartDom = document.getElementById('main');
-const myChart = echarts.init(chartDom);
+console.log('NDA Analytics Portal v2.0 загружен');
+console.log('Время загрузки:', new Date().toLocaleString());
+
+// Глобальные переменные
+let chartDom, myChart;
 let animationCompleted = false;
+let isInitialLoad = true;
 
-// Определение мобильного устройства
-function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-           window.innerWidth <= 768;
-}
-
-// Адаптивные настройки для разных устройств
-function getChartOptions() {
-    const isMobileDevice = isMobile();
-    const fontSize = isMobileDevice ? (window.innerWidth <= 480 ? 70 : 90) : 140;
-    const animationDuration = isMobileDevice ? 2000 : 2500;
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен, инициализация...');
     
-    return {
+    // Инициализация ECharts
+    chartDom = document.getElementById('main');
+    if (!chartDom) {
+        console.error('Элемент #main не найден!');
+        return;
+    }
+    
+    myChart = echarts.init(chartDom);
+    
+    // Проверка на мобильное устройство
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+        console.log('Мобильное устройство обнаружено');
+    }
+    
+    // Настройка анимации
+    setupAnimation();
+    
+    // Настройка обработчиков событий
+    setupEventHandlers();
+    
+    // Запуск анимации
+    setTimeout(startAnimation, 100);
+});
+
+// НАСТРОЙКА АНИМАЦИИ NDA
+function setupAnimation() {
+    const isMobile = document.body.classList.contains('mobile-device');
+    const fontSize = isMobile ? (window.innerWidth <= 480 ? 70 : 90) : 140;
+    const animationDuration = isMobile ? 2000 : 2500;
+    
+    const option = {
         backgroundColor: '#ff5014',
         graphic: {
             elements: [
@@ -34,7 +60,7 @@ function getChartOptions() {
                         lineDashOffset: 0,
                         fill: 'transparent',
                         stroke: '#FFF',
-                        lineWidth: isMobileDevice ? 3 : 4
+                        lineWidth: isMobile ? 3 : 4
                     },
                     keyframeAnimation: {
                         duration: animationDuration,
@@ -66,207 +92,202 @@ function getChartOptions() {
             ]
         }
     };
+    
+    myChart.setOption(option);
 }
 
-// Функция для показа кнопок после анимации
-function showButtons() {
-    if (animationCompleted) return;
+// ЗАПУСК АНИМАЦИИ
+function startAnimation() {
+    console.log('Запуск анимации NDA...');
     
-    animationCompleted = true;
+    // Слушаем завершение анимации
+    myChart.on('finished', function() {
+        console.log('Анимация NDA завершена');
+        animationCompleted = true;
+        
+        // Скрываем NDA и показываем кнопки
+        setTimeout(() => {
+            hideNDA();
+            showButtons();
+        }, 500);
+    });
     
-    // Скрываем анимацию NDA
+    // На случай если анимация не сработает
     setTimeout(() => {
+        if (!animationCompleted) {
+            console.log('Автоматический показ кнопок (таймаут)');
+            hideNDA();
+            showButtons();
+        }
+    }, 3500);
+}
+
+// СКРЫТЬ NDA
+function hideNDA() {
+    if (chartDom) {
         chartDom.style.opacity = '0';
         chartDom.style.pointerEvents = 'none';
-        
-        // Показываем кнопки с анимацией
-        const buttonsContainer = document.getElementById('buttons-container');
-        const subtitle = document.getElementById('subtitle');
-        
-        if (buttonsContainer) {
-            buttonsContainer.style.opacity = '1';
-            buttonsContainer.style.transform = 'translateY(0)';
-        }
-        
-        if (subtitle) {
-            setTimeout(() => {
-                subtitle.style.opacity = '1';
-                subtitle.style.transform = 'translateY(0)';
-            }, 300);
-        }
-    }, 800); // Задержка после завершения анимации
-}
-
-// Применяем настройки
-myChart.setOption(getChartOptions());
-
-// Добавляем класс для мобильных устройств
-if (isMobile()) {
-    document.body.classList.add('mobile-device');
-    console.log('Мобильное устройство обнаружено');
-}
-
-// ОТСЛЕЖИВАНИЕ ЗАВЕРШЕНИЯ АНИМАЦИИ
-myChart.on('finished', function() {
-    console.log('Анимация NDA завершена');
-    setTimeout(showButtons, 500); // Задержка перед показом кнопок
-});
-
-// Альтернатива: если анимация не сработала, показать кнопки через 3 секунды
-setTimeout(() => {
-    if (!animationCompleted) {
-        console.log('Автоматический показ кнопок (таймаут)');
-        showButtons();
     }
-}, 3500);
+}
 
-// ФУНКЦИЯ ЗАГРУЗКИ АНАЛИТИКИ
-function loadAnalytics(analyticsName) {
-    console.log(`Загрузка: ${analyticsName}`);
+// ПОКАЗАТЬ КНОПКИ
+function showButtons() {
+    const buttonsContainer = document.getElementById('buttons-container');
+    const subtitle = document.getElementById('subtitle');
     
-    // Добавляем вибрацию на мобильных (если поддерживается)
-    if (navigator.vibrate && isMobile()) {
-        navigator.vibrate(50);
+    if (buttonsContainer) {
+        buttonsContainer.style.opacity = '1';
+        buttonsContainer.style.transform = 'translateY(0)';
     }
+    
+    if (subtitle) {
+        setTimeout(() => {
+            subtitle.style.opacity = '1';
+            subtitle.style.transform = 'translateY(0)';
+        }, 300);
+    }
+    
+    console.log('Кнопки показаны');
+}
+
+// НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ
+function setupEventHandlers() {
+    // Обработка изменения размера окна
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            if (myChart) {
+                myChart.resize();
+                setupAnimation();
+            }
+        }, 200);
+    });
+    
+    // Настройка touch событий для кнопок
+    const buttons = document.querySelectorAll('.portal-button, .back-button');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function() {
+            this.style.opacity = '0.9';
+        });
+        
+        button.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+        });
+    });
+    
+    // Предотвращение двойного тапа для масштабирования
+    document.addEventListener('touchstart', function(event) {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }, { passive: false });
+}
+
+// ЗАГРУЗКА АНАЛИТИКИ
+function loadAnalytics(analyticsName) {
+    console.log(`Загрузка аналитики: ${analyticsName}`);
     
     // Скрываем главный экран
-    document.querySelector('.container').style.display = 'none';
+    const container = document.querySelector('.container');
+    if (container) container.style.display = 'none';
     
-    // Показываем контейнер с аналитикой
-    const container = document.getElementById('analytics-container');
+    // Показываем контейнер аналитики
+    const analyticsContainer = document.getElementById('analytics-container');
     const frame = document.getElementById('analytics-frame');
     
-    container.style.display = 'block';
-    
-    // Добавляем параметр времени для обхода кэширования
-    const timestamp = new Date().getTime();
-    const analyticsUrl = `${analyticsName}/index.html?t=${timestamp}`;
-    
-    // Загружаем аналитику в iframe
-    frame.src = analyticsUrl;
-    
-    console.log(`Аналитика "${analyticsName}" загружена`);
-}
-
-// ФУНКЦИЯ ВОЗВРАТА НА ГЛАВНЫЙ ЭКРАН
-function returnToMain() {
-    // Вибрация на мобильных
-    if (navigator.vibrate && isMobile()) {
-        navigator.vibrate(30);
+    if (analyticsContainer) {
+        analyticsContainer.style.display = 'block';
     }
     
-    // Скрываем контейнер с аналитикой
-    document.getElementById('analytics-container').style.display = 'none';
+    // Загружаем iframe с параметром для избежания кэширования
+    if (frame) {
+        const timestamp = Date.now();
+        frame.src = `${analyticsName}/index.html?nocache=${timestamp}`;
+    }
     
-    // Очищаем iframe с параметром для очистки кэша
-    document.getElementById('analytics-frame').src = 'about:blank';
+    // Запоминаем какая аналитика загружена
+    sessionStorage.setItem('lastAnalytics', analyticsName);
+}
+
+// ВОЗВРАТ НА ГЛАВНЫЙ ЭКРАН
+function returnToMain() {
+    console.log('Возврат на главный экран');
+    
+    // Скрываем контейнер аналитики
+    const analyticsContainer = document.getElementById('analytics-container');
+    if (analyticsContainer) {
+        analyticsContainer.style.display = 'none';
+    }
+    
+    // Очищаем iframe
+    const frame = document.getElementById('analytics-frame');
+    if (frame) {
+        frame.src = 'about:blank';
+    }
     
     // Показываем главный экран
     const container = document.querySelector('.container');
-    container.style.display = 'flex';
+    if (container) {
+        container.style.display = 'flex';
+    }
     
-    // Возвращаем анимацию NDA
-    chartDom.style.opacity = '1';
-    chartDom.style.pointerEvents = 'auto';
-    
+    // Сбрасываем анимацию
+    resetAnimation();
+}
+
+// СБРОС АНИМАЦИИ
+function resetAnimation() {
     // Скрываем кнопки
     const buttonsContainer = document.getElementById('buttons-container');
     const subtitle = document.getElementById('subtitle');
     
     if (buttonsContainer) {
         buttonsContainer.style.opacity = '0';
-        buttonsContainer.style.transform = 'translateY(20px)';
+        buttonsContainer.style.transform = 'translateY(30px)';
     }
     
     if (subtitle) {
         subtitle.style.opacity = '0';
-        subtitle.style.transform = 'translateY(10px)';
+        subtitle.style.transform = 'translateY(20px)';
     }
     
-    // Сбрасываем флаг анимации
+    // Показываем NDA
+    if (chartDom) {
+        chartDom.style.opacity = '1';
+        chartDom.style.pointerEvents = 'auto';
+    }
+    
+    // Сбрасываем флаги
     animationCompleted = false;
     
     // Перезапускаем анимацию
     setTimeout(() => {
-        myChart.resize();
-        myChart.setOption(getChartOptions(), true);
-        
-        // Запускаем показ кнопок через 3 секунды
-        setTimeout(() => {
-            showButtons();
-        }, 3000);
-    }, 50);
-    
-    console.log('Возврат на главный экран');
+        if (myChart) {
+            myChart.resize();
+            setupAnimation();
+            setTimeout(startAnimation, 100);
+        }
+    }, 100);
 }
 
-// ОБРАБОТЧИК ИЗМЕНЕНИЯ РАЗМЕРА ОКНА
-let resizeTimeout;
-window.addEventListener('resize', function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-        myChart.resize();
-        myChart.setOption(getChartOptions(), true);
-    }, 200);
-});
-
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('PORTAL Analytics загружен');
-    
-    // Настройка touch-событий для кнопок
-    const buttons = document.querySelectorAll('.portal-button, .back-button');
-    buttons.forEach(button => {
-        // Touch события
-        button.addEventListener('touchstart', function() {
-            this.style.opacity = '0.8';
-            this.style.transform = 'scale(0.98)';
-        });
-        
-        button.addEventListener('touchend', function() {
-            this.style.opacity = '1';
-            this.style.transform = '';
-        });
-        
-        button.addEventListener('touchcancel', function() {
-            this.style.opacity = '1';
-            this.style.transform = '';
-        });
-    });
-    
-    // Предотвращаем масштабирование при двойном тапе
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(event) {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, false);
-    
-    // Улучшенная обработка для iOS
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        document.body.style.cursor = 'pointer';
-    }
-});
-
-// Функция для обновления iframe без кэширования
-function refreshIframe(iframeId) {
-    const iframe = document.getElementById(iframeId);
-    if (iframe) {
-        const src = iframe.src;
-        const separator = src.indexOf('?') === -1 ? '?' : '&';
-        const newSrc = src + separator + 'nocache=' + new Date().getTime();
-        iframe.src = newSrc;
+// ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
+function refreshAnalytics() {
+    const frame = document.getElementById('analytics-frame');
+    if (frame && frame.src) {
+        const url = new URL(frame.src);
+        url.searchParams.set('refresh', Date.now());
+        frame.src = url.toString();
+        console.log('Аналитика обновлена');
     }
 }
 
-// Автоматический рефреш iframe при видимости (если вкладка была скрыта)
-document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible') {
-        const container = document.getElementById('analytics-container');
-        if (container.style.display === 'block') {
-            refreshIframe('analytics-frame');
-        }
-    }
-});
+function getCurrentVersion() {
+    return '2.0';
+}
+
+// Экспорт функций для глобального доступа
+window.loadAnalytics = loadAnalytics;
+window.returnToMain = returnToMain;
+window.refreshAnalytics = refreshAnalytics;
+window.getCurrentVersion = getCurrentVersion;
