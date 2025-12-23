@@ -2,19 +2,19 @@
 const chartDom = document.getElementById('main');
 const myChart = echarts.init(chartDom);
 
-// Функция для адаптивного размера текста
-function getResponsiveFontSize() {
-    const width = window.innerWidth;
-    if (width <= 480) return 80;
-    if (width <= 768) return 100;
-    if (width <= 1024) return 120;
-    return 140;
+// Определение мобильного устройства
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768;
 }
 
-// Функция для перерисовки графики при изменении размера
-function updateChartSize() {
-    const fontSize = getResponsiveFontSize();
-    const option = {
+// Адаптивные настройки для разных устройств
+function getChartOptions() {
+    const isMobileDevice = isMobile();
+    const fontSize = isMobileDevice ? (window.innerWidth <= 480 ? 70 : 90) : 140;
+    const animationDuration = isMobileDevice ? 2000 : 2500;
+    
+    return {
         backgroundColor: '#ff5014',
         graphic: {
             elements: [
@@ -30,10 +30,10 @@ function updateChartSize() {
                         lineDashOffset: 0,
                         fill: 'transparent',
                         stroke: '#FFF',
-                        lineWidth: 4
+                        lineWidth: isMobileDevice ? 3 : 4
                     },
                     keyframeAnimation: {
-                        duration: 2500,
+                        duration: animationDuration,
                         loop: false,
                         keyframes: [
                             {
@@ -62,12 +62,16 @@ function updateChartSize() {
             ]
         }
     };
-    
-    myChart.setOption(option, true);
 }
 
-// Инициализация графика
-updateChartSize();
+// Применяем настройки
+myChart.setOption(getChartOptions());
+
+// Добавляем класс для мобильных устройств
+if (isMobile()) {
+    document.body.classList.add('mobile-device');
+    console.log('Мобильное устройство обнаружено');
+}
 
 // ОТСЛЕЖИВАНИЕ ЗАВЕРШЕНИЯ АНИМАЦИИ
 myChart.on('finished', function() {
@@ -78,8 +82,13 @@ myChart.on('finished', function() {
 function loadAnalytics(analyticsName) {
     console.log(`Загрузка: ${analyticsName}`);
     
+    // Добавляем вибрацию на мобильных (если поддерживается)
+    if (navigator.vibrate && isMobile()) {
+        navigator.vibrate(50);
+    }
+    
     // Показываем индикатор загрузки
-    showLoadingIndicator();
+    showLoading();
     
     // Скрываем главный экран
     document.querySelector('.container').style.display = 'none';
@@ -92,23 +101,21 @@ function loadAnalytics(analyticsName) {
     
     // Загружаем аналитику в iframe
     frame.onload = function() {
-        hideLoadingIndicator();
+        hideLoading();
     };
     
     frame.src = `${analyticsName}/index.html`;
-    
-    // На мобильных добавляем небольшую задержку для лучшего UX
-    if (isMobileDevice()) {
-        setTimeout(() => {
-            hideLoadingIndicator();
-        }, 500);
-    }
     
     console.log(`Аналитика "${analyticsName}" загружена`);
 }
 
 // ФУНКЦИЯ ВОЗВРАТА НА ГЛАВНЫЙ ЭКРАН
 function returnToMain() {
+    // Вибрация на мобильных
+    if (navigator.vibrate && isMobile()) {
+        navigator.vibrate(30);
+    }
+    
     // Скрываем контейнер с аналитикой
     document.getElementById('analytics-container').style.display = 'none';
     
@@ -121,61 +128,63 @@ function returnToMain() {
     // Перерисовываем главный график
     setTimeout(() => {
         myChart.resize();
-        updateChartSize();
+        myChart.setOption(getChartOptions(), true);
     }, 50);
     
     console.log('Возврат на главный экран');
 }
 
 // ОБРАБОТЧИК ИЗМЕНЕНИЯ РАЗМЕРА ОКНА
-let resizeTimer;
+let resizeTimeout;
 window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
         myChart.resize();
-        updateChartSize();
-    }, 150);
+        myChart.setOption(getChartOptions(), true);
+    }, 200);
 });
 
-// Вспомогательные функции
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-function showLoadingIndicator() {
-    // Создаем индикатор загрузки, если его нет
-    if (!document.getElementById('loading-indicator')) {
-        const loadingDiv = document.createElement('div');
-        loadingDiv.id = 'loading-indicator';
-        loadingDiv.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 80, 20, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            color: white;
-            font-size: 18px;
+// Функции индикатора загрузки
+function showLoading() {
+    let loading = document.getElementById('custom-loading');
+    if (!loading) {
+        loading = document.createElement('div');
+        loading.id = 'custom-loading';
+        loading.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #ff5014;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                color: white;
+                font-size: ${isMobile() ? '18px' : '22px'};
+                text-align: center;
+                padding: 20px;
+            ">
+                <div style="font-size: ${isMobile() ? '40px' : '60px'}; margin-bottom: 20px;">📊</div>
+                <div>Загрузка аналитики...</div>
+                <div style="font-size: ${isMobile() ? '14px' : '16px'}; margin-top: 10px; opacity: 0.8;">
+                    Пожалуйста, подождите
+                </div>
+            </div>
         `;
-        loadingDiv.innerHTML = `
-            <div style="font-size: 24px; margin-bottom: 20px;">🔄</div>
-            <div>Загрузка аналитики...</div>
-        `;
-        document.body.appendChild(loadingDiv);
+        document.body.appendChild(loading);
     } else {
-        document.getElementById('loading-indicator').style.display = 'flex';
+        loading.style.display = 'flex';
     }
 }
 
-function hideLoadingIndicator() {
-    const indicator = document.getElementById('loading-indicator');
-    if (indicator) {
-        indicator.style.display = 'none';
+function hideLoading() {
+    const loading = document.getElementById('custom-loading');
+    if (loading) {
+        loading.style.display = 'none';
     }
 }
 
@@ -183,35 +192,38 @@ function hideLoadingIndicator() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('PORTAL Analytics загружен');
     
-    // Добавляем обработчики для touch устройств
-    if (isMobileDevice()) {
-        document.body.classList.add('mobile-device');
-        
-        // Улучшаем touch-обработку для кнопок
-        const buttons = document.querySelectorAll('.portal-button, .back-button');
-        buttons.forEach(button => {
-            button.addEventListener('touchstart', function(e) {
-                this.style.transform = 'scale(0.98)';
-            });
-            
-            button.addEventListener('touchend', function(e) {
-                this.style.transform = '';
-            });
+    // Настройка touch-событий для кнопок
+    const buttons = document.querySelectorAll('.portal-button, .back-button');
+    buttons.forEach(button => {
+        // Touch события
+        button.addEventListener('touchstart', function() {
+            this.style.opacity = '0.8';
+            this.style.transform = 'scale(0.98)';
         });
-    }
-    
-    // Предотвращаем масштабирование при двойном тапе на кнопки
-    document.addEventListener('touchstart', function(e) {
-        if (e.target.tagName === 'BUTTON') {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
-    // Перерисовываем график после полной загрузки
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            myChart.resize();
-            updateChartSize();
-        }, 100);
+        
+        button.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+            this.style.transform = '';
+        });
+        
+        button.addEventListener('touchcancel', function() {
+            this.style.opacity = '1';
+            this.style.transform = '';
+        });
     });
+    
+    // Предотвращаем масштабирование при двойном тапе
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Улучшенная обработка для iOS
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        document.body.style.cursor = 'pointer';
+    }
 });
