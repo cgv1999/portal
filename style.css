@@ -11,17 +11,19 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    touch-action: manipulation;
 }
 
 .container {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 #main {
@@ -36,58 +38,68 @@ body {
 .buttons-container {
     position: relative;
     z-index: 30;
-    margin-bottom: 250px;
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
     align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 60px;
 }
 
 .buttons-row {
     display: flex;
-    gap: 25px;
+    gap: 15px;
     justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .portal-button {
     background: rgba(255, 255, 255, 0.95);
     border: none;
-    padding: 22px 45px;
+    padding: 18px 25px;
     border-radius: 12px;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
     color: #ff5014;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    min-width: 200px;
+    min-width: 160px;
+    min-height: 60px;
     text-align: center;
     backdrop-filter: blur(10px);
     letter-spacing: 0.5px;
+    flex: 1;
+    max-width: 280px;
 }
 
-.portal-button:hover {
+.portal-button:hover,
+.portal-button:focus {
     background: white;
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    outline: none;
 }
 
 .portal-button:active {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
 }
 
 .subtitle {
     position: absolute;
-    bottom: 40px;
+    bottom: 20px;
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
     padding: 15px;
     z-index: 10;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 /* Стили для контейнера аналитики */
@@ -99,23 +111,26 @@ body {
     height: 100%;
     background: white;
     z-index: 100;
+    display: none;
 }
 
 .back-button {
     position: fixed;
-    top: 30px;
-    left: 30px;
+    top: 20px;
+    left: 20px;
     background: #ff5014;
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: 12px 24px;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     z-index: 101;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .back-button:hover {
@@ -125,9 +140,186 @@ body {
 
 #analytics-frame {
     position: absolute;
-    top: 0;
+    top: 70px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 70px);
     border: none;
+}
+
+/* Медиа-запросы для адаптивности */
+
+/* Планшеты и маленькие ноутбуки */
+@media (max-width: 1024px) {
+    .buttons-container {
+        margin-top: 40px;
+        gap: 12px;
+    }
+    
+    .buttons-row {
+        gap: 12px;
+    }
+    
+    .portal-button {
+        padding: 16px 22px;
+        font-size: 17px;
+        min-width: 140px;
+        min-height: 56px;
+        max-width: 240px;
+    }
+}
+
+/* Большие мобильные (ландшафт) */
+@media (max-width: 768px) {
+    body {
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+    
+    .container {
+        padding: 15px;
+        justify-content: flex-start;
+    }
+    
+    .buttons-container {
+        margin-top: 30px;
+        gap: 10px;
+    }
+    
+    .buttons-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .portal-button {
+        width: 100%;
+        max-width: 320px;
+        padding: 18px 20px;
+        font-size: 17px;
+        min-height: 62px;
+    }
+    
+    .subtitle {
+        position: relative;
+        bottom: auto;
+        margin-top: 30px;
+        font-size: 15px;
+        padding: 10px;
+    }
+    
+    .back-button {
+        top: 15px;
+        left: 15px;
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+    
+    #analytics-frame {
+        top: 60px;
+        height: calc(100% - 60px);
+    }
+}
+
+/* Мобильные (портрет) */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .buttons-container {
+        margin-top: 20px;
+        gap: 8px;
+    }
+    
+    .portal-button {
+        padding: 16px 15px;
+        font-size: 16px;
+        min-height: 56px;
+        max-width: 100%;
+    }
+    
+    .subtitle {
+        font-size: 14px;
+        margin-top: 25px;
+        padding: 8px;
+    }
+    
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    #analytics-frame {
+        top: 55px;
+        height: calc(100% - 55px);
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+    .portal-button {
+        padding: 14px 12px;
+        font-size: 15px;
+        min-height: 52px;
+    }
+    
+    .subtitle {
+        font-size: 13px;
+    }
+    
+    .back-button {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+
+/* Ориентация ландшафт для мобильных */
+@media (max-height: 500px) and (orientation: landscape) {
+    .container {
+        justify-content: center;
+    }
+    
+    .buttons-container {
+        margin-top: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .buttons-row {
+        flex-direction: row;
+        width: auto;
+    }
+    
+    .portal-button {
+        min-width: 140px;
+        min-height: 50px;
+        padding: 12px 15px;
+    }
+    
+    .subtitle {
+        margin-top: 15px;
+    }
+}
+
+/* Поддержка touch устройств */
+@media (hover: none) and (pointer: coarse) {
+    .portal-button:hover {
+        transform: none;
+    }
+    
+    .portal-button:active {
+        transform: scale(0.98);
+    }
+    
+    .back-button:hover {
+        transform: none;
+    }
+    
+    .back-button:active {
+        transform: scale(0.98);
+    }
 }
