@@ -11,7 +11,7 @@ const option = {
                 left: 'center',
                 top: '50%',
                 style: {
-                    text: 'ПОРТАЛ',
+                    text: 'NDA',
                     fontSize: 140,
                     fontWeight: 'bold',
                     lineDash: [0, 200],
@@ -55,7 +55,7 @@ myChart.setOption(option);
 
 // ОТСЛЕЖИВАНИЕ ЗАВЕРШЕНИЯ АНИМАЦИИ
 myChart.on('finished', function() {
-    console.log('Анимация PORTAL завершена');
+    console.log('Анимация NDA завершена');
 });
 
 // ФУНКЦИЯ ЗАГРУЗКИ АНАЛИТИКИ
