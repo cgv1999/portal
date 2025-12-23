@@ -12,9 +12,11 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
-    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
 }
 
+/* Главный экран */
 .container {
     width: 100%;
     min-height: 100vh;
@@ -24,6 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
+    transition: all 0.3s ease;
 }
 
 #main {
@@ -35,74 +38,70 @@ body {
     z-index: 1;
 }
 
+/* Кнопки на десктопе */
 .buttons-container {
     position: relative;
     z-index: 30;
-    margin-bottom: 0;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    margin-top: 60px;
 }
 
 .buttons-row {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
 }
 
 .portal-button {
     background: rgba(255, 255, 255, 0.95);
     border: none;
-    padding: 18px 25px;
+    padding: 20px 40px;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: #ff5014;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    min-width: 160px;
+    min-width: 180px;
     min-height: 60px;
     text-align: center;
     backdrop-filter: blur(10px);
     letter-spacing: 0.5px;
-    flex: 1;
-    max-width: 280px;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.portal-button:hover,
-.portal-button:focus {
+.portal-button:hover {
     background: white;
-    transform: translateY(-5px);
+    transform: translateY(-8px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
-    outline: none;
 }
 
 .portal-button:active {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
 }
 
 .subtitle {
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
     padding: 15px;
     z-index: 10;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
-/* Стили для контейнера аналитики */
+/* Контейнер аналитики */
 #analytics-container {
     position: fixed;
     top: 0;
@@ -116,21 +115,23 @@ body {
 
 .back-button {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 30px;
+    left: 30px;
     background: #ff5014;
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 15px 30px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     z-index: 101;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 50px;
+    min-width: 160px;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .back-button:hover {
@@ -140,186 +141,244 @@ body {
 
 #analytics-frame {
     position: absolute;
-    top: 70px;
+    top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 70px);
+    height: 100%;
     border: none;
 }
 
-/* Медиа-запросы для адаптивности */
+/* ========== МОБИЛЬНЫЕ СТИЛИ ========== */
 
-/* Планшеты и маленькие ноутбуки */
-@media (max-width: 1024px) {
-    .buttons-container {
-        margin-top: 40px;
-        gap: 12px;
-    }
-    
-    .buttons-row {
-        gap: 12px;
-    }
-    
-    .portal-button {
-        padding: 16px 22px;
-        font-size: 17px;
-        min-width: 140px;
-        min-height: 56px;
-        max-width: 240px;
-    }
-}
-
-/* Большие мобильные (ландшафт) */
+/* Общие мобильные стили */
 @media (max-width: 768px) {
     body {
-        min-height: 100vh;
+        min-height: -webkit-fill-available;
         overflow-y: auto;
     }
     
     .container {
-        padding: 15px;
-        justify-content: flex-start;
+        padding: 10px !important;
+        justify-content: flex-start !important;
+        padding-top: 40px !important;
+        min-height: -webkit-fill-available;
     }
     
+    /* Анимация на мобильных */
+    #main {
+        position: fixed !important;
+        top: 0 !important;
+    }
+    
+    /* Перестраиваем кнопки в столбец */
     .buttons-container {
-        margin-top: 30px;
-        gap: 10px;
+        margin-top: 40px !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px !important;
     }
     
     .buttons-row {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
     }
     
     .portal-button {
-        width: 100%;
-        max-width: 320px;
-        padding: 18px 20px;
-        font-size: 17px;
-        min-height: 62px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: auto !important;
+        min-height: 70px !important;
+        padding: 22px 15px !important;
+        font-size: 18px !important;
+        margin: 5px 0 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
     }
     
+    /* Убираем hover эффекты для тач-устройств */
+    .portal-button:hover {
+        transform: none !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    .portal-button:active {
+        background: white !important;
+        transform: scale(0.98) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Подзаголовок на мобильных */
     .subtitle {
-        position: relative;
-        bottom: auto;
-        margin-top: 30px;
-        font-size: 15px;
-        padding: 10px;
+        position: relative !important;
+        bottom: auto !important;
+        margin-top: 30px !important;
+        margin-bottom: 20px !important;
+        font-size: 16px !important;
+        padding: 10px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
     
+    /* Кнопка назад на мобильных */
     .back-button {
-        top: 15px;
-        left: 15px;
-        padding: 10px 20px;
-        font-size: 15px;
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+        min-height: 44px !important;
+        min-width: 140px !important;
+        z-index: 1001 !important;
+        border-radius: 6px !important;
     }
     
+    .back-button:hover {
+        transform: none !important;
+    }
+    
+    .back-button:active {
+        transform: scale(0.95) !important;
+    }
+    
+    /* Iframe на мобильных */
     #analytics-frame {
-        top: 60px;
-        height: calc(100% - 60px);
+        top: 70px !important;
+        height: calc(100% - 70px) !important;
     }
 }
 
-/* Мобильные (портрет) */
+/* Маленькие мобильные */
 @media (max-width: 480px) {
     .container {
-        padding: 10px;
+        padding: 8px !important;
+        padding-top: 30px !important;
     }
     
     .buttons-container {
-        margin-top: 20px;
-        gap: 8px;
+        margin-top: 30px !important;
+        gap: 10px !important;
+        padding: 5px !important;
     }
     
     .portal-button {
-        padding: 16px 15px;
-        font-size: 16px;
-        min-height: 56px;
-        max-width: 100%;
+        min-height: 65px !important;
+        padding: 20px 12px !important;
+        font-size: 17px !important;
+        border-radius: 8px !important;
+        margin: 4px 0 !important;
     }
     
     .subtitle {
-        font-size: 14px;
-        margin-top: 25px;
-        padding: 8px;
+        font-size: 15px !important;
+        margin-top: 25px !important;
+        padding: 8px !important;
     }
     
     .back-button {
-        top: 10px;
-        left: 10px;
-        padding: 10px 16px;
-        font-size: 14px;
+        top: 10px !important;
+        left: 10px !important;
+        padding: 10px 16px !important;
+        font-size: 15px !important;
+        min-width: 130px !important;
     }
     
     #analytics-frame {
-        top: 55px;
-        height: calc(100% - 55px);
+        top: 65px !important;
+        height: calc(100% - 65px) !important;
     }
 }
 
 /* Очень маленькие экраны */
 @media (max-width: 360px) {
     .portal-button {
-        padding: 14px 12px;
-        font-size: 15px;
-        min-height: 52px;
+        min-height: 60px !important;
+        padding: 18px 10px !important;
+        font-size: 16px !important;
     }
     
     .subtitle {
-        font-size: 13px;
+        font-size: 14px !important;
     }
     
     .back-button {
-        padding: 8px 14px;
-        font-size: 13px;
+        padding: 8px 14px !important;
+        font-size: 14px !important;
     }
 }
 
-/* Ориентация ландшафт для мобильных */
+/* Ландшафтная ориентация для мобильных */
 @media (max-height: 500px) and (orientation: landscape) {
     .container {
-        justify-content: center;
+        padding-top: 20px !important;
+        justify-content: center !important;
     }
     
     .buttons-container {
-        margin-top: 20px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
+        margin-top: 10px !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
     }
     
     .buttons-row {
-        flex-direction: row;
-        width: auto;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        width: auto !important;
     }
     
     .portal-button {
-        min-width: 140px;
-        min-height: 50px;
-        padding: 12px 15px;
+        min-height: 50px !important;
+        padding: 12px 10px !important;
+        font-size: 15px !important;
+        min-width: 120px !important;
+        max-width: 45% !important;
+        flex: 1 1 auto !important;
     }
     
     .subtitle {
-        margin-top: 15px;
+        margin-top: 15px !important;
+        font-size: 14px !important;
     }
 }
 
-/* Поддержка touch устройств */
+/* Отключение анимаций для пользователей, которые их не хотят */
+@media (prefers-reduced-motion: reduce) {
+    .portal-button, .back-button {
+        transition: none !important;
+    }
+}
+
+/* Touch-устройства */
 @media (hover: none) and (pointer: coarse) {
-    .portal-button:hover {
-        transform: none;
+    .portal-button, .back-button {
+        cursor: pointer !important;
     }
     
-    .portal-button:active {
-        transform: scale(0.98);
+    .portal-button:hover, .back-button:hover {
+        transform: none !important;
     }
     
-    .back-button:hover {
-        transform: none;
+    /* Увеличиваем область нажатия */
+    .portal-button::after, .back-button::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+    }
+}
+
+/* iOS Safari specific */
+@supports (-webkit-touch-callout: none) {
+    body {
+        min-height: -webkit-fill-available;
     }
     
-    .back-button:active {
-        transform: scale(0.98);
+    .container {
+        min-height: -webkit-fill-available;
     }
 }
