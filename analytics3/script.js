@@ -40396,6 +40396,27 @@ const retailObjects = [
     "Юрлов Денис"
 ];
 
+// Функция для стандартизации адреса (улучшенная версия)
+function standardizeAddress(address) {
+    if (!address) return "";
+    
+    const addressStr = String(address).trim();
+    
+    // Приведение к верхнему регистру и удаление лишних пробелов
+    return addressStr.toUpperCase().replace(/\s+/g, ' ').trim();
+}
+
+// Функция для сравнения адресов с учетом стандартизации
+function compareAddresses(address1, address2) {
+    if (!address1 || !address2) return false;
+    
+    const addr1 = standardizeAddress(address1);
+    const addr2 = standardizeAddress(address2);
+    
+    // Сравниваем стандартизированные адреса
+    return addr1 === addr2;
+}
+
 // Функция для парсинга даты из строки в формате DD.MM.YYYY
 function parseDate(dateStr) {
     try {
@@ -40526,14 +40547,20 @@ function processCompanyData(data) {
     });
 }
 
-// Агрегация данных по месяцам
+// Агрегация данных по месяцам с улучшенной фильтрацией
 function aggregateMonthlyData(data, selectedMonths = null, selectedObjects = null, selectedAddresses = null) {
     const monthlyAggregated = {};
 
-    const isAllObjects = !selectedObjects || selectedObjects.length === 0 || (selectedObjects.length === 1 && selectedObjects[0] === 'all');
+    const isAllObjects = !selectedObjects || selectedObjects.length === 0;
     const isAllAddresses = !selectedAddresses || selectedAddresses.length === 0;
     const shouldIncludeCompanyExpenses = isAllObjects && isAllAddresses && companyExpensesFileLoaded;
     const shouldIncludeFranchiseBonus = isAllObjects && isAllAddresses;
+
+    console.log('=== aggregateMonthlyData ===');
+    console.log('selectedObjects:', selectedObjects);
+    console.log('selectedAddresses:', selectedAddresses);
+    console.log('isAllObjects:', isAllObjects);
+    console.log('isAllAddresses:', isAllAddresses);
 
     data.forEach(row => {
         const date = row['Дата'];
@@ -40548,15 +40575,40 @@ function aggregateMonthlyData(data, selectedMonths = null, selectedObjects = nul
             if (!monthKey || !selectedMonths.includes(monthKey)) return;
         }
 
+        // Фильтрация по объектам
         if (selectedObjects && selectedObjects.length > 0) {
+            let objectMatch = false;
+            
             if (selectedObjects.includes('all_retail')) {
-                if (!retailObjects.includes(object)) return;
-            } else if (!selectedObjects.includes('all')) {
-                if (!selectedObjects.includes(object)) return;
+                // Если выбрана "Вся розница", проверяем входит ли объект в список розничных
+                objectMatch = retailObjects.includes(object);
+            } else {
+                // Проверяем точное совпадение объектов
+                objectMatch = selectedObjects.includes(object);
             }
+            
+            if (!objectMatch) return;
         }
 
-        if (selectedAddresses && selectedAddresses.length > 0 && !selectedAddresses.includes(address)) return;
+        // Фильтрация по адресам (множественный выбор)
+        if (selectedAddresses && selectedAddresses.length > 0) {
+            let addressMatch = false;
+            
+            // Сначала проверяем точное совпадение
+            if (selectedAddresses.includes(address)) {
+                addressMatch = true;
+            } else {
+                // Если нет точного совпадения, проверяем стандартизированные адреса
+                for (const selectedAddr of selectedAddresses) {
+                    if (compareAddresses(address, selectedAddr)) {
+                        addressMatch = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!addressMatch) return;
+        }
 
         const monthKey = getMonthKey(date);
         if (!monthKey) return;
@@ -40676,6 +40728,7 @@ function aggregateMonthlyData(data, selectedMonths = null, selectedObjects = nul
         return a.month - b.month;
     });
 
+    console.log('Агрегировано месяцев:', result.length);
     return result;
 }
 
@@ -40728,6 +40781,61 @@ function populateMonthFilter(months) {
     updateSelectedInfo('monthSelected', monthSelect);
 }
 
+// Функция для обновления списка адресов при выборе объекта
+function updateAddressFilter(selectedObject, data) {
+    const addressSelect = document.getElementById('addressSelect');
+    const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
+    
+    console.log('=== updateAddressFilter ===');
+    console.log('Выбранный объект:', selectedObject);
+    console.log('Текущие выбранные адреса:', currentSelected);
+    
+    let filteredAddresses;
+    
+    if (selectedObject === 'all_retail') {
+        // Все адреса для розничных объектов
+        filteredAddresses = [...new Set(data
+            .filter(row => retailObjects.includes(row['Объект']))
+            .map(row => row['Адрес']))].filter(Boolean);
+    } else if (selectedObject && selectedObject !== 'all') {
+        // Адреса для конкретного объекта
+        filteredAddresses = [...new Set(data
+            .filter(row => row['Объект'] === selectedObject)
+            .map(row => row['Адрес']))].filter(Boolean);
+    } else {
+        // Все адреса
+        filteredAddresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
+    }
+    
+    // Исключаем "Франшиза роялти"
+    filteredAddresses = filteredAddresses.filter(address => {
+        const addr = String(address).trim();
+        return !addr.toLowerCase().includes('франшиза роялти');
+    });
+    
+    // Сортируем адреса
+    filteredAddresses.sort((a, b) => a.localeCompare(b));
+    
+    console.log('Доступные адреса для выбора:', filteredAddresses);
+    
+    addressSelect.innerHTML = '<option value="">Все адреса</option>';
+    
+    filteredAddresses.forEach(address => {
+        const option = document.createElement('option');
+        option.value = address;
+        option.textContent = address;
+        
+        // Сохраняем выбранные ранее адреса, если они есть в новом списке
+        if (currentSelected.includes(address)) {
+            option.selected = true;
+        }
+        
+        addressSelect.appendChild(option);
+    });
+    
+    updateSelectedInfo('addressSelected', addressSelect);
+}
+
 function populateFilters(data) {
     const objects = [...new Set(data.map(row => row['Объект']))]
         .filter(Boolean)
@@ -40736,7 +40844,7 @@ function populateFilters(data) {
     const addresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
 
     const objectSelect = document.getElementById('objectSelect');
-    objectSelect.innerHTML = '<option value="all">Все объекты</option>';
+    objectSelect.innerHTML = '<option value="">Все объекты</option>';
 
     const allRetailOption = document.createElement('option');
     allRetailOption.value = 'all_retail';
@@ -40791,7 +40899,11 @@ function populateFilters(data) {
     });
 
     const addressSelect = document.getElementById('addressSelect');
-    addressSelect.innerHTML = '<option value="all">Все адреса</option>';
+    addressSelect.innerHTML = '<option value="">Все адреса</option>';
+    
+    // Сортируем адреса
+    addresses.sort((a, b) => a.localeCompare(b));
+    
     addresses.forEach(address => {
         const option = document.createElement('option');
         option.value = address;
@@ -40813,6 +40925,7 @@ function populateFilters(data) {
 
     objectSelect.addEventListener('change', function () {
         updateSelectedInfo('objectSelected', this);
+        updateAddressFilter(this.value, data);
         applyFilters();
     });
 
@@ -40831,7 +40944,7 @@ function populateFilters(data) {
 function updateSelectedInfo(containerId, selectElement) {
     const selectedOptions = Array.from(selectElement.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && (selectElement.id !== 'monthSelect' || value !== 'all'));
+        .filter(value => value && value !== '');
 
     const container = document.getElementById(containerId);
     if (selectedOptions.length > 0) {
@@ -40856,7 +40969,8 @@ function updateSelectedInfo(containerId, selectElement) {
 function getSelectedMonths() {
     const monthSelect = document.getElementById('monthSelect');
     const selectedMonths = Array.from(monthSelect.selectedOptions)
-        .map(option => option.value);
+        .map(option => option.value)
+        .filter(value => value && value !== '');
 
     return selectedMonths.length > 0 ? selectedMonths : null;
 }
@@ -40865,7 +40979,10 @@ function getSelectedObjects() {
     const objectSelect = document.getElementById('objectSelect');
     const selectedObjects = Array.from(objectSelect.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && value !== 'all');
+        .filter(value => value && value !== '');
+
+    console.log('=== getSelectedObjects ===');
+    console.log('Выбранные объекты:', selectedObjects);
 
     return selectedObjects.length > 0 ? selectedObjects : null;
 }
@@ -40874,16 +40991,28 @@ function getSelectedAddresses() {
     const addressSelect = document.getElementById('addressSelect');
     const selectedAddresses = Array.from(addressSelect.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && value !== 'all');
+        .filter(value => value && value !== '');
+
+    console.log('=== getSelectedAddresses ===');
+    console.log('Выбранные адреса:', selectedAddresses);
 
     return selectedAddresses.length > 0 ? selectedAddresses : null;
 }
 
 function applyFilters() {
+    console.log('=== applyFilters ===');
+    
     const selectedMonths = getSelectedMonths();
     const selectedObjects = getSelectedObjects();
     const selectedAddresses = getSelectedAddresses();
-    
+
+    console.log('Параметры фильтрации:', {
+        selectedMonths,
+        selectedObjects,
+        selectedAddresses,
+        selectedAddressesCount: selectedAddresses ? selectedAddresses.length : 0
+    });
+
     const dataToDisplay = aggregateMonthlyData(companyData, selectedMonths, selectedObjects, selectedAddresses);
     
     let infoText = `Показано месяцев: ${dataToDisplay.length}`;
@@ -40891,7 +41020,7 @@ function applyFilters() {
         infoText += ` | Выбрано месяцев: ${selectedMonths.length}`;
     }
 
-    const isAllObjectsFlag = !selectedObjects || selectedObjects.length === 0 || (selectedObjects.length === 1 && selectedObjects[0] === 'all');
+    const isAllObjectsFlag = !selectedObjects || selectedObjects.length === 0;
     const isAllAddressesFlag = !selectedAddresses || selectedAddresses.length === 0;
 
     if (isAllObjectsFlag && isAllAddressesFlag && companyExpensesFileLoaded) {
@@ -40987,7 +41116,7 @@ function buildChart(data, selectedObjects, selectedAddresses) {
         subtitle += ` | Адресов: ${selectedAddresses.length}`;
     }
 
-    const isAllObjectsFlag = !selectedObjects || selectedObjects.length === 0 || (selectedObjects.length === 1 && selectedObjects[0] === 'all');
+    const isAllObjectsFlag = !selectedObjects || selectedObjects.length === 0;
     const isAllAddressesFlag = !selectedAddresses || selectedAddresses.length === 0;
 
     if (isAllObjectsFlag && isAllAddressesFlag && companyExpensesFileLoaded) {
@@ -41266,6 +41395,25 @@ function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFra
     `;
 
     document.getElementById('statsInfo').innerHTML = statsHtml;
+}
+
+// Вспомогательные функции для управления выбором адресов
+function selectAllAddresses() {
+    const addressSelect = document.getElementById('addressSelect');
+    for (let i = 0; i < addressSelect.options.length; i++) {
+        addressSelect.options[i].selected = true;
+    }
+    updateSelectedInfo('addressSelected', addressSelect);
+    applyFilters();
+}
+
+function clearAddressSelection() {
+    const addressSelect = document.getElementById('addressSelect');
+    for (let i = 0; i < addressSelect.options.length; i++) {
+        addressSelect.options[i].selected = false;
+    }
+    updateSelectedInfo('addressSelected', addressSelect);
+    applyFilters();
 }
 
 // Инициализация при загрузке страницы
