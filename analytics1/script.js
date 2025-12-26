@@ -53963,11 +53963,34 @@ const addressMapping = {
     "Общий расход": "Общий расход"
 };
 
-// Функция для стандартизации адреса (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
+// Функция для стандартизации адреса (УЛУЧШЕННАЯ ВЕРСИЯ)
 function standardizeAddress(address) {
     if (!address) return "Общий расход";
+    
     const addressStr = String(address).trim();
-    return addressMapping[addressStr] || "Общий расход";
+    
+    // Сначала проверяем точное совпадение
+    if (addressMapping[addressStr]) {
+        return addressMapping[addressStr];
+    }
+    
+    // Проверяем без учета регистра
+    const addressLower = addressStr.toLowerCase();
+    for (const [key, value] of Object.entries(addressMapping)) {
+        if (key.toLowerCase() === addressLower) {
+            return value;
+        }
+    }
+    
+    // Проверяем частичные совпадения
+    for (const [key, value] of Object.entries(addressMapping)) {
+        if (addressLower.includes(key.toLowerCase()) || key.toLowerCase().includes(addressLower)) {
+            return value;
+        }
+    }
+    
+    // Если ничего не нашли, возвращаем оригинал в верхнем регистре
+    return addressStr.toUpperCase();
 }
 
 // Функция для определения объекта по адресу (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
@@ -55202,16 +55225,20 @@ function getSelectedAddresses() {
 function applyFilters() {
     const selectedObject = getSelectedObject();
     const selectedAddresses = getSelectedAddresses();
-
+    
+    console.log('=== applyFilters ===');
+    console.log('selectedObject:', selectedObject);
+    console.log('selectedAddresses:', selectedAddresses);
+    
     // Отфильтровываем строки с "Франшиза роялти" в адресе
     let filteredData = allData.filter(row => {
         const address = String(row.Адрес || '').trim();
         return !address.toLowerCase().includes('франшиза роялти');
     });
-
+    
     const dateFrom = document.getElementById('dateFrom').value;
     const dateTo = document.getElementById('dateTo').value;
-
+    
     if (dateFrom && dateTo) {
         filteredData = filteredData.filter(row => {
             const rowDateStr = row.Дата;
@@ -55226,34 +55253,88 @@ function applyFilters() {
             }
         });
     }
-
+    
+    // СНАЧАЛА фильтруем по адресам, ЕСЛИ они выбраны
+    if (selectedAddresses && selectedAddresses.length > 0) {
+        // Исключаем пустое значение "Все адреса"
+        const validAddresses = selectedAddresses.filter(addr => addr && addr !== '');
+        
+        if (validAddresses.length > 0) {
+            console.log('Фильтрация по адресам. Выбрано адресов:', validAddresses.length);
+            console.log('Выбранные адреса:', validAddresses);
+            
+            // Создаем массив стандартизированных адресов для сравнения
+            const standardizedSelectedAddresses = validAddresses.map(addr => standardizeAddress(addr));
+            console.log('Стандартизированные выбранные адреса:', standardizedSelectedAddresses);
+            
+            filteredData = filteredData.filter(row => {
+                const rowAddress = String(row.Адрес || '').trim();
+                
+                // Если адрес строки пустой, исключаем его
+                if (!rowAddress) return false;
+                
+                // Стандартизируем адрес строки
+                const rowStandardizedAddress = standardizeAddress(rowAddress);
+                
+                // Проверяем 4 варианта сравнения:
+                // 1. Точное совпадение оригинальных адресов
+                if (validAddresses.includes(rowAddress)) {
+                    console.log(`Совпадение по точному адресу: ${rowAddress}`);
+                    return true;
+                }
+                
+                // 2. Совпадение стандартизированных адресов
+                if (standardizedSelectedAddresses.includes(rowStandardizedAddress)) {
+                    console.log(`Совпадение по стандартизированному адресу: ${rowAddress} -> ${rowStandardizedAddress}`);
+                    return true;
+                }
+                
+                // 3. Сравнение без учета регистра
+                const rowAddressLower = rowAddress.toLowerCase();
+                for (const selectedAddr of validAddresses) {
+                    if (rowAddressLower === selectedAddr.toLowerCase()) {
+                        console.log(`Совпадение без учета регистра: ${rowAddress} === ${selectedAddr}`);
+                        return true;
+                    }
+                }
+                
+                // 4. Проверяем, содержит ли адрес строки выбранный адрес (для случаев типа "Шереметьевская РН")
+                for (const selectedAddr of validAddresses) {
+                    if (rowAddress.includes(selectedAddr) || selectedAddr.includes(rowAddress)) {
+                        console.log(`Частичное совпадение: ${rowAddress} содержит ${selectedAddr} или наоборот`);
+                        return true;
+                    }
+                }
+                
+                return false;
+            });
+            
+            console.log('После фильтрации по адресам осталось записей:', filteredData.length);
+            
+            // Для отладки покажем первые несколько отфильтрованных записей
+            if (filteredData.length > 0) {
+                console.log('Примеры отфильтрованных записей:');
+                filteredData.slice(0, 3).forEach((row, i) => {
+                    console.log(`${i+1}. Адрес: "${row.Адрес}", Объект: "${row.Объект}"`);
+                });
+            }
+        }
+    }
+    
+    // ПОТОМ фильтруем по объекту, ЕСЛИ он выбран
     if (selectedObject) {
         if (selectedObject === 'all_retail') {
             filteredData = filteredData.filter(row => retailObjects.includes(row.Объект));
         } else {
             filteredData = filteredData.filter(row => row.Объект === selectedObject);
         }
+        console.log('После фильтрации по объекту осталось записей:', filteredData.length);
     }
-
-    // ИСПРАВЛЕННАЯ ФИЛЬТРАЦИЯ ПО АДРЕСАМ
-    if (selectedAddresses && selectedAddresses.length > 0) {
-        // Используем стандартизированные адреса для сравнения
-        filteredData = filteredData.filter(row => {
-            const rowStandardizedAddress = standardizeAddress(row.Адрес);
-            
-            // Проверяем, совпадает ли стандартизированный адрес строки с любым из выбранных адресов
-            for (const selectedAddr of selectedAddresses) {
-                const selectedStandardizedAddr = standardizeAddress(selectedAddr);
-                if (rowStandardizedAddress === selectedStandardizedAddr) {
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
-
+    
+    console.log('Итоговое количество записей:', filteredData.length);
+    
     updateSelectionInfo(dateFrom, dateTo, selectedObject, selectedAddresses, filteredData.length);
-
+    
     if (filteredData.length > 0) {
         buildChart(filteredData, selectedObject, selectedAddresses);
     } else {
