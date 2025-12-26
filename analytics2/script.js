@@ -40397,6 +40397,29 @@ const retailObjects = [
     "Юрлов Денис"
 ];
 
+// Функция для стандартизации адреса
+function standardizeAddress(address) {
+    if (!address) return "";
+    
+    const addressStr = String(address).trim();
+    
+    // Простая стандартизация - приведение к верхнему регистру и удаление лишних пробелов
+    return addressStr.toUpperCase().replace(/\s+/g, ' ').trim();
+}
+
+// Функция для сравнения адресов с учетом стандартизации
+function compareAddresses(address1, address2) {
+    if (!address1 || !address2) return false;
+    
+    const addr1 = standardizeAddress(address1);
+    const addr2 = standardizeAddress(address2);
+    
+    return addr1 === addr2 || 
+           addr1.includes(addr2) || 
+           addr2.includes(addr1) ||
+           address1.toLowerCase() === address2.toLowerCase();
+}
+
 // Функция для парсинга даты из строки в формате DD.MM.YYYY
 function parseDate(dateStr) {
     try {
@@ -40585,10 +40608,16 @@ function processCompanyData(data) {
 function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObjects = null, selectedAddresses = null) {
     const dailyAggregated = {};
     
-    const isAllObjects = !selectedObjects || selectedObjects.length === 0 || (selectedObjects.length === 1 && selectedObjects[0] === 'all');
+    const isAllObjects = !selectedObjects || selectedObjects.length === 0;
     const isAllAddresses = !selectedAddresses || selectedAddresses.length === 0;
     const shouldIncludeCompanyExpenses = isAllObjects && isAllAddresses && companyExpensesFileLoaded;
     const shouldIncludeFranchiseBonus = isAllObjects && isAllAddresses;
+    
+    console.log('=== aggregateDailyData ===');
+    console.log('selectedObjects:', selectedObjects);
+    console.log('selectedAddresses:', selectedAddresses);
+    console.log('isAllObjects:', isAllObjects);
+    console.log('isAllAddresses:', isAllAddresses);
     
     data.forEach(row => {
         const date = row['Дата'];
@@ -40599,15 +40628,52 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         
         if (!isDateInRange(date, dateFrom, dateTo)) return;
         
+        // Фильтрация по объектам
         if (selectedObjects && selectedObjects.length > 0) {
+            let objectMatch = false;
+            
             if (selectedObjects.includes('all_retail')) {
-                if (!retailObjects.includes(object)) return;
-            } else if (!selectedObjects.includes('all')) {
-                if (!selectedObjects.includes(object)) return;
+                // Если выбрана "Вся розница", проверяем входит ли объект в список розничных
+                objectMatch = retailObjects.includes(object);
+            } else {
+                // Проверяем точное совпадение объектов
+                objectMatch = selectedObjects.includes(object);
+                
+                // Если нет точного совпадения, проверяем стандартизированные названия
+                if (!objectMatch) {
+                    const standardizedObject = standardizeAddress(object);
+                    for (const selectedObj of selectedObjects) {
+                        if (compareAddresses(standardizedObject, selectedObj)) {
+                            objectMatch = true;
+                            break;
+                        }
+                    }
+                }
             }
+            
+            if (!objectMatch) return;
         }
         
-        if (selectedAddresses && !selectedAddresses.includes(address)) return;
+        // Фильтрация по адресам (множественный выбор)
+        if (selectedAddresses && selectedAddresses.length > 0) {
+            let addressMatch = false;
+            
+            // Сначала проверяем точное совпадение
+            if (selectedAddresses.includes(address)) {
+                addressMatch = true;
+            } else {
+                // Если нет точного совпадения, проверяем стандартизированные адреса
+                const standardizedAddress = standardizeAddress(address);
+                for (const selectedAddr of selectedAddresses) {
+                    if (compareAddresses(standardizedAddress, selectedAddr)) {
+                        addressMatch = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!addressMatch) return;
+        }
         
         if (!dailyAggregated[date]) {
             dailyAggregated[date] = {
@@ -40638,7 +40704,7 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         if (shouldIncludeFranchiseBonus) {
             const franchiseBonus = row['Франшиза сопровождение бонус'] || 0;
             dayData.revenue += franchiseBonus;
-            dayData.franchiseBonus = franchiseBonus;
+            dayData.franchiseBonus += franchiseBonus;
         }
         
         dayData.operatingProfit += row['Операционная прибыль'] || 0;
@@ -40683,6 +40749,7 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     const result = Object.values(dailyAggregated);
     result.sort((a, b) => compareDates(a.date, b.date));
     
+    console.log('Агрегировано дней:', result.length);
     return result;
 }
 
@@ -40706,7 +40773,7 @@ function populateFilters(data) {
     const addresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
 
     const objectSelect = document.getElementById('objectSelect');
-    objectSelect.innerHTML = '<option value="all">Все объекты</option>';
+    objectSelect.innerHTML = '<option value="">Все объекты</option>';
 
     const allRetailOption = document.createElement('option');
     allRetailOption.value = 'all_retail';
@@ -40761,7 +40828,11 @@ function populateFilters(data) {
     });
 
     const addressSelect = document.getElementById('addressSelect');
-    addressSelect.innerHTML = '<option value="all">Все адреса</option>';
+    addressSelect.innerHTML = '<option value="">Все адреса</option>';
+    
+    // Сортируем адреса для удобства
+    addresses.sort((a, b) => a.localeCompare(b));
+    
     addresses.forEach(address => {
         const option = document.createElement('option');
         option.value = address;
@@ -40781,6 +40852,7 @@ function populateFilters(data) {
 
     objectSelect.addEventListener('change', function () {
         updateSelectedInfo('objectSelected', this);
+        updateAddressFilter(this.value, data);
         applyFilters();
     });
 
@@ -40794,19 +40866,74 @@ function populateFilters(data) {
     applyFilters();
 }
 
+// Функция для обновления фильтра адресов в зависимости от выбранного объекта
+function updateAddressFilter(selectedObject, data) {
+    const addressSelect = document.getElementById('addressSelect');
+    const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
+    
+    console.log('=== updateAddressFilter ===');
+    console.log('selectedObject:', selectedObject);
+    console.log('Текущие выбранные адреса:', currentSelected);
+    
+    let filteredAddresses;
+    
+    if (selectedObject === 'all_retail') {
+        // Все адреса для розничных объектов
+        filteredAddresses = [...new Set(data
+            .filter(row => retailObjects.includes(row['Объект']))
+            .map(row => row['Адрес']))].filter(Boolean);
+    } else if (selectedObject) {
+        // Адреса для конкретного объекта
+        filteredAddresses = [...new Set(data
+            .filter(row => row['Объект'] === selectedObject)
+            .map(row => row['Адрес']))].filter(Boolean);
+    } else {
+        // Все адреса
+        filteredAddresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
+    }
+    
+    // Исключаем "Франшиза роялти"
+    filteredAddresses = filteredAddresses.filter(address => {
+        const addr = String(address).trim();
+        return !addr.toLowerCase().includes('франшиза роялти');
+    });
+    
+    // Сортируем адреса
+    filteredAddresses.sort((a, b) => a.localeCompare(b));
+    
+    console.log('Доступные адреса для выбора:', filteredAddresses);
+    
+    addressSelect.innerHTML = '<option value="">Все адреса</option>';
+    
+    filteredAddresses.forEach(address => {
+        const option = document.createElement('option');
+        option.value = address;
+        option.textContent = address;
+        
+        // Сохраняем выбранные ранее адреса, если они есть в новом списке
+        if (currentSelected.includes(address)) {
+            option.selected = true;
+        }
+        
+        addressSelect.appendChild(option);
+    });
+    
+    updateSelectedInfo('addressSelected', addressSelect);
+}
+
 function updateSelectedInfo(containerId, selectElement) {
     const selectedOptions = Array.from(selectElement.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && value !== 'all');
+        .filter(value => value && value !== '');
 
     const container = document.getElementById(containerId);
     if (selectedOptions.length > 0) {
-        if (selectedOptions.includes('all_retail')) {
+        if (selectedOptions.includes('all_retail') && containerId === 'objectSelected') {
             container.textContent = 'Вся розница';
         } else {
             container.textContent = `Выбрано: ${selectedOptions.length}`;
+            container.title = selectedOptions.join(', ');
         }
-        container.title = selectedOptions.join(', ');
     } else {
         container.textContent = 'Все';
         container.title = '';
@@ -40836,7 +40963,7 @@ function getSelectedObjects() {
     const objectSelect = document.getElementById('objectSelect');
     const selectedObjects = Array.from(objectSelect.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && value !== 'all');
+        .filter(value => value && value !== '');
 
     return selectedObjects.length > 0 ? selectedObjects : null;
 }
@@ -40845,15 +40972,29 @@ function getSelectedAddresses() {
     const addressSelect = document.getElementById('addressSelect');
     const selectedAddresses = Array.from(addressSelect.selectedOptions)
         .map(option => option.value)
-        .filter(value => value && value !== 'all');
+        .filter(value => value && value !== '');
+
+    console.log('=== getSelectedAddresses ===');
+    console.log('Все опции:', addressSelect.options.length);
+    console.log('Выбрано опций:', addressSelect.selectedOptions.length);
+    console.log('Отфильтрованные адреса:', selectedAddresses);
 
     return selectedAddresses.length > 0 ? selectedAddresses : null;
 }
 
 function applyFilters() {
+    console.log('=== applyFilters ===');
+    
     const dateRange = getDateRange();
     const selectedObjects = getSelectedObjects();
     const selectedAddresses = getSelectedAddresses();
+
+    console.log('Параметры фильтрации:', {
+        dateRange,
+        selectedObjects,
+        selectedAddresses,
+        selectedAddressesCount: selectedAddresses ? selectedAddresses.length : 0
+    });
 
     const filteredData = aggregateDailyData(companyData, dateRange.from, dateRange.to, selectedObjects, selectedAddresses);
 
@@ -40882,11 +41023,15 @@ function updateSelectionInfo(dateRange, objects, addresses, count) {
         if (objects.includes('all_retail')) {
             info += ` | Объект: Вся розница`;
         } else {
-            info += ` | Объектов: ${objects.length}`;
+            const displayObjects = objects.slice(0, 3).join(', ');
+            const moreText = objects.length > 3 ? `... (+${objects.length - 3} ещё)` : '';
+            info += ` | Объектов: ${objects.length} (${displayObjects}${moreText})`;
         }
     }
     if (addresses) {
-        info += ` | Адресов: ${addresses.length}`;
+        const displayAddresses = addresses.slice(0, 3).join(', ');
+        const moreText = addresses.length > 3 ? `... (+${addresses.length - 3} ещё)` : '';
+        info += ` | Адресов: ${addresses.length} (${displayAddresses}${moreText})`;
     }
 
     const isAllObjects = !objects || objects.length === 0;
@@ -41295,3 +41440,22 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('companyFileInfo').textContent = 'Нет данных для построения графика';
     }
 });
+
+// Добавляем вспомогательные функции для управления выбором адресов
+function selectAllAddresses() {
+    const addressSelect = document.getElementById('addressSelect');
+    for (let i = 0; i < addressSelect.options.length; i++) {
+        addressSelect.options[i].selected = true;
+    }
+    updateSelectedInfo('addressSelected', addressSelect);
+    applyFilters();
+}
+
+function clearAddressSelection() {
+    const addressSelect = document.getElementById('addressSelect');
+    for (let i = 0; i < addressSelect.options.length; i++) {
+        addressSelect.options[i].selected = false;
+    }
+    updateSelectedInfo('addressSelected', addressSelect);
+    applyFilters();
+}
