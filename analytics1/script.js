@@ -53887,13 +53887,136 @@ const embeddedData = {
       },
       "файл_источник": "24.11.25 - 30.11.25.csv"
     }
-    ]
+  ],
+  "support": [
+    {
+      "Дата": "01.12.2025",
+      "Оплаты от франчайзи за а/х": 408200,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 85000
+    },
+    {
+      "Дата": "02.12.2025",
+      "Оплаты от франчайзи за а/х": 0,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 290300
+    },
+    {
+      "Дата": "03.12.2025",
+      "Оплаты от франчайзи за а/х": 579785,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 5350
+    },
+    {
+      "Дата": "04.12.2025",
+      "Оплаты от франчайзи за а/х": 30000,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 70020
+    },
+    {
+      "Дата": "05.12.2025",
+      "Оплаты от франчайзи за а/х": 30000,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 90000
+    },
+    {
+      "Дата": "07.12.2025",
+      "Оплаты от франчайзи за а/х": 0,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 7000
+    },
+    {
+      "Дата": "08.12.2025",
+      "Оплаты от франчайзи за а/х": 683685.5,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 40387.5
+    },
+    {
+      "Дата": "09.12.2025",
+      "Оплаты от франчайзи за а/х": 489207,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 0
+    },
+    {
+      "Дата": "10.12.2025",
+      "Оплаты от франчайзи за а/х": 0,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 2675
+    },
+    {
+      "Дата": "11.12.2025",
+      "Оплаты от франчайзи за а/х": 0,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 5350
+    },
+    {
+      "Дата": "12.12.2025",
+      "Оплаты от франчайзи за а/х": 82840,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 286800
+    },
+    {
+      "Дата": "15.12.2025",
+      "Оплаты от франчайзи за а/х": 59050,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 14175
+    },
+    {
+      "Дата": "16.12.2025",
+      "Оплаты от франчайзи за а/х": 561060,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 24503
+    },
+    {
+      "Дата": "17.12.2025",
+      "Оплаты от франчайзи за а/х": 97018.5,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 22639.5
+    },
+    {
+      "Дата": "18.12.2025",
+      "Оплаты от франчайзи за а/х": 0,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 2675
+    },
+    {
+      "Дата": "19.12.2025",
+      "Оплаты от франчайзи за а/х": 78020,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 2675
+    },
+    {
+      "Дата": "22.12.2025",
+      "Оплаты от франчайзи за а/х": 757312.5,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 0
+    },
+    {
+      "Дата": "23.12.2025",
+      "Оплаты от франчайзи за а/х": 82840,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 0
+    },
+    {
+      "Дата": "25.12.2025",
+      "Оплаты от франчайзи за а/х": 586284,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 0
+    },
+    {
+      "Дата": "26.12.2025",
+      "Оплаты от франчайзи за а/х": 747400,
+      "Оплаты от франчайзи за ворота": 0,
+      "Оплаты от франчайзи за прочее": 44609
+    }
+  ],
 };
 
 // Глобальные переменные
 let allData = [];
 let otherExpensesData = [];
 let salaryOfficeData = [];
+let supportData = []; // ДОБАВЛЯЕМ supportData
 let currentSortField = 'сумма';
 let currentSortDirection = 'desc';
 let currentIndivisibleSortField = 'сумма';
@@ -53907,754 +54030,1336 @@ let allWeeks = [];
 
 // Определяем объекты розницы
 const retailObjects = [
-    "Козубенко Денис",
-    "Сенатов Кирилл",
-    "Большаков Максим",
-    "Мозговой Филипп",
-    "Данилов Алексей",
-    "Ичко Роман",
-    "Юрлов Денис"
+  "Козубенко Денис",
+  "Сенатов Кирилл",
+  "Большаков Максим",
+  "Мозговой Филипп",
+  "Данилов Алексей",
+  "Ичко Роман",
+  "Юрлов Денис"
 ];
 
 const addressMapping = {
-    "Каспийская": "Каспийская",
-    "ТТК": "ТТК",
-    "ттк": "ТТК",
-    "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
-    "ВДНХ РН": "ВДНХ",
-    "Дмитровка РН": "ДМИТРОВСКОЕ",
-    "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
-    "профсоюзная РН": "ПРОФСОЮЗНАЯ",
-    "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
-    "Мытищи ЭКА": "МЫТИЩИ",
-    "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
-    "Химки": "ХИМКИ",
-    "химки": "ХИМКИ",
-    "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
-    "Загородное ВР": "ЗАГОРОДНОЕ",
-    "Пятницкое шоссе 20": "Пятницкое шоссе 20",
-    "Привольная ВР": "ПРИВОЛЬНАЯ",
-    "Мичуринский ВР": "МИЧУРИНСКИЙ",
-    "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
-    "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
-    "Вернадского РН": "ВЕРНАДСКОГО",
-    "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
-    "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
-    "Плещеева ВР": "ПЛЕЩЕЕВА",
-    "Паперника ВР": "ПАПЕРНИКА вл.22",
-    "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
-    "Проспект мира 94": "Пр Мира 94 А",
-    "Проспект Мира 94": "Пр Мира 94 А",
-    "Коломенский пр-д": "Коломенский пр-д",
-    "Правобережная": "ПРАВОБЕРЕЖНАЯ",
-    "Носовихинское": "Носовихинское",
-    "Куликовская": "Куликовская",
-    "Чертановская": "Чертановская",
-    "Минская": "Минская",
-    "СПБ Маршала Жукова": "СПб, Маршала Жукова",
-    "Франшиза отдел продаж": "Франшиза отдел продаж",
-    "франшиза отдел продаж": "Франшиза отдел продаж",
-    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-    "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-    "Угрешская 5": "Дзержинский, Угрешская",
-    "Каширское 24": "КАШИРСКОЕ 24",
-    "Развитие": "Развитие",
-    "Франшиза": "Франшиза отдел продаж",
-    "Общий расход": "Общий расход"
+  "Каспийская": "Каспийская",
+  "ТТК": "ТТК",
+  "ттк": "ТТК",
+  "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
+  "ВДНХ РН": "ВДНХ",
+  "Дмитровка РН": "ДМИТРОВСКОЕ",
+  "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
+  "профсоюзная РН": "ПРОФСОЮЗНАЯ",
+  "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
+  "Мытищи ЭКА": "МЫТИЩИ",
+  "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
+  "Химки": "ХИМКИ",
+  "химки": "ХИМКИ",
+  "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
+  "Загородное ВР": "ЗАГОРОДНОЕ",
+  "Пятницкое шоссе 20": "Пятницкое шоссе 20",
+  "Привольная ВР": "ПРИВОЛЬНАЯ",
+  "Мичуринский ВР": "МИЧУРИНСКИЙ",
+  "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
+  "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
+  "Вернадского РН": "ВЕРНАДСКОГО",
+  "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
+  "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
+  "Плещеева ВР": "ПЛЕЩЕЕВА",
+  "Паперника ВР": "ПАПЕРНИКА вл.22",
+  "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
+  "Проспект мира 94": "Пр Мира 94 А",
+  "Проспект Мира 94": "Пр Мира 94 А",
+  "Коломенский пр-д": "Коломенский пр-д",
+  "Правобережная": "ПРАВОБЕРЕЖНАЯ",
+  "Носовихинское": "Носовихинское",
+  "Куликовская": "Куликовская",
+  "Чертановская": "Чертановская",
+  "Минская": "Минская",
+  "СПБ Маршала Жукова": "СПб, Маршала Жукова",
+  "Франшиза отдел продаж": "Франшиза отдел продаж",
+  "франшиза отдел продаж": "Франшиза отдел продаж",
+  "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+  "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+  "Угрешская 5": "Дзержинский, Угрешская",
+  "Каширское 24": "КАШИРСКОЕ 24",
+  "Развитие": "Развитие",
+  "Франшиза": "Франшиза отдел продаж",
+  "Общий расход": "Общий расход"
 };
 
 // Функция для стандартизации адреса (УЛУЧШЕННАЯ ВЕРСИЯ)
 function standardizeAddress(address) {
-    if (!address) return "Общий расход";
-    
-    const addressStr = String(address).trim();
-    
-    // Сначала проверяем точное совпадение
-    if (addressMapping[addressStr]) {
-        return addressMapping[addressStr];
+  if (!address) return "Общий расход";
+
+  const addressStr = String(address).trim();
+
+  // Сначала проверяем точное совпадение
+  if (addressMapping[addressStr]) {
+    return addressMapping[addressStr];
+  }
+
+  // Проверяем без учета регистра
+  const addressLower = addressStr.toLowerCase();
+  for (const [key, value] of Object.entries(addressMapping)) {
+    if (key.toLowerCase() === addressLower) {
+      return value;
     }
-    
-    // Проверяем без учета регистра
-    const addressLower = addressStr.toLowerCase();
-    for (const [key, value] of Object.entries(addressMapping)) {
-        if (key.toLowerCase() === addressLower) {
-            return value;
-        }
+  }
+
+  // Проверяем частичные совпадения
+  for (const [key, value] of Object.entries(addressMapping)) {
+    if (addressLower.includes(key.toLowerCase()) || key.toLowerCase().includes(addressLower)) {
+      return value;
     }
-    
-    // Проверяем частичные совпадения
-    for (const [key, value] of Object.entries(addressMapping)) {
-        if (addressLower.includes(key.toLowerCase()) || key.toLowerCase().includes(addressLower)) {
-            return value;
-        }
-    }
-    
-    // Если ничего не нашли, возвращаем оригинал в верхнем регистре
-    return addressStr.toUpperCase();
+  }
+
+  // Если ничего не нашли, возвращаем оригинал в верхнем регистре
+  return addressStr.toUpperCase();
 }
 
 // Функция для определения объекта по адресу (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
 function getObjectByAddress(address) {
-    const objectMapping = {
-        "ДМИТРОВСКОЕ": "Козубенко Денис",
-        "ПЯТНИЦКОЕ": "Козубенко Денис",
-        "Пятницкое шоссе 20": "Козубенко Денис",
-        "ХИМКИ": "Козубенко Денис",
-        "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
-        "МИЧУРИНСКИЙ": "Сенатов Кирилл",
-        "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
-        "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
-        "РУБЛЕВКА91": "Сенатов Кирилл",
-        "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
-        "Минская": "Сенатов Кирилл",
-        "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
-        "Носовихинское": "Большаков Максим",
-        "Пр Мира 94 А": "Большаков Максим",
-        "ТТК": "Большаков Максим",
-        "МЫТИЩИ": "Большаков Максим",
-        "ВЕРНАДСКОГО": "Мозговой Филипп",
-        "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
-        "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
-        "Дзержинский, Угрешская": "Мозговой Филипп",
-        "ЗАГОРОДНОЕ": "Данилов Алексей",
-        "ПРИВОЛЬНАЯ": "Данилов Алексей",
-        "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
-        "Каспийская": "Данилов Алексей",
-        "КАШИРСКОЕ 24": "Данилов Алексей",
-        "Коломенский пр-д": "Данилов Алексей",
-        "ВДНХ": "Ичко Роман",
-        "ПЛЕЩЕЕВА": "Ичко Роман",
-        "Куликовская": "Юрлов Денис",
-        "Чертановская": "Юрлов Денис",
-        "СПб, Маршала Жукова": "Юрлов Денис",
-        "ПАПЕРНИКА вл.22": "Юрлов Денис",
-        "Франшиза отдел продаж": "Франшиза отдел продаж",
-        "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-        "Развитие": "Развитие"
-    };
+  const objectMapping = {
+    "ДМИТРОВСКОЕ": "Козубенко Денис",
+    "ПЯТНИЦКОЕ": "Козубенко Денис",
+    "Пятницкое шоссе 20": "Козубенко Денис",
+    "ХИМКИ": "Козубенко Денис",
+    "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
+    "МИЧУРИНСКИЙ": "Сенатов Кирилл",
+    "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
+    "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
+    "РУБЛЕВКА91": "Сенатов Кирилл",
+    "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
+    "Минская": "Сенатов Кирилл",
+    "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
+    "Носовихинское": "Большаков Максим",
+    "Пр Мира 94 А": "Большаков Максим",
+    "ТТК": "Большаков Максим",
+    "МЫТИЩИ": "Большаков Максим",
+    "ВЕРНАДСКОГО": "Мозговой Филипп",
+    "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
+    "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
+    "Дзержинский, Угрешская": "Мозговой Филипп",
+    "ЗАГОРОДНОЕ": "Данилов Алексей",
+    "ПРИВОЛЬНАЯ": "Данилов Алексей",
+    "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
+    "Каспийская": "Данилов Алексей",
+    "КАШИРСКОЕ 24": "Данилов Алексей",
+    "Коломенский пр-д": "Данилов Алексей",
+    "ВДНХ": "Ичко Роман",
+    "ПЛЕЩЕЕВА": "Ичко Роман",
+    "Куликовская": "Юрлов Денис",
+    "Чертановская": "Юрлов Денис",
+    "СПб, Маршала Жукова": "Юрлов Денис",
+    "ПАПЕРНИКА вл.22": "Юрлов Денис",
+    "Франшиза отдел продаж": "Франшиза отдел продаж",
+    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+    "Развитие": "Развитие"
+  };
 
-    return objectMapping[address] || "Общий расход";
+  return objectMapping[address] || "Общий расход";
 }
 
 // Функция для получения недели из даты (КАК В ПЕРВОМ КОДЕ)
 function getWeekFromDate(dateStr) {
-    try {
-        const date = new Date(dateStr.split('.').reverse().join('-'));
-        // Начальная дата для расчета недель - 06.01.2025
-        const startDate = new Date('2025-01-06');
-        const diffTime = date - startDate;
-        const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+  try {
+    const date = new Date(dateStr.split('.').reverse().join('-'));
+    // Начальная дата для расчета недель - 06.01.2025
+    const startDate = new Date('2025-01-06');
+    const diffTime = date - startDate;
+    const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
 
-        const weekStart = new Date(startDate);
-        weekStart.setDate(startDate.getDate() + diffWeeks * 7);
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekStart.getDate() + 6);
+    const weekStart = new Date(startDate);
+    weekStart.setDate(startDate.getDate() + diffWeeks * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
 
-        return `${weekStart.toLocaleDateString('ru-RU')} - ${weekEnd.toLocaleDateString('ru-RU')}`;
-    } catch (e) {
-        console.error('Ошибка обработки даты:', dateStr, e);
-        return null;
-    }
+    return `${weekStart.toLocaleDateString('ru-RU')} - ${weekEnd.toLocaleDateString('ru-RU')}`;
+  } catch (e) {
+    console.error('Ошибка обработки даты:', dateStr, e);
+    return null;
+  }
 }
 
 // Функция для автоматической загрузки данных при старте
 function loadEmbeddedData() {
-    try {
-        // Загружаем данные из embeddedData
-        allData = embeddedData.mainData || [];
-        otherExpensesData = embeddedData.expensesData || [];
-        salaryOfficeData = embeddedData.salaryData || [];
+  try {
+    // Загружаем данные из embeddedData
+    allData = embeddedData.mainData || [];
+    otherExpensesData = embeddedData.expensesData || [];
+    salaryOfficeData = embeddedData.salaryData || [];
+    supportData = embeddedData.support || []; // ДОБАВЛЯЕМ ЗАГРУЗКУ supportData
 
-        // ОБРАБОТКА ДАННЫХ ОПЛАТ (ВАЖНО: добавляем объект к каждой записи)
-        otherExpensesData = otherExpensesData.map(expense => {
-            // Определяем объект для каждой записи оплат
-            const объект = getObjectByAddress(expense.мойка);
-            // Добавляем поле недели для фильтрации по датам
-            const неделя = getWeekFromDate(expense.дата);
-            return {
-                ...expense,
-                объект: объект,
-                неделя: неделя
-            };
-        });
+    // ОБРАБОТКА ДАННЫХ ОПЛАТ (ВАЖНО: добавляем объект к каждой записи)
+    otherExpensesData = otherExpensesData.map(expense => {
+      // Определяем объект для каждой записи оплат
+      const объект = getObjectByAddress(expense.мойка);
+      // Добавляем поле недели для фильтрации по датам
+      const неделя = getWeekFromDate(expense.дата);
+      return {
+        ...expense,
+        объект: объект,
+        неделя: неделя
+      };
+    });
 
-        // ОБРАБОТКА ЗАРПЛАТ
-        salaryOfficeData = processSalaryData(salaryOfficeData);
+    // ОБРАБОТКА ЗАРПЛАТ
+    salaryOfficeData = processSalaryData(salaryOfficeData);
 
-        // Заполняем фильтры и применяем
-        if (allData.length > 0) {
-            populateFilters(allData);
-            applyFilters();
-        }
-
-    } catch (error) {
-        console.error('Ошибка загрузки данных:', error);
+    // Заполняем фильтры и применяем
+    if (allData.length > 0) {
+      populateFilters(allData);
+      applyFilters();
     }
+
+  } catch (error) {
+    console.error('Ошибка загрузки данных:', error);
+  }
 }
 
 // НОВАЯ ФУНКЦИЯ: Обработка данных зарплат
 function processSalaryData(salaryData) {
-    if (!salaryData) return [];
+  if (!salaryData) return [];
 
-    return salaryData.map(item => {
-        // Исправляем "Nan" на пустую строку
-        const employeeName = (item.сотрудник === "Nan" || item.сотрудник === "NaN") ? "" : item.сотрудник;
-        const position = (item.должность === "Nan" || item.должность === "NaN") ? "" : item.должность;
+  return salaryData.map(item => {
+    // Исправляем "Nan" на пустую строку
+    const employeeName = (item.сотрудник === "Nan" || item.сотрудник === "NaN") ? "" : item.сотрудник;
+    const position = (item.должность === "Nan" || item.должность === "NaN") ? "" : item.должность;
 
-        // Исправляем формат недели (добавляем 20 для годов)
-        let weekStr = item.неделя || "Неизвестная неделя";
-        weekStr = weekStr.replace(/(\d{2})\.(\d{2})\.(\d{2})/g, function (match, day, month, year) {
-            const fullYear = year.length === 2 ? `20${year}` : year;
-            return `${day}.${month}.${fullYear}`;
-        });
-
-        // Получаем месяц и год из недели
-        const monthInfo = getPredominantMonthForWeek(weekStr);
-
-        return {
-            ...item,
-            сотрудник: employeeName,
-            должность: position,
-            неделя: weekStr,
-            месяц: monthInfo.month,
-            год: monthInfo.year,
-            дней_в_месяце: monthInfo.daysInMonth
-        };
+    // Исправляем формат недели (добавляем 20 для годов)
+    let weekStr = item.неделя || "Неизвестная неделя";
+    weekStr = weekStr.replace(/(\d{2})\.(\d{2})\.(\d{2})/g, function (match, day, month, year) {
+      const fullYear = year.length === 2 ? `20${year}` : year;
+      return `${day}.${month}.${fullYear}`;
     });
+
+    // Получаем месяц и год из недели
+    const monthInfo = getPredominantMonthForWeek(weekStr);
+
+    return {
+      ...item,
+      сотрудник: employeeName,
+      должность: position,
+      неделя: weekStr,
+      месяц: monthInfo.month,
+      год: monthInfo.year,
+      дней_в_месяце: monthInfo.daysInMonth
+    };
+  });
 }
 
 // Вспомогательные функции
 function getDaysInMonth(month, year) {
-    const monthMap = {
-        'Январь': 31,
-        'Февраль': (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28,
-        'Март': 31,
-        'Апрель': 30,
-        'Май': 31,
-        'Июнь': 30,
-        'Июль': 31,
-        'Август': 31,
-        'Сентябрь': 30,
-        'Октябрь': 31,
-        'Ноябрь': 30,
-        'Декабрь': 31
-    };
-    return monthMap[month] || 30;
+  const monthMap = {
+    'Январь': 31,
+    'Февраль': (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28,
+    'Март': 31,
+    'Апрель': 30,
+    'Май': 31,
+    'Июнь': 30,
+    'Июль': 31,
+    'Август': 31,
+    'Сентябрь': 30,
+    'Октябрь': 31,
+    'Ноябрь': 30,
+    'Декабрь': 31
+  };
+  return monthMap[month] || 30;
 }
 
 function getPredominantMonthForWeek(weekStr) {
-    if (!weekStr) return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
-    try {
-        const parts = weekStr.split(' - ');
-        if (parts.length !== 2) return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
+  if (!weekStr) return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
+  try {
+    const parts = weekStr.split(' - ');
+    if (parts.length !== 2) return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
 
-        const startDate = new Date(parts[0].trim().split('.').reverse().join('-'));
-        const endDate = new Date(parts[1].trim().split('.').reverse().join('-'));
+    const startDate = new Date(parts[0].trim().split('.').reverse().join('-'));
+    const endDate = new Date(parts[1].trim().split('.').reverse().join('-'));
 
-        const monthDays = {};
-        let currentDate = new Date(startDate);
+    const monthDays = {};
+    let currentDate = new Date(startDate);
 
-        while (currentDate <= endDate) {
-            const month = currentDate.toLocaleString('ru-RU', { month: 'long' });
-            const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
-            const year = currentDate.getFullYear();
-            const key = `${capitalizedMonth}_${year}`;
-            monthDays[key] = (monthDays[key] || 0) + 1;
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-
-        let maxDays = 0;
-        let predominantMonthKey = '';
-        for (const [key, days] of Object.entries(monthDays)) {
-            if (days > maxDays) {
-                maxDays = days;
-                predominantMonthKey = key;
-            }
-        }
-
-        if (predominantMonthKey) {
-            const [month, year] = predominantMonthKey.split('_');
-            const daysInMonth = getDaysInMonth(month, parseInt(year));
-            return {
-                month: month,
-                year: parseInt(year),
-                daysInMonth: daysInMonth,
-                daysInWeek: maxDays
-            };
-        }
-    } catch (e) {
-        console.error('Ошибка определения месяца для недели:', weekStr, e);
+    while (currentDate <= endDate) {
+      const month = currentDate.toLocaleString('ru-RU', { month: 'long' });
+      const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+      const year = currentDate.getFullYear();
+      const key = `${capitalizedMonth}_${year}`;
+      monthDays[key] = (monthDays[key] || 0) + 1;
+      currentDate.setDate(currentDate.getDate() + 1);
     }
-    return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
+
+    let maxDays = 0;
+    let predominantMonthKey = '';
+    for (const [key, days] of Object.entries(monthDays)) {
+      if (days > maxDays) {
+        maxDays = days;
+        predominantMonthKey = key;
+      }
+    }
+
+    if (predominantMonthKey) {
+      const [month, year] = predominantMonthKey.split('_');
+      const daysInMonth = getDaysInMonth(month, parseInt(year));
+      return {
+        month: month,
+        year: parseInt(year),
+        daysInMonth: daysInMonth,
+        daysInWeek: maxDays
+      };
+    }
+  } catch (e) {
+    console.error('Ошибка определения месяца для недели:', weekStr, e);
+  }
+  return { month: 'Октябрь', year: 2025, daysInMonth: 31 };
 }
 
 function calculateSalaryForPeriod() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    if (!dateFrom || !dateTo) return 0;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  if (!dateFrom || !dateTo) return 0;
 
-    const fromDate = new Date(dateFrom);
-    const toDate = new Date(dateTo);
-    const diffTime = Math.abs(toDate - fromDate);
-    const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+  const diffTime = Math.abs(toDate - fromDate);
+  const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-    let totalSalaryExpense = 0;
-    let processedWeeks = new Set();
-    const weeklyData = {};
+  let totalSalaryExpense = 0;
+  let processedWeeks = new Set();
+  const weeklyData = {};
 
-    salaryOfficeData.forEach(item => {
-        if (!item.неделя) return;
-        if (!weeklyData[item.неделя]) {
-            weeklyData[item.неделя] = {
-                сотрудники: [],
-                месяц: item.месяц,
-                год: item.год,
-                дней_в_месяце: item.дней_в_месяце
-            };
-        }
-        weeklyData[item.неделя].сотрудники.push(item);
-    });
-
-    for (const [weekStr, weekData] of Object.entries(weeklyData)) {
-        try {
-            const weekParts = weekStr.split(' - ');
-            if (weekParts.length !== 2) continue;
-
-            const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
-            const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
-
-            const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
-                (weekEnd >= fromDate && weekEnd <= toDate) ||
-                (weekStart <= fromDate && weekEnd >= toDate);
-
-            if (weekInPeriod) {
-                processedWeeks.add(weekStr);
-                const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
-                const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
-                const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
-
-                weekData.сотрудники.forEach(item => {
-                    const totalAmount = item.исходные_данные?.итого || 0;
-                    const officeSalary = item.исходные_данные?.оф_зп || 0;
-                    const coefficient = item.исходные_данные?.коэффициент || 0;
-                    const daysInMonth = item.дней_в_месяце || weekData.дней_в_месяце || 30;
-                    const dailySalary = -((totalAmount + (officeSalary * coefficient)) / daysInMonth);
-                    const salaryForWeekDays = dailySalary * weekDaysInPeriod;
-                    totalSalaryExpense += salaryForWeekDays;
-                });
-            }
-        } catch (e) {
-            console.error('Ошибка обработки недели:', weekStr, e);
-        }
+  salaryOfficeData.forEach(item => {
+    if (!item.неделя) return;
+    if (!weeklyData[item.неделя]) {
+      weeklyData[item.неделя] = {
+        сотрудники: [],
+        месяц: item.месяц,
+        год: item.год,
+        дней_в_месяце: item.дней_в_месяце
+      };
     }
+    weeklyData[item.неделя].сотрудники.push(item);
+  });
 
-    return totalSalaryExpense;
+  for (const [weekStr, weekData] of Object.entries(weeklyData)) {
+    try {
+      const weekParts = weekStr.split(' - ');
+      if (weekParts.length !== 2) continue;
+
+      const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
+      const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
+
+      const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
+        (weekEnd >= fromDate && weekEnd <= toDate) ||
+        (weekStart <= fromDate && weekEnd >= toDate);
+
+      if (weekInPeriod) {
+        processedWeeks.add(weekStr);
+        const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
+        const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
+        const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
+
+        weekData.сотрудники.forEach(item => {
+          const totalAmount = item.исходные_данные?.итого || 0;
+          const officeSalary = item.исходные_данные?.оф_зп || 0;
+          const coefficient = item.исходные_данные?.коэффициент || 0;
+          const daysInMonth = item.дней_в_месяце || weekData.дней_в_месяце || 30;
+          const dailySalary = -((totalAmount + (officeSalary * coefficient)) / daysInMonth);
+          const salaryForWeekDays = dailySalary * weekDaysInPeriod;
+          totalSalaryExpense += salaryForWeekDays;
+        });
+      }
+    } catch (e) {
+      console.error('Ошибка обработки недели:', weekStr, e);
+    }
+  }
+
+  return totalSalaryExpense;
 }
 
 function getGeneralExpenseForDateRange() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    if (!dateFrom || !dateTo) return 0;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  if (!dateFrom || !dateTo) return 0;
 
-    const fromDate = new Date(dateFrom);
-    const toDate = new Date(dateTo);
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
 
-    const generalExpenses = otherExpensesData.filter(expense => {
-        if (expense.мойка !== "Общий расход") return false;
-        if (expense.команда && expense.команда.trim() !== '') return false;
-        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-        return expenseDate >= fromDate && expenseDate <= toDate;
-    });
+  const generalExpenses = otherExpensesData.filter(expense => {
+    if (expense.мойка !== "Общий расход") return false;
+    if (expense.команда && expense.команда.trim() !== '') return false;
+    const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+    return expenseDate >= fromDate && expenseDate <= toDate;
+  });
 
-    return generalExpenses.reduce((sum, expense) => sum + expense.сумма, 0);
+  return generalExpenses.reduce((sum, expense) => sum + expense.сумма, 0);
 }
 
 function getIndivisibleExpenseForDateRange(selectedObject, selectedAddresses) {
-    if (!allData.length && !otherExpensesData.length) return 0;
+  if (!allData.length && !otherExpensesData.length) return 0;
 
-    const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-        (!selectedAddresses || selectedAddresses.length === 0);
+  const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
 
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    if (isDrilldownMode) {
-        const indivisibleExpenses = otherExpensesData.filter(expense => {
-            const isIndivisible = expense.мойка === "Общий расход" &&
-                expense.команда &&
-                String(expense.команда).toLowerCase() === 'розница';
-            if (!isIndivisible) return false;
-            if (dateFrom && dateTo) {
-                const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-                const fromDate = new Date(dateFrom);
-                const toDate = new Date(dateTo);
-                if (expenseDate < fromDate || expenseDate > toDate) return false;
-            }
-            return true;
-        });
-        return indivisibleExpenses.reduce((sum, expense) => sum + expense.сумма, 0);
-    } else {
-        let totalIndivisible = 0;
-        let filteredData = allData;
+  if (isDrilldownMode) {
+    const indivisibleExpenses = otherExpensesData.filter(expense => {
+      const isIndivisible = expense.мойка === "Общий расход" &&
+        expense.команда &&
+        String(expense.команда).toLowerCase() === 'розница';
+      if (!isIndivisible) return false;
+      if (dateFrom && dateTo) {
+        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        if (expenseDate < fromDate || expenseDate > toDate) return false;
+      }
+      return true;
+    });
+    return indivisibleExpenses.reduce((sum, expense) => sum + expense.сумма, 0);
+  } else {
+    let totalIndivisible = 0;
+    let filteredData = allData;
 
-        if (dateFrom && dateTo) {
-            filteredData = allData.filter(row => {
-                const rowDateStr = row.Дата;
-                if (!rowDateStr) return true;
-                try {
-                    const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
-                    const fromDate = new Date(dateFrom);
-                    const toDate = new Date(dateTo);
-                    return rowDate >= fromDate && rowDate <= toDate;
-                } catch (e) {
-                    return true;
-                }
-            });
+    if (dateFrom && dateTo) {
+      filteredData = allData.filter(row => {
+        const rowDateStr = row.Дата;
+        if (!rowDateStr) return true;
+        try {
+          const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+          const fromDate = new Date(dateFrom);
+          const toDate = new Date(dateTo);
+          return rowDate >= fromDate && rowDate <= toDate;
+        } catch (e) {
+          return true;
+        }
+      });
+    }
+
+    filteredData = filteredData.filter(row => {
+      const rowObject = row.Объект;
+      const rowAddress = row.Адрес;
+
+      if (selectedObject) {
+        if (selectedObject === 'all_retail') {
+          if (!retailObjects.includes(rowObject)) return false;
+        } else if (rowObject !== selectedObject) {
+          return false;
+        }
+      }
+
+      if (selectedAddresses && selectedAddresses.length > 0) {
+        const rowStandardizedAddress = standardizeAddress(row.Адрес);
+        let addressMatches = false;
+
+        for (const selectedAddr of selectedAddresses) {
+          const selectedStandardizedAddr = standardizeAddress(selectedAddr);
+          if (rowStandardizedAddress === selectedStandardizedAddr) {
+            addressMatches = true;
+            break;
+          }
         }
 
-        filteredData = filteredData.filter(row => {
-            const rowObject = row.Объект;
-            const rowAddress = row.Адрес;
+        if (!addressMatches) return false;
+      }
 
-            if (selectedObject) {
-                if (selectedObject === 'all_retail') {
-                    if (!retailObjects.includes(rowObject)) return false;
-                } else if (rowObject !== selectedObject) {
-                    return false;
-                }
-            }
+      return true;
+    });
 
-            if (selectedAddresses && selectedAddresses.length > 0) {
-                const rowStandardizedAddress = standardizeAddress(row.Адрес);
-                let addressMatches = false;
-                
-                for (const selectedAddr of selectedAddresses) {
-                    const selectedStandardizedAddr = standardizeAddress(selectedAddr);
-                    if (rowStandardizedAddress === selectedStandardizedAddr) {
-                        addressMatches = true;
-                        break;
-                    }
-                }
-                
-                if (!addressMatches) return false;
-            }
+    filteredData.forEach(row => {
+      for (const key in row) {
+        if (key.toLowerCase().includes('неделимый') || key === 'Неделимый расход') {
+          totalIndivisible += parseFloat(row[key]) || 0;
+          break;
+        }
+      }
+    });
 
-            return true;
-        });
-
-        filteredData.forEach(row => {
-            for (const key in row) {
-                if (key.toLowerCase().includes('неделимый') || key === 'Неделимый расход') {
-                    totalIndivisible += parseFloat(row[key]) || 0;
-                    break;
-                }
-            }
-        });
-
-        return totalIndivisible;
-    }
+    return totalIndivisible;
+  }
 }
 
 function getFilteredIndivisibleExpenses() {
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-        (!selectedAddresses || selectedAddresses.length === 0);
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
 
-    if (!isDrilldownMode) return [];
+  if (!isDrilldownMode) return [];
 
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    return otherExpensesData.filter(expense => {
-        const isIndivisible = expense.мойка === "Общий расход" &&
-            expense.команда &&
-            String(expense.команда).toLowerCase() === 'розница';
-        if (!isIndivisible) return false;
-        if (dateFrom && dateTo) {
-            const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-            const fromDate = new Date(dateFrom);
-            const toDate = new Date(dateTo);
-            if (expenseDate < fromDate || expenseDate > toDate) return false;
-        }
-        return true;
-    });
+  return otherExpensesData.filter(expense => {
+    const isIndivisible = expense.мойка === "Общий расход" &&
+      expense.команда &&
+      String(expense.команда).toLowerCase() === 'розница';
+    if (!isIndivisible) return false;
+    if (dateFrom && dateTo) {
+      const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+      const fromDate = new Date(dateFrom);
+      const toDate = new Date(dateTo);
+      if (expenseDate < fromDate || expenseDate > toDate) return false;
+    }
+    return true;
+  });
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ getFilteredGeneralExpenseExpenses()
 function getFilteredGeneralExpenseExpenses() {
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    return otherExpensesData.filter(expense => {
-        if (expense.мойка !== "Общий расход") return false;
-        if (expense.команда && expense.команда.trim() !== '') return false;
-        
-        if (dateFrom && dateTo) {
-            const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-            const fromDate = new Date(dateFrom);
-            const toDate = new Date(dateTo);
-            if (expenseDate < fromDate || expenseDate > toDate) return false;
+  return otherExpensesData.filter(expense => {
+    if (expense.мойка !== "Общий расход") return false;
+    if (expense.команда && expense.команда.trim() !== '') return false;
+
+    if (dateFrom && dateTo) {
+      const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+      const fromDate = new Date(dateFrom);
+      const toDate = new Date(dateTo);
+      if (expenseDate < fromDate || expenseDate > toDate) return false;
+    }
+
+    // ДЛЯ "ОБЩЕГО РАСХОДА" ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
+    if (selectedObject) {
+      const expenseObject = getObjectByAddress(expense.мойка);
+
+      if (selectedObject === 'all_retail') {
+        if (!retailObjects.includes(expenseObject)) {
+          return false;
         }
-        
-        // ДЛЯ "ОБЩЕГО РАСХОДА" ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
-        if (selectedObject) {
-            const expenseObject = getObjectByAddress(expense.мойка);
-            
-            if (selectedObject === 'all_retail') {
-                if (!retailObjects.includes(expenseObject)) {
-                    return false;
-                }
-            } else if (expenseObject !== selectedObject) {
-                return false;
-            }
-        }
-        
-        // Для "Общего расхода" фильтрация по адресам не применяется
-        // так как expense.мойка всегда будет "Общий расход"
-        if (selectedAddresses) {
-            // "Общий расход" не должен фильтроваться по адресам
-            // так как это общефирменные расходы
-            return true;
-        }
-        
-        return true;
-    });
+      } else if (expenseObject !== selectedObject) {
+        return false;
+      }
+    }
+
+    // Для "Общего расхода" фильтрация по адресам не применяется
+    // так как expense.мойка всегда будет "Общий расход"
+    if (selectedAddresses) {
+      // "Общий расход" не должен фильтроваться по адресам
+      // так как это общефирменные расходы
+      return true;
+    }
+
+    return true;
+  });
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ getFilteredOtherExpenses()
 function getFilteredOtherExpenses() {
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    console.log('=== ФИЛЬТРАЦИЯ "ПРОЧИХ" РАСХОДОВ ===');
-    console.log('Период:', dateFrom, '-', dateTo);
-    console.log('Объект:', selectedObject);
-    console.log('Адреса:', selectedAddresses);
-    console.log('Всего записей в expensesData:', otherExpensesData.length);
+  console.log('=== ФИЛЬТРАЦИЯ "ПРОЧИХ" РАСХОДОВ ===');
+  console.log('Период:', dateFrom, '-', dateTo);
+  console.log('Объект:', selectedObject);
+  console.log('Адреса:', selectedAddresses);
+  console.log('Всего записей в expensesData:', otherExpensesData.length);
 
-    return otherExpensesData.filter(expense => {
-        // 1. Проверяем, относится ли это к "Неделимому расходу"
-        const isIndivisible = expense.мойка === "Общий расход" &&
-            expense.команда &&
-            String(expense.команда).toLowerCase() === 'розница';
-        
-        // 2. Проверяем, относится ли это к "Общему расходу"
-        const isGeneralExpense = expense.мойка === "Общий расход" &&
-            (!expense.команда || expense.команда.trim() === '');
+  return otherExpensesData.filter(expense => {
+    // 1. Проверяем, относится ли это к "Неделимому расходу"
+    const isIndivisible = expense.мойка === "Общий расход" &&
+      expense.команда &&
+      String(expense.команда).toLowerCase() === 'розница';
 
-        // Если это "Неделимый" или "Общий расход" - исключаем из "Прочих"
-        if (isIndivisible || isGeneralExpense) {
-            return false;
+    // 2. Проверяем, относится ли это к "Общему расходу"
+    const isGeneralExpense = expense.мойка === "Общий расход" &&
+      (!expense.команда || expense.команда.trim() === '');
+
+    // Если это "Неделимый" или "Общий расход" - исключаем из "Прочих"
+    if (isIndivisible || isGeneralExpense) {
+      return false;
+    }
+
+    // Фильтрация по дате
+    if (dateFrom && dateTo) {
+      try {
+        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        if (expenseDate < fromDate || expenseDate > toDate) {
+          return false;
         }
+      } catch (e) {
+        console.error('Ошибка обработки даты:', expense.дата, e);
+        return false;
+      }
+    }
 
-        // Фильтрация по дате
-        if (dateFrom && dateTo) {
-            try {
-                const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
-                const fromDate = new Date(dateFrom);
-                const toDate = new Date(dateTo);
-                if (expenseDate < fromDate || expenseDate > toDate) {
-                    return false;
-                }
-            } catch (e) {
-                console.error('Ошибка обработки даты:', expense.дата, e);
-                return false;
-            }
+    // ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
+    if (selectedObject) {
+      if (selectedObject === 'all_retail') {
+        // Проверяем, относится ли объект к рознице
+        if (!retailObjects.includes(expense.объект)) {
+          return false;
         }
+      } else if (expense.объект !== selectedObject) {
+        return false;
+      }
+    }
 
-        // ФИЛЬТРАЦИЯ ПО ОБЪЕКТУ
-        if (selectedObject) {
-            if (selectedObject === 'all_retail') {
-                // Проверяем, относится ли объект к рознице
-                if (!retailObjects.includes(expense.объект)) {
-                    return false;
-                }
-            } else if (expense.объект !== selectedObject) {
-                return false;
-            }
+    // ФИЛЬТРАЦИЯ ПО АДРЕСАМ
+    if (selectedAddresses && selectedAddresses.length > 0) {
+      // Для "Прочих" учитываем только записи с конкретной мойкой
+      if (!expense.мойка || expense.мойка === "Общий расход") {
+        // Если у записи нет мойки или это "Общий расход" - исключаем
+        return false;
+      }
+
+      // Стандартизируем адрес для сравнения
+      const expenseStandardizedAddress = standardizeAddress(expense.мойка);
+
+      let addressMatches = false;
+      for (const selectedAddr of selectedAddresses) {
+        const selectedStandardizedAddr = standardizeAddress(selectedAddr);
+        if (expenseStandardizedAddress === selectedStandardizedAddr) {
+          addressMatches = true;
+          break;
         }
+      }
 
-        // ФИЛЬТРАЦИЯ ПО АДРЕСАМ
-        if (selectedAddresses && selectedAddresses.length > 0) {
-            // Для "Прочих" учитываем только записи с конкретной мойкой
-            if (!expense.мойка || expense.мойка === "Общий расход") {
-                // Если у записи нет мойки или это "Общий расход" - исключаем
-                return false;
-            }
-            
-            // Стандартизируем адрес для сравнения
-            const expenseStandardizedAddress = standardizeAddress(expense.мойка);
-            
-            let addressMatches = false;
-            for (const selectedAddr of selectedAddresses) {
-                const selectedStandardizedAddr = standardizeAddress(selectedAddr);
-                if (expenseStandardizedAddress === selectedStandardizedAddr) {
-                    addressMatches = true;
-                    break;
-                }
-            }
-            
-            if (!addressMatches) {
-                return false;
-            }
-        }
+      if (!addressMatches) {
+        return false;
+      }
+    }
 
-        // ДОПОЛНИТЕЛЬНЫЕ ПРОВЕРКИ
-        // Исключаем записи с пустой статьей или нулевой суммой
-        if (!expense.статья || expense.статья.trim() === '' || 
-            !expense.наименование || expense.наименование.trim() === '' || 
-            Math.abs(expense.сумма) < 0.01) {
-            return false;
-        }
+    // ДОПОЛНИТЕЛЬНЫЕ ПРОВЕРКИ
+    // Исключаем записи с пустой статьей или нулевой суммой
+    if (!expense.статья || expense.статья.trim() === '' ||
+      !expense.наименование || expense.наименование.trim() === '' ||
+      Math.abs(expense.сумма) < 0.01) {
+      return false;
+    }
 
-        return true;
-    });
+    return true;
+  });
 }
 
 function getFilteredSalaryOfficeExpenses() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    if (!dateFrom || !dateTo) return [];
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  if (!dateFrom || !dateTo) return [];
 
-    const fromDate = new Date(dateFrom);
-    const toDate = new Date(dateTo);
-    const diffTime = Math.abs(toDate - fromDate);
-    const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+  const diffTime = Math.abs(toDate - fromDate);
+  const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-    const result = [];
-    let processedWeeks = new Set();
-    const weeklyData = {};
+  const result = [];
+  let processedWeeks = new Set();
+  const weeklyData = {};
 
-    salaryOfficeData.forEach(item => {
-        if (!item.неделя) return;
-        if (!weeklyData[item.неделя]) {
-            weeklyData[item.неделя] = {
-                сотрудники: [],
-                месяц: item.месяц,
-                год: item.год,
-                дней_в_месяце: item.дней_в_месяце
-            };
-        }
-        weeklyData[item.неделя].сотрудники.push(item);
-    });
-
-    for (const [weekStr, weekData] of Object.entries(weeklyData)) {
-        try {
-            const weekParts = weekStr.split(' - ');
-            if (weekParts.length !== 2) continue;
-
-            const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
-            const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
-
-            const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
-                (weekEnd >= fromDate && weekEnd <= toDate) ||
-                (weekStart <= fromDate && weekEnd >= toDate);
-
-            if (weekInPeriod) {
-                processedWeeks.add(weekStr);
-                const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
-                const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
-                const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
-
-                weekData.сотрудники.forEach(item => {
-                    const totalAmount = item.исходные_данные?.итого || 0;
-                    const officeSalary = item.исходные_данные?.оф_зп || 0;
-                    const coefficient = item.исходные_данные?.коэффициент || 0;
-                    const daysInMonth = item.дней_в_месяце || weekData.дней_в_месяце || 30;
-                    const dailySalary = (totalAmount + (officeSalary * coefficient)) / daysInMonth;
-                    const salaryForWeekDays = dailySalary * weekDaysInPeriod;
-
-                    result.push({
-                        неделя: weekStr,
-                        дней_в_неделе: weekDaysInPeriod,
-                        сотрудник: item.сотрудник,
-                        должность: item.должность,
-                        зарплата: salaryForWeekDays,
-                        исходные_данные: {
-                            итого: totalAmount,
-                            оф_зп: officeSalary,
-                            коэффициент: coefficient,
-                            дней_в_месяце: daysInMonth,
-                            дневная_зарплата: dailySalary
-                        },
-                        файл_источник: item.файл_источник
-                    });
-                });
-            }
-        } catch (e) {
-            console.error('Ошибка обработки недели:', weekStr, e);
-        }
+  salaryOfficeData.forEach(item => {
+    if (!item.неделя) return;
+    if (!weeklyData[item.неделя]) {
+      weeklyData[item.неделя] = {
+        сотрудники: [],
+        месяц: item.месяц,
+        год: item.год,
+        дней_в_месяце: item.дней_в_месяце
+      };
     }
+    weeklyData[item.неделя].сотрудники.push(item);
+  });
 
-    return result;
+  for (const [weekStr, weekData] of Object.entries(weeklyData)) {
+    try {
+      const weekParts = weekStr.split(' - ');
+      if (weekParts.length !== 2) continue;
+
+      const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
+      const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
+
+      const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
+        (weekEnd >= fromDate && weekEnd <= toDate) ||
+        (weekStart <= fromDate && weekEnd >= toDate);
+
+      if (weekInPeriod) {
+        processedWeeks.add(weekStr);
+        const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
+        const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
+        const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
+
+        weekData.сотрудники.forEach(item => {
+          const totalAmount = item.исходные_данные?.итого || 0;
+          const officeSalary = item.исходные_данные?.оф_зп || 0;
+          const coefficient = item.исходные_данные?.коэффициент || 0;
+          const daysInMonth = item.дней_в_месяце || weekData.дней_в_месяце || 30;
+          const dailySalary = (totalAmount + (officeSalary * coefficient)) / daysInMonth;
+          const salaryForWeekDays = dailySalary * weekDaysInPeriod;
+
+          result.push({
+            неделя: weekStr,
+            дней_в_неделе: weekDaysInPeriod,
+            сотрудник: item.сотрудник,
+            должность: item.должность,
+            зарплата: salaryForWeekDays,
+            исходные_данные: {
+              итого: totalAmount,
+              оф_зп: officeSalary,
+              коэффициент: coefficient,
+              дней_в_месяце: daysInMonth,
+              дневная_зарплата: dailySalary
+            },
+            файл_источник: item.файл_источник
+          });
+        });
+      }
+    } catch (e) {
+      console.error('Ошибка обработки недели:', weekStr, e);
+    }
+  }
+
+  return result;
+}
+
+// НОВАЯ ФУНКЦИЯ: Получить выручку франшизы сопровождения за период
+function getFranchiseSupportRevenueForPeriod(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) return 0;
+
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+
+  const filteredSupportData = supportData.filter(item => {
+    const itemDate = new Date(item.Дата.split('.').reverse().join('-'));
+    return itemDate >= fromDate && itemDate <= toDate;
+  });
+
+  // Суммируем все оплаты от франчайзи
+  return filteredSupportData.reduce((total, item) => {
+    return total +
+      (item["Оплаты от франчайзи за а/х"] || 0) +
+      (item["Оплаты от франчайзи за ворота"] || 0) +
+      (item["Оплаты от франчайзи за прочее"] || 0);
+  }, 0);
+}
+
+// НОВАЯ ФУНКЦИЯ: Детализация выручки по адресам
+function showRevenueDetailsByAddress() {
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+
+  // Проверяем, находится ли пользователь в режиме "Вся розница + Все адреса"
+  const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
+
+  // Проверяем, находится ли пользователь в режиме "Франшиза отдел сопровождения"
+  const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+
+  if (!isAllRetailAllAddresses && !isFranchiseSupport) {
+    alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"');
+    return;
+  }
+
+  if (isAllRetailAllAddresses) {
+    // Детализация для розницы
+    showRetailRevenueDetails(dateFrom, dateTo);
+  } else if (isFranchiseSupport) {
+    // Детализация для франшизы сопровождения
+    showFranchiseSupportRevenueDetails(dateFrom, dateTo);
+  }
+}
+
+// НОВАЯ ФУНКЦИЯ: Детализация выручки розницы
+function showRetailRevenueDetails(dateFrom, dateTo) {
+  // Получаем отфильтрованные данные
+  let filteredData = allData.filter(row => {
+    const address = String(row.Адрес || '').trim();
+    return !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  // Фильтруем только розницу
+  filteredData = filteredData.filter(row => retailObjects.includes(row.Объект));
+
+  // Группируем по адресам
+  const revenueByAddress = {};
+  filteredData.forEach(row => {
+    const address = row.Адрес;
+    const revenue = row.Выручка || 0;
+
+    if (address) {
+      if (!revenueByAddress[address]) {
+        revenueByAddress[address] = 0;
+      }
+      revenueByAddress[address] += revenue;
+    }
+  });
+
+  // Преобразуем в массив и сортируем по убыванию
+  const sortedRevenue = Object.entries(revenueByAddress)
+    .map(([address, revenue]) => ({ address, revenue }))
+    .sort((a, b) => b.revenue - a.revenue);
+
+  // Создаем график
+  createRetailRevenueChart(sortedRevenue, dateFrom, dateTo);
+}
+
+// НОВАЯ ФУНКЦИЯ: Детализация выручки франшизы сопровождения
+function showFranchiseSupportRevenueDetails(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) {
+    alert('Пожалуйста, выберите период дат');
+    return;
+  }
+
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+
+  // Фильтруем данные по дате
+  const filteredSupportData = supportData.filter(item => {
+    const itemDate = new Date(item.Дата.split('.').reverse().join('-'));
+    return itemDate >= fromDate && itemDate <= toDate;
+  });
+
+  if (filteredSupportData.length === 0) {
+    alert('Нет данных по оплатам франчайзи за выбранный период');
+    return;
+  }
+
+  // Сортируем по дате
+  filteredSupportData.sort((a, b) => {
+    const dateA = new Date(a.Дата.split('.').reverse().join('-'));
+    const dateB = new Date(b.Дата.split('.').reverse().join('-'));
+    return dateA - dateB;
+  });
+
+  // Создаем график
+  createFranchiseSupportRevenueChart(filteredSupportData, dateFrom, dateTo);
+}
+
+// НОВАЯ ФУНКЦИЯ: Создание графика выручки по адресам (розница)
+function createRetailRevenueChart(revenueData, dateFrom, dateTo) {
+  if (currentChart) {
+    currentChart.dispose();
+    currentChart = null;
+  }
+
+  const chart = echarts.init(document.getElementById('chart'));
+  currentChart = chart;
+
+  // Подготавливаем данные для графика
+  const addresses = revenueData.map(item => item.address);
+  const revenues = revenueData.map(item => item.revenue);
+
+  const option = {
+    title: {
+      text: 'Выручка по адресам (отсортировано по убыванию)',
+      subtext: dateFrom && dateTo ? `Период: ${dateFrom} - ${dateTo}` : '',
+      left: 'center',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        const data = params[0];
+        const value = data.value;
+        const address = data.name;
+        return `
+                    <div style="text-align: left">
+                        <strong>${address}</strong><br/>
+                        Выручка: ${formatCurrency(value)}
+                    </div>
+                `;
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: addresses,
+      axisLabel: {
+        interval: 0,
+        rotate: 45,
+        fontSize: 11,
+        margin: 10
+      },
+      axisTick: {
+        alignWithLabel: true
+      }
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      axisLabel: {
+        formatter: formatCurrency
+      }
+    },
+    series: [
+      {
+        name: 'Выручка',
+        type: 'bar',
+        barWidth: '60%',
+        data: revenues.map((value, index) => ({
+          value: value,
+          itemStyle: {
+            color: '#4CAF50'
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function (params) {
+            return formatCurrency(params.value);
+          },
+          fontSize: 10,
+          fontWeight: 'bold'
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ],
+    dataZoom: [
+      {
+        type: 'inside',
+        xAxisIndex: 0,
+        start: 0,
+        end: 100
+      },
+      {
+        show: true,
+        xAxisIndex: 0,
+        type: 'slider',
+        bottom: 10,
+        start: 0,
+        end: 100
+      }
+    ]
+  };
+
+  chart.setOption(option);
+
+  // Обновляем статистику
+  const totalRevenue = revenues.reduce((sum, value) => sum + value, 0);
+  const avgRevenue = revenues.length > 0 ? totalRevenue / revenues.length : 0;
+  const maxRevenue = Math.max(...revenues);
+  const minRevenue = Math.min(...revenues);
+
+  document.getElementById('statsInfo').innerHTML = `
+        <div class="stat-item">Всего адресов: ${revenues.length}</div>
+        <div class="stat-item">Общая выручка: ${formatCurrency(totalRevenue)}</div>
+        <div class="stat-item">Средняя выручка: ${formatCurrency(avgRevenue)}</div>
+        <div class="stat-item">Максимальная: ${formatCurrency(maxRevenue)}</div>
+        <div class="stat-item">Минимальная: ${formatCurrency(minRevenue)}</div>
+    `;
+
+  window.addEventListener('resize', function () {
+    chart.resize();
+  });
+}
+
+// НОВАЯ ФУНКЦИЯ: Создание графика выручки франшизы сопровождения
+// НОВАЯ ФУНКЦИЯ: Создание графика выручки франшизы сопровождения
+function createFranchiseSupportRevenueChart(supportData, dateFrom, dateTo) {
+  if (currentChart) {
+    currentChart.dispose();
+    currentChart = null;
+  }
+
+  const chart = echarts.init(document.getElementById('chart'));
+  currentChart = chart;
+
+  // Подготавливаем данные
+  const dates = supportData.map(item => item.Дата);
+  const autoChemPayments = supportData.map(item => item["Оплаты от франчайзи за а/х"] || 0);
+  const gatesPayments = supportData.map(item => item["Оплаты от франчайзи за ворота"] || 0);
+  const otherPayments = supportData.map(item => item["Оплаты от франчайзи за прочее"] || 0);
+
+  // Вычисляем общую сумму за каждый день
+  const totalPayments = supportData.map(item =>
+    (item["Оплаты от франчайзи за а/х"] || 0) +
+    (item["Оплаты от франчайзи за ворота"] || 0) +
+    (item["Оплаты от франчайзи за прочее"] || 0)
+  );
+
+  // Сортируем по убыванию общей суммы для другого графика
+  const sortedData = [...supportData]
+    .map(item => ({
+      date: item.Дата,
+      autoChem: item["Оплаты от франчайзи за а/х"] || 0,
+      gates: item["Оплаты от франчайзи за ворота"] || 0,
+      other: item["Оплаты от франчайзи за прочее"] || 0,
+      total: (item["Оплаты от франчайзи за а/х"] || 0) +
+        (item["Оплаты от франчайзи за ворота"] || 0) +
+        (item["Оплаты от франчайзи за прочее"] || 0)
+    }))
+    .sort((a, b) => b.total - a.total);
+
+  // Создаем stacked bar chart по категориям (ПЕРВЫЙ ГРАФИК)
+  const option = {
+    title: {
+      text: 'Оплаты от франчайзи по дням (Франшиза сопровождение)',
+      subtext: `Период: ${dateFrom} - ${dateTo}`,
+      left: 'center',
+      textStyle: {
+        fontSize: 14, // УМЕНЬШИЛИ с 16 до 14
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        let result = `<div style="text-align: left">`;
+        result += `<strong>${params[0].name}</strong><br/>`;
+
+        let total = 0;
+        params.forEach(param => {
+          result += `${param.seriesName}: ${formatCurrency(param.value)}<br/>`;
+          total += param.value;
+        });
+
+        result += `<hr style="margin: 5px 0; border-color: #ccc"/>`;
+        result += `<strong>Итого: ${formatCurrency(total)}</strong>`;
+        result += `</div>`;
+        return result;
+      }
+    },
+    legend: {
+      data: ['Автохимия', 'Ворота', 'Прочее'],
+      top: 40, // СДВИНУЛИ ЕЩЕ ВЫШЕ
+      left: 'center'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '15%',
+      top: '20%', // УМЕНЬШИЛИ с 25% до 20%
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: dates,
+      axisLabel: {
+        rotate: 45,
+        fontSize: 11
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: formatCurrency
+      }
+    },
+    series: [
+      {
+        name: 'Автохимия',
+        type: 'bar',
+        stack: 'total',
+        data: autoChemPayments,
+        itemStyle: {
+          color: '#4CAF50'
+        },
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: function (params) {
+            return params.value > 0 ? formatCurrency(params.value) : '';
+          },
+          fontSize: 9
+        }
+      },
+      {
+        name: 'Ворота',
+        type: 'bar',
+        stack: 'total',
+        data: gatesPayments,
+        itemStyle: {
+          color: '#2196F3'
+        },
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: function (params) {
+            return params.value > 0 ? formatCurrency(params.value) : '';
+          },
+          fontSize: 9
+        }
+      },
+      {
+        name: 'Прочее',
+        type: 'bar',
+        stack: 'total',
+        data: otherPayments,
+        itemStyle: {
+          color: '#FF9800'
+        },
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: function (params) {
+            return params.value > 0 ? formatCurrency(params.value) : '';
+          },
+          fontSize: 9
+        }
+      }
+    ],
+    dataZoom: [
+      {
+        type: 'inside',
+        xAxisIndex: 0,
+        start: 0,
+        end: 100
+      },
+      {
+        show: true,
+        xAxisIndex: 0,
+        type: 'slider',
+        bottom: 10,
+        start: 0,
+        end: 100
+      }
+    ]
+  };
+
+  chart.setOption(option);
+
+  // Обновляем статистику
+  const totalAutoChem = autoChemPayments.reduce((sum, val) => sum + val, 0);
+  const totalGates = gatesPayments.reduce((sum, val) => sum + val, 0);
+  const totalOther = otherPayments.reduce((sum, val) => sum + val, 0);
+  const totalAll = totalAutoChem + totalGates + totalOther;
+
+  document.getElementById('statsInfo').innerHTML = `
+        <div class="stat-item">Всего дней: ${supportData.length}</div>
+        <div class="stat-item" style="background-color: #4CAF50;">Автохимия: ${formatCurrency(totalAutoChem)}</div>
+        <div class="stat-item" style="background-color: #2196F3;">Ворота: ${formatCurrency(totalGates)}</div>
+        <div class="stat-item" style="background-color: #FF9800;">Прочее: ${formatCurrency(totalOther)}</div>
+        <div class="stat-item" style="background-color: #ffc107;">Общая выручка: ${formatCurrency(totalAll)}</div>
+    `;
+
+  // Добавляем второй график с сортировкой по убыванию
+  createSortedFranchiseSupportChart(sortedData, dateFrom, dateTo);
+}
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: Создание отсортированного графика франшизы сопровождения
+function createSortedFranchiseSupportChart(sortedData, dateFrom, dateTo) {
+  // Создаем контейнер для второго графика
+  const chartContainer = document.getElementById('chart');
+  const secondChartContainer = document.createElement('div');
+  secondChartContainer.id = 'secondChart';
+  secondChartContainer.style.height = '400px'; // ТАКОЙ ЖЕ РАЗМЕР КАК У ПЕРВОГО
+  secondChartContainer.style.marginTop = '20px'; // УМЕНЬШИЛИ отступ
+  secondChartContainer.style.borderTop = '2px solid #eee';
+  secondChartContainer.style.paddingTop = '15px'; // УМЕНЬШИЛИ отступ
+
+  chartContainer.parentNode.insertBefore(secondChartContainer, chartContainer.nextSibling);
+
+  const secondChart = echarts.init(secondChartContainer);
+
+  // Подготавливаем данные для второго графика (сортировка по убыванию)
+  const sortedDates = sortedData.map(item => item.date);
+  const sortedTotals = sortedData.map(item => item.total);
+
+  const secondOption = {
+    title: {
+      text: 'Оплаты от франчайзи по дням (отсортировано по убыванию)',
+      subtext: `Период: ${dateFrom} - ${dateTo}`,
+      left: 'center',
+      textStyle: {
+        fontSize: 14, // ОСТАВИЛИ 14 (как у первого)
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        const data = params[0];
+        const date = data.name;
+        const value = data.value;
+        const dayData = sortedData.find(item => item.date === date);
+
+        let result = `<div style="text-align: left">`;
+        result += `<strong>${date}</strong><br/>`;
+        result += `Автохимия: ${formatCurrency(dayData.autoChem)}<br/>`;
+        result += `Ворота: ${formatCurrency(dayData.gates)}<br/>`;
+        result += `Прочее: ${formatCurrency(dayData.other)}<br/>`;
+        result += `<hr style="margin: 5px 0; border-color: #ccc"/>`;
+        result += `<strong>Итого: ${formatCurrency(value)}</strong>`;
+        result += `</div>`;
+        return result;
+      }
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '15%',
+      top: '15%', // УМЕНЬШИЛИ с 15% (чтобы было как у первого 20%)
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: sortedDates,
+      axisLabel: {
+        rotate: 45,
+        fontSize: 11 // ТАКОЙ ЖЕ РАЗМЕР ШРИФТА
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: formatCurrency
+      }
+    },
+    series: [
+      {
+        name: 'Общая сумма',
+        type: 'bar',
+        data: sortedTotals,
+        itemStyle: {
+          color: function (params) {
+            // Градиент цвета в зависимости от суммы
+            const value = params.value;
+            if (value > 1000000) return '#4CAF50';
+            if (value > 500000) return '#2196F3';
+            if (value > 100000) return '#FF9800';
+            return '#9E9E9E';
+          }
+        },
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function (params) {
+            return formatCurrency(params.value);
+          },
+          fontSize: 10, // ЧУТЬ БОЛЬШЕ, ЧЕМ У ПЕРВОГО (9)
+          fontWeight: 'bold'
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ],
+    dataZoom: [
+      {
+        type: 'inside',
+        xAxisIndex: 0,
+        start: 0,
+        end: 100
+      },
+      {
+        show: true,
+        xAxisIndex: 0,
+        type: 'slider',
+        bottom: 10,
+        start: 0,
+        end: 100
+      }
+    ]
+  };
+
+  secondChart.setOption(secondOption);
+
+  window.addEventListener('resize', function () {
+    secondChart.resize();
+  });
 }
 
 function sortExpensesData(data, field, direction) {
-    return [...data].sort((a, b) => {
-        let aValue = a[field];
-        let bValue = b[field];
+  return [...data].sort((a, b) => {
+    let aValue = a[field];
+    let bValue = b[field];
 
-        if (field === 'сумма') {
-            aValue = Math.abs(aValue);
-            bValue = Math.abs(bValue);
-        }
+    if (field === 'сумма') {
+      aValue = Math.abs(aValue);
+      bValue = Math.abs(bValue);
+    }
 
-        if (field === 'дата') {
-            aValue = new Date(aValue.split('.').reverse().join('-'));
-            bValue = new Date(bValue.split('.').reverse().join('-'));
-        }
+    if (field === 'дата') {
+      aValue = new Date(aValue.split('.').reverse().join('-'));
+      bValue = new Date(bValue.split('.').reverse().join('-'));
+    }
 
-        if (typeof aValue === 'string') {
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
-        }
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
 
-        if (direction === 'asc') {
-            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-        } else {
-            return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
-        }
-    });
+    if (direction === 'asc') {
+      return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+    } else {
+      return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
+    }
+  });
 }
 
 function sortSalaryOfficeData(data, field, direction) {
-    return [...data].sort((a, b) => {
-        let aValue = a[field];
-        let bValue = b[field];
+  return [...data].sort((a, b) => {
+    let aValue = a[field];
+    let bValue = b[field];
 
-        if (field === 'зарплата') {
-            aValue = Math.abs(aValue);
-            bValue = Math.abs(bValue);
-        }
+    if (field === 'зарплата') {
+      aValue = Math.abs(aValue);
+      bValue = Math.abs(bValue);
+    }
 
-        if (typeof aValue === 'string') {
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
-        }
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
 
-        if (direction === 'asc') {
-            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-        } else {
-            return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
-        }
-    });
+    if (direction === 'asc') {
+      return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+    } else {
+      return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
+    }
+  });
 }
 
 function updateExpensesTable(filteredExpenses) {
-    const sortedData = sortExpensesData(filteredExpenses, currentSortField, currentSortDirection);
-    const expensesDetails = document.getElementById('expensesDetails');
+  const sortedData = sortExpensesData(filteredExpenses, currentSortField, currentSortDirection);
+  const expensesDetails = document.getElementById('expensesDetails');
 
-    if (sortedData.length === 0) {
-        expensesDetails.innerHTML = '<div class="loading">Нет данных по прочим расходам для выбранных фильтров</div>';
-        return;
-    }
+  if (sortedData.length === 0) {
+    expensesDetails.innerHTML = '<div class="loading">Нет данных по прочим расходам для выбранных фильтров</div>';
+    return;
+  }
 
-    let tableHtml = `
+  let tableHtml = `
         <table class="expenses-table">
             <thead>
                 <tr>
@@ -54669,8 +55374,8 @@ function updateExpensesTable(filteredExpenses) {
             <tbody>
     `;
 
-    sortedData.forEach(expense => {
-        tableHtml += `
+  sortedData.forEach(expense => {
+    tableHtml += `
             <tr>
                 <td>${formatCurrency(expense.сумма)}</td>
                 <td>${expense.статья}</td>
@@ -54680,10 +55385,10 @@ function updateExpensesTable(filteredExpenses) {
                 <td>${expense.дата}</td>
             </tr>
         `;
-    });
+  });
 
-    const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
-    tableHtml += `
+  const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
+  tableHtml += `
             </tbody>
         </table>
         <div style="margin-top: 15px; font-weight: bold;">
@@ -54691,20 +55396,20 @@ function updateExpensesTable(filteredExpenses) {
         </div>
     `;
 
-    expensesDetails.innerHTML = tableHtml;
-    updateSortInfo();
+  expensesDetails.innerHTML = tableHtml;
+  updateSortInfo();
 }
 
 function updateIndivisibleTable(filteredExpenses) {
-    const sortedData = sortExpensesData(filteredExpenses, currentIndivisibleSortField, currentIndivisibleSortDirection);
-    const indivisibleDetails = document.getElementById('indivisibleDetails');
+  const sortedData = sortExpensesData(filteredExpenses, currentIndivisibleSortField, currentIndivisibleSortDirection);
+  const indivisibleDetails = document.getElementById('indivisibleDetails');
 
-    if (sortedData.length === 0) {
-        indivisibleDetails.innerHTML = '<div class="loading">Нет данных по неделимому расходу для выбранных фильтров</div>';
-        return;
-    }
+  if (sortedData.length === 0) {
+    indivisibleDetails.innerHTML = '<div class="loading">Нет данных по неделимому расходу для выбранных фильтров</div>';
+    return;
+  }
 
-    let tableHtml = `
+  let tableHtml = `
         <table class="expenses-table">
             <thead>
                 <tr>
@@ -54719,8 +55424,8 @@ function updateIndivisibleTable(filteredExpenses) {
             <tbody>
     `;
 
-    sortedData.forEach(expense => {
-        tableHtml += `
+  sortedData.forEach(expense => {
+    tableHtml += `
             <tr>
                 <td>${formatCurrency(expense.сумма)}</td>
                 <td>${expense.статья}</td>
@@ -54730,10 +55435,10 @@ function updateIndivisibleTable(filteredExpenses) {
                 <td>${expense.дата}</td>
             </tr>
         `;
-    });
+  });
 
-    const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
-    tableHtml += `
+  const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
+  tableHtml += `
             </tbody>
         </table>
         <div style="margin-top: 15px; font-weight: bold;">
@@ -54741,20 +55446,20 @@ function updateIndivisibleTable(filteredExpenses) {
         </div>
     `;
 
-    indivisibleDetails.innerHTML = tableHtml;
-    updateIndivisibleSortInfo();
+  indivisibleDetails.innerHTML = tableHtml;
+  updateIndivisibleSortInfo();
 }
 
 function updateGeneralExpenseTable(filteredExpenses) {
-    const sortedData = sortExpensesData(filteredExpenses, currentGeneralExpenseSortField, currentGeneralExpenseSortDirection);
-    const generalExpenseDetails = document.getElementById('generalExpenseDetails');
+  const sortedData = sortExpensesData(filteredExpenses, currentGeneralExpenseSortField, currentGeneralExpenseSortDirection);
+  const generalExpenseDetails = document.getElementById('generalExpenseDetails');
 
-    if (sortedData.length === 0) {
-        generalExpenseDetails.innerHTML = '<div class="loading">Нет данных по общему расходу для выбранных фильтров</div>';
-        return;
-    }
+  if (sortedData.length === 0) {
+    generalExpenseDetails.innerHTML = '<div class="loading">Нет данных по общему расходу для выбранных фильтров</div>';
+    return;
+  }
 
-    let tableHtml = `
+  let tableHtml = `
         <table class="expenses-table">
             <thead>
                 <tr>
@@ -54769,8 +55474,8 @@ function updateGeneralExpenseTable(filteredExpenses) {
             <tbody>
     `;
 
-    sortedData.forEach(expense => {
-        tableHtml += `
+  sortedData.forEach(expense => {
+    tableHtml += `
             <tr>
                 <td>${formatCurrency(expense.сумма)}</td>
                 <td>${expense.статья}</td>
@@ -54780,10 +55485,10 @@ function updateGeneralExpenseTable(filteredExpenses) {
                 <td>${expense.дата}</td>
             </tr>
         `;
-    });
+  });
 
-    const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
-    tableHtml += `
+  const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
+  tableHtml += `
             </tbody>
         </table>
         <div style="margin-top: 15px; font-weight: bold;">
@@ -54791,25 +55496,25 @@ function updateGeneralExpenseTable(filteredExpenses) {
         </div>
     `;
 
-    generalExpenseDetails.innerHTML = tableHtml;
-    updateGeneralExpenseSortInfo();
+  generalExpenseDetails.innerHTML = tableHtml;
+  updateGeneralExpenseSortInfo();
 }
 
 function updateSalaryOfficeTable(filteredExpenses) {
-    const sortedData = sortSalaryOfficeData(filteredExpenses, currentSalaryOfficeSortField, currentSalaryOfficeSortDirection);
-    const salaryOfficeDetails = document.getElementById('salaryOfficeDetails');
+  const sortedData = sortSalaryOfficeData(filteredExpenses, currentSalaryOfficeSortField, currentSalaryOfficeSortDirection);
+  const salaryOfficeDetails = document.getElementById('salaryOfficeDetails');
 
-    if (sortedData.length === 0) {
-        salaryOfficeDetails.innerHTML = `
+  if (sortedData.length === 0) {
+    salaryOfficeDetails.innerHTML = `
             <div class="loading">
                 Нет данных по З/п офис для выбранного периода<br>
                 Всего записей в базе: ${salaryOfficeData.length}
             </div>
         `;
-        return;
-    }
+    return;
+  }
 
-    let tableHtml = `
+  let tableHtml = `
         <table class="expenses-table">
             <thead>
                 <tr>
@@ -54824,10 +55529,10 @@ function updateSalaryOfficeTable(filteredExpenses) {
             <tbody>
     `;
 
-    sortedData.forEach(expense => {
-        const details = `Дневная: ${formatCurrency(expense.исходные_данные.дневная_зарплата)} = (${formatCurrency(expense.исходные_данные.итого)} + ${formatCurrency(expense.исходные_данные.оф_зп)} × ${expense.исходные_данные.коэффициент}) / ${expense.исходные_данные.дней_в_месяце} дней`;
+  sortedData.forEach(expense => {
+    const details = `Дневная: ${formatCurrency(expense.исходные_данные.дневная_зарплата)} = (${formatCurrency(expense.исходные_данные.итого)} + ${formatCurrency(expense.исходные_данные.оф_зп)} × ${expense.исходные_данные.коэффициент}) / ${expense.исходные_данные.дней_в_месяце} дней`;
 
-        tableHtml += `
+    tableHtml += `
             <tr>
                 <td>${expense.сотрудник || 'Не указан'}</td>
                 <td>${expense.должность || 'Не указана'}</td>
@@ -54837,15 +55542,15 @@ function updateSalaryOfficeTable(filteredExpenses) {
                 <td title="${details}">${details.length > 60 ? details.substring(0, 60) + '...' : details}</td>
             </tr>
         `;
-    });
+  });
 
-    const totalЗарплата = sortedData.reduce((sum, item) => sum + item.зарплата, 0);
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    const diffTime = Math.abs(new Date(dateTo) - new Date(dateFrom));
-    const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const totalЗарплата = sortedData.reduce((sum, item) => sum + item.зарплата, 0);
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  const diffTime = Math.abs(new Date(dateTo) - new Date(dateFrom));
+  const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-    tableHtml += `
+  tableHtml += `
             </tbody>
         </table>
         <div style="margin-top: 15px; font-weight: bold;">
@@ -54855,1112 +55560,1156 @@ function updateSalaryOfficeTable(filteredExpenses) {
         </div>
     `;
 
-    salaryOfficeDetails.innerHTML = tableHtml;
-    updateSalaryOfficeSortInfo();
+  salaryOfficeDetails.innerHTML = tableHtml;
+  updateSalaryOfficeSortInfo();
 }
 
 function changeSort(field) {
-    if (currentSortField === field) {
-        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentSortField = field;
-        currentSortDirection = field === 'сумма' ? 'desc' : 'asc';
-    }
-    const filteredExpenses = getFilteredOtherExpenses();
-    updateExpensesTable(filteredExpenses);
-    updateSortButtons();
+  if (currentSortField === field) {
+    currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSortField = field;
+    currentSortDirection = field === 'сумма' ? 'desc' : 'asc';
+  }
+  const filteredExpenses = getFilteredOtherExpenses();
+  updateExpensesTable(filteredExpenses);
+  updateSortButtons();
 }
 
 function changeIndivisibleSort(field) {
-    if (currentIndivisibleSortField === field) {
-        currentIndivisibleSortDirection = currentIndivisibleSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentIndivisibleSortField = field;
-        currentIndivisibleSortDirection = field === 'сумма' ? 'desc' : 'asc';
-    }
-    const filteredExpenses = getFilteredIndivisibleExpenses();
-    updateIndivisibleTable(filteredExpenses);
-    updateIndivisibleSortButtons();
+  if (currentIndivisibleSortField === field) {
+    currentIndivisibleSortDirection = currentIndivisibleSortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentIndivisibleSortField = field;
+    currentIndivisibleSortDirection = field === 'сумма' ? 'desc' : 'asc';
+  }
+  const filteredExpenses = getFilteredIndivisibleExpenses();
+  updateIndivisibleTable(filteredExpenses);
+  updateIndivisibleSortButtons();
 }
 
 function changeGeneralExpenseSort(field) {
-    if (currentGeneralExpenseSortField === field) {
-        currentGeneralExpenseSortDirection = currentGeneralExpenseSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentGeneralExpenseSortField = field;
-        currentGeneralExpenseSortDirection = field === 'сумма' ? 'desc' : 'asc';
-    }
-    const filteredExpenses = getFilteredGeneralExpenseExpenses();
-    updateGeneralExpenseTable(filteredExpenses);
-    updateGeneralExpenseSortButtons();
+  if (currentGeneralExpenseSortField === field) {
+    currentGeneralExpenseSortDirection = currentGeneralExpenseSortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentGeneralExpenseSortField = field;
+    currentGeneralExpenseSortDirection = field === 'сумма' ? 'desc' : 'asc';
+  }
+  const filteredExpenses = getFilteredGeneralExpenseExpenses();
+  updateGeneralExpenseTable(filteredExpenses);
+  updateGeneralExpenseSortButtons();
 }
 
 function changeSalaryOfficeSort(field) {
-    if (currentSalaryOfficeSortField === field) {
-        currentSalaryOfficeSortDirection = currentSalaryOfficeSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentSalaryOfficeSortField = field;
-        currentSalaryOfficeSortDirection = field === 'зарплата' ? 'desc' : 'asc';
-    }
-    const filteredExpenses = getFilteredSalaryOfficeExpenses();
-    updateSalaryOfficeTable(filteredExpenses);
-    updateSalaryOfficeSortButtons();
+  if (currentSalaryOfficeSortField === field) {
+    currentSalaryOfficeSortDirection = currentSalaryOfficeSortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSalaryOfficeSortField = field;
+    currentSalaryOfficeSortDirection = field === 'зарплата' ? 'desc' : 'asc';
+  }
+  const filteredExpenses = getFilteredSalaryOfficeExpenses();
+  updateSalaryOfficeTable(filteredExpenses);
+  updateSalaryOfficeSortButtons();
 }
 
 function showExpensesDetails() {
-    const modal = document.getElementById('expensesModal');
-    const modalTitle = document.getElementById('modalTitle');
+  const modal = document.getElementById('expensesModal');
+  const modalTitle = document.getElementById('modalTitle');
 
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    let title = 'Детализация расходов "Прочие" (исключая "Общий расход")';
-    if (dateFrom && dateTo) title += ` | Период: ${dateFrom} - ${dateTo}`;
-    if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
-    if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
+  let title = 'Детализация расходов "Прочие" (исключая "Общий расход")';
+  if (dateFrom && dateTo) title += ` | Период: ${dateFrom} - ${dateTo}`;
+  if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
+  if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
 
-    modalTitle.textContent = title;
-    const filteredExpenses = getFilteredOtherExpenses();
-    updateSortButtons();
-    updateExpensesTable(filteredExpenses);
-    modal.style.display = 'block';
+  modalTitle.textContent = title;
+  const filteredExpenses = getFilteredOtherExpenses();
+  updateSortButtons();
+  updateExpensesTable(filteredExpenses);
+  modal.style.display = 'block';
 }
 
 function showIndivisibleDetails() {
-    const modal = document.getElementById('indivisibleModal');
-    const modalTitle = document.getElementById('indivisibleModalTitle');
+  const modal = document.getElementById('indivisibleModal');
+  const modalTitle = document.getElementById('indivisibleModalTitle');
 
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-        (!selectedAddresses || selectedAddresses.length === 0);
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
 
-    if (!isDrilldownMode) {
-        alert('Детализация "Неделимый расход" доступна только в режиме дриллдауна (Все объекты/Вся розница + Все адреса)');
-        return;
-    }
+  if (!isDrilldownMode) {
+    alert('Детализация "Неделимый расход" доступна только в режиме дриллдауна (Все объекты/Вся розница + Все адреса)');
+    return;
+  }
 
-    let title = 'Детализация расходов "Неделимый расход" (Мойка = "Общий расход", Команда = "Розница")';
-    if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
-    if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
+  let title = 'Детализация расходов "Неделимый расход" (Мойка = "Общий расход", Команда = "Розница")';
+  if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
+  if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
 
-    modalTitle.textContent = title;
-    const filteredExpenses = getFilteredIndivisibleExpenses();
-    updateIndivisibleSortButtons();
-    updateIndivisibleTable(filteredExpenses);
-    modal.style.display = 'block';
+  modalTitle.textContent = title;
+  const filteredExpenses = getFilteredIndivisibleExpenses();
+  updateIndivisibleSortButtons();
+  updateIndivisibleTable(filteredExpenses);
+  modal.style.display = 'block';
 }
 
 function showGeneralExpenseDetails() {
-    const modal = document.getElementById('generalExpenseModal');
-    const modalTitle = document.getElementById('generalExpenseModalTitle');
+  const modal = document.getElementById('generalExpenseModal');
+  const modalTitle = document.getElementById('generalExpenseModalTitle');
 
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
 
-    let title = 'Детализация расходов "Общий расход" (Мойка = "Общий расход", Команда = "")';
-    if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
-    if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
+  let title = 'Детализация расходов "Общий расход" (Мойка = "Общий расход", Команда = "")';
+  if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
+  if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
 
-    modalTitle.textContent = title;
-    const filteredExpenses = getFilteredGeneralExpenseExpenses();
-    updateGeneralExpenseSortButtons();
-    updateGeneralExpenseTable(filteredExpenses);
-    modal.style.display = 'block';
+  modalTitle.textContent = title;
+  const filteredExpenses = getFilteredGeneralExpenseExpenses();
+  updateGeneralExpenseSortButtons();
+  updateGeneralExpenseTable(filteredExpenses);
+  modal.style.display = 'block';
 }
 
 function showSalaryOfficeDetails() {
-    const modal = document.getElementById('salaryOfficeModal');
-    const modalTitle = document.getElementById('salaryOfficeModalTitle');
+  const modal = document.getElementById('salaryOfficeModal');
+  const modalTitle = document.getElementById('salaryOfficeModalTitle');
 
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
 
-    let title = 'Детализация расходов "З/п офис" - Сотрудники';
-    if (dateFrom && dateTo) {
-        title += ` | Период: ${dateFrom} - ${dateTo}`;
-    }
+  let title = 'Детализация расходов "З/п офис" - Сотрудники';
+  if (dateFrom && dateTo) {
+    title += ` | Период: ${dateFrom} - ${dateTo}`;
+  }
 
-    modalTitle.textContent = title;
-    const filteredExpenses = getFilteredSalaryOfficeExpenses();
-    updateSalaryOfficeSortButtons();
-    updateSalaryOfficeTable(filteredExpenses);
-    modal.style.display = 'block';
+  modalTitle.textContent = title;
+  const filteredExpenses = getFilteredSalaryOfficeExpenses();
+  updateSalaryOfficeSortButtons();
+  updateSalaryOfficeTable(filteredExpenses);
+  modal.style.display = 'block';
 }
 
 function populateFilters(data) {
-    // Отфильтровываем строки с "Франшиза роялти" в адресе
-    const filteredData = data.filter(row => {
-        const address = String(row.Адрес || '').trim();
-        return !address.toLowerCase().includes('франшиза роялти');
+  // Отфильтровываем строки с "Франшиза роялти" в адресе
+  const filteredData = data.filter(row => {
+    const address = String(row.Адрес || '').trim();
+    return !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  allWeeks = [...new Set(filteredData.map(row => row.Неделя || row['﻿Неделя']))].filter(Boolean);
+  allWeeks.sort((a, b) => {
+    const dateA = new Date(a.split(' - ')[0].split('.').reverse().join('-'));
+    const dateB = new Date(b.split(' - ')[0].split('.').reverse().join('-'));
+    return dateA - dateB;
+  });
+
+  const objects = [...new Set(filteredData.map(row => row.Объект))]
+    .filter(Boolean)
+    .filter(obj => obj !== "Продажа объекта/агентские");
+
+  const addresses = [...new Set(filteredData.map(row => row.Адрес))]
+    .filter(Boolean)
+    .filter(address => {
+      const addr = String(address).trim();
+      return !addr.toLowerCase().includes('франшиза роялти');
     });
 
-    allWeeks = [...new Set(filteredData.map(row => row.Неделя || row['﻿Неделя']))].filter(Boolean);
-    allWeeks.sort((a, b) => {
-        const dateA = new Date(a.split(' - ')[0].split('.').reverse().join('-'));
-        const dateB = new Date(b.split(' - ')[0].split('.').reverse().join('-'));
-        return dateA - dateB;
-    });
+  const objectsSelect = document.getElementById('objectSelect');
+  objectsSelect.innerHTML = '<option value="">Все объекты</option>';
 
-    const objects = [...new Set(filteredData.map(row => row.Объект))]
-        .filter(Boolean)
-        .filter(obj => obj !== "Продажа объекта/агентские");
+  const allRetailOption = document.createElement('option');
+  allRetailOption.value = 'all_retail';
+  allRetailOption.textContent = 'Вся розница';
+  objectsSelect.appendChild(allRetailOption);
 
-    const addresses = [...new Set(filteredData.map(row => row.Адрес))]
-        .filter(Boolean)
-        .filter(address => {
-            const addr = String(address).trim();
-            return !addr.toLowerCase().includes('франшиза роялти');
-        });
+  const orderedObjects = [];
+  const retailOrder = [
+    "Козубенко Денис",
+    "Сенатов Кирилл",
+    "Большаков Максим",
+    "Мозговой Филипп",
+    "Данилов Алексей",
+    "Ичко Роман",
+    "Юрлов Денис"
+  ];
 
-    const objectsSelect = document.getElementById('objectSelect');
-    objectsSelect.innerHTML = '<option value="">Все объекты</option>';
-
-    const allRetailOption = document.createElement('option');
-    allRetailOption.value = 'all_retail';
-    allRetailOption.textContent = 'Вся розница';
-    objectsSelect.appendChild(allRetailOption);
-
-    const orderedObjects = [];
-    const retailOrder = [
-        "Козубенко Денис",
-        "Сенатов Кирилл",
-        "Большаков Максим",
-        "Мозговой Филипп",
-        "Данилов Алексей",
-        "Ичко Роман",
-        "Юрлов Денис"
-    ];
-
-    retailOrder.forEach(retailObj => {
-        if (objects.includes(retailObj)) {
-            orderedObjects.push(retailObj);
-        }
-    });
-
-    const specialObjects = [
-        "Юр. Лица",
-        "Абонементы/сертификаты",
-        "Подписка на мойку",
-        "Франшиза отдел продаж",
-        "Развитие",
-        "Франшиза отдел сопровождения"
-    ];
-
-    specialObjects.forEach(specialObj => {
-        if (objects.includes(specialObj)) {
-            orderedObjects.push(specialObj);
-        }
-    });
-
-    const remainingObjects = objects.filter(obj =>
-        ![...retailOrder, ...specialObjects].includes(obj)
-    );
-
-    remainingObjects.sort((a, b) => a.localeCompare(b));
-    orderedObjects.push(...remainingObjects);
-
-    orderedObjects.forEach(object => {
-        const option = document.createElement('option');
-        option.value = object;
-        option.textContent = object;
-        objectsSelect.appendChild(option);
-    });
-
-    const addressSelect = document.getElementById('addressSelect');
-    addressSelect.innerHTML = '<option value="">Все адреса</option>';
-    addresses.forEach(address => {
-        const option = document.createElement('option');
-        option.value = address;
-        option.textContent = address;
-        addressSelect.appendChild(option);
-    });
-
-    document.getElementById('filters').style.display = 'flex';
-
-    objectsSelect.addEventListener('change', function () {
-        updateAddressFilter(this.value, data);
-        applyFilters();
-    });
-
-    addressSelect.addEventListener('change', function () {
-        updateSelectedInfo('addressSelected', this);
-        applyFilters();
-    });
-
-    updateSelectedInfo('addressSelected', addressSelect);
-
-    // АВТОМАТИЧЕСКОЕ ОПРЕДЕЛЕНИЕ ДАТ
-    const dateTo = document.getElementById('dateTo');
-    const dateFrom = document.getElementById('dateFrom');
-
-    // Если есть данные для определения дат
-    if (filteredData.length > 0 || salaryOfficeData.length > 0) {
-        let minDate = null;
-        let maxDate = null;
-
-        // 1. Ищем даты в основных данных
-        filteredData.forEach(row => {
-            if (row.Дата) {
-                try {
-                    const rowDate = new Date(row.Дата.split('.').reverse().join('-'));
-                    if (!minDate || rowDate < minDate) minDate = rowDate;
-                    if (!maxDate || rowDate > maxDate) maxDate = rowDate;
-                } catch (e) {
-                    // Игнорируем ошибки парсинга
-                }
-            }
-        });
-
-        // 2. Ищем даты в зарплатных данных (из поля неделя)
-        salaryOfficeData.forEach(item => {
-            if (item.неделя) {
-                try {
-                    const weekParts = item.неделя.split(' - ');
-                    if (weekParts.length === 2) {
-                        const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
-                        const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
-
-                        if (!minDate || weekStart < minDate) minDate = weekStart;
-                        if (!maxDate || weekEnd > maxDate) maxDate = weekEnd;
-                    }
-                } catch (e) {
-                    // Игнорируем ошибки парсинга
-                }
-            }
-        });
-
-        // 3. Устанавливаем даты по умолчанию
-        if (minDate && maxDate) {
-            // Устанавливаем последний месяц по умолчанию
-            const endDate = new Date(maxDate);
-            const startDate = new Date(maxDate);
-            startDate.setMonth(startDate.getMonth() - 1); // За последний месяц
-
-            // Форматируем даты для input type="date"
-            dateTo.value = endDate.toISOString().split('T')[0];
-            dateFrom.value = startDate.toISOString().split('T')[0];
-        } else {
-            // Если не нашли дат, ставим текущий месяц
-            const today = new Date();
-            dateTo.valueAsDate = today;
-            const monthAgo = new Date();
-            monthAgo.setMonth(monthAgo.getMonth() - 1);
-            dateFrom.valueAsDate = monthAgo;
-        }
-    } else {
-        // Если нет данных, ставим текущий месяц
-        const today = new Date();
-        dateTo.valueAsDate = today;
-        const monthAgo = new Date();
-        monthAgo.setMonth(monthAgo.getMonth() - 1);
-        dateFrom.valueAsDate = monthAgo;
+  retailOrder.forEach(retailObj => {
+    if (objects.includes(retailObj)) {
+      orderedObjects.push(retailObj);
     }
+  });
+
+  const specialObjects = [
+    "Юр. Лица",
+    "Абонементы/сертификаты",
+    "Подписка на мойку",
+    "Франшиза отдел продаж",
+    "Развитие",
+    "Франшиза отдел сопровождения"
+  ];
+
+  specialObjects.forEach(specialObj => {
+    if (objects.includes(specialObj)) {
+      orderedObjects.push(specialObj);
+    }
+  });
+
+  const remainingObjects = objects.filter(obj =>
+    ![...retailOrder, ...specialObjects].includes(obj)
+  );
+
+  remainingObjects.sort((a, b) => a.localeCompare(b));
+  orderedObjects.push(...remainingObjects);
+
+  orderedObjects.forEach(object => {
+    const option = document.createElement('option');
+    option.value = object;
+    option.textContent = object;
+    objectsSelect.appendChild(option);
+  });
+
+  const addressSelect = document.getElementById('addressSelect');
+  addressSelect.innerHTML = '<option value="">Все адреса</option>';
+  addresses.forEach(address => {
+    const option = document.createElement('option');
+    option.value = address;
+    option.textContent = address;
+    addressSelect.appendChild(option);
+  });
+
+  document.getElementById('filters').style.display = 'flex';
+
+  objectsSelect.addEventListener('change', function () {
+    updateAddressFilter(this.value, data);
+    applyFilters();
+  });
+
+  addressSelect.addEventListener('change', function () {
+    updateSelectedInfo('addressSelected', this);
+    applyFilters();
+  });
+
+  updateSelectedInfo('addressSelected', addressSelect);
+
+  // АВТОМАТИЧЕСКОЕ ОПРЕДЕЛЕНИЕ ДАТ
+  const dateTo = document.getElementById('dateTo');
+  const dateFrom = document.getElementById('dateFrom');
+
+  // Если есть данные для определения дат
+  if (filteredData.length > 0 || salaryOfficeData.length > 0) {
+    let minDate = null;
+    let maxDate = null;
+
+    // 1. Ищем даты в основных данных
+    filteredData.forEach(row => {
+      if (row.Дата) {
+        try {
+          const rowDate = new Date(row.Дата.split('.').reverse().join('-'));
+          if (!minDate || rowDate < minDate) minDate = rowDate;
+          if (!maxDate || rowDate > maxDate) maxDate = rowDate;
+        } catch (e) {
+          // Игнорируем ошибки парсинга
+        }
+      }
+    });
+
+    // 2. Ищем даты в зарплатных данных (из поля неделя)
+    salaryOfficeData.forEach(item => {
+      if (item.неделя) {
+        try {
+          const weekParts = item.неделя.split(' - ');
+          if (weekParts.length === 2) {
+            const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
+            const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
+
+            if (!minDate || weekStart < minDate) minDate = weekStart;
+            if (!maxDate || weekEnd > maxDate) maxDate = weekEnd;
+          }
+        } catch (e) {
+          // Игнорируем ошибки парсинга
+        }
+      }
+    });
+
+    // 3. Устанавливаем даты по умолчанию
+    if (minDate && maxDate) {
+      // Устанавливаем последний месяц по умолчанию
+      const endDate = new Date(maxDate);
+      const startDate = new Date(maxDate);
+      startDate.setMonth(startDate.getMonth() - 1); // За последний месяц
+
+      // Форматируем даты для input type="date"
+      dateTo.value = endDate.toISOString().split('T')[0];
+      dateFrom.value = startDate.toISOString().split('T')[0];
+    } else {
+      // Если не нашли дат, ставим текущий месяц
+      const today = new Date();
+      dateTo.valueAsDate = today;
+      const monthAgo = new Date();
+      monthAgo.setMonth(monthAgo.getMonth() - 1);
+      dateFrom.valueAsDate = monthAgo;
+    }
+  } else {
+    // Если нет данных, ставим текущий месяц
+    const today = new Date();
+    dateTo.valueAsDate = today;
+    const monthAgo = new Date();
+    monthAgo.setMonth(monthAgo.getMonth() - 1);
+    dateFrom.valueAsDate = monthAgo;
+  }
 }
 
 function updateSelectedInfo(containerId, selectElement) {
-    const selectedOptions = Array.from(selectElement.selectedOptions)
-        .map(option => option.value)
-        .filter(value => value && value !== '');
+  const selectedOptions = Array.from(selectElement.selectedOptions)
+    .map(option => option.value)
+    .filter(value => value && value !== '');
 
-    const container = document.getElementById(containerId);
-    if (selectedOptions.length > 0) {
-        container.textContent = `Выбрано: ${selectedOptions.length}`;
-        container.title = selectedOptions.join(', ');
-    } else {
-        container.textContent = 'Все';
-        container.title = '';
-    }
+  const container = document.getElementById(containerId);
+  if (selectedOptions.length > 0) {
+    container.textContent = `Выбрано: ${selectedOptions.length}`;
+    container.title = selectedOptions.join(', ');
+  } else {
+    container.textContent = 'Все';
+    container.title = '';
+  }
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ updateAddressFilter() ДЛЯ КОРРЕКТНОЙ РАБОТЫ
 function updateAddressFilter(selectedObject, data) {
-    const addressSelect = document.getElementById('addressSelect');
-    const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
+  const addressSelect = document.getElementById('addressSelect');
+  const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
 
-    let filteredAddresses;
+  let filteredAddresses;
 
-    if (selectedObject === 'all_retail') {
-        filteredAddresses = [...new Set(data
-            .filter(row => retailObjects.includes(row.Объект))
-            .map(row => row.Адрес))].filter(Boolean);
-    } else if (selectedObject) {
-        filteredAddresses = [...new Set(data
-            .filter(row => row.Объект === selectedObject)
-            .map(row => row.Адрес))].filter(Boolean);
-    } else {
-        filteredAddresses = [...new Set(data.map(row => row.Адрес))].filter(Boolean);
+  if (selectedObject === 'all_retail') {
+    filteredAddresses = [...new Set(data
+      .filter(row => retailObjects.includes(row.Объект))
+      .map(row => row.Адрес))].filter(Boolean);
+  } else if (selectedObject) {
+    filteredAddresses = [...new Set(data
+      .filter(row => row.Объект === selectedObject)
+      .map(row => row.Адрес))].filter(Boolean);
+  } else {
+    filteredAddresses = [...new Set(data.map(row => row.Адрес))].filter(Boolean);
+  }
+
+  addressSelect.innerHTML = '<option value="">Все адреса</option>';
+  filteredAddresses.forEach(address => {
+    const option = document.createElement('option');
+    option.value = address;
+    option.textContent = address;
+    if (currentSelected.includes(address)) {
+      option.selected = true;
     }
+    addressSelect.appendChild(option);
+  });
 
-    addressSelect.innerHTML = '<option value="">Все адреса</option>';
-    filteredAddresses.forEach(address => {
-        const option = document.createElement('option');
-        option.value = address;
-        option.textContent = address;
-        if (currentSelected.includes(address)) {
-            option.selected = true;
-        }
-        addressSelect.appendChild(option);
-    });
-
-    updateSelectedInfo('addressSelected', addressSelect);
+  updateSelectedInfo('addressSelected', addressSelect);
 }
 
 function getSelectedObject() {
-    const objectSelect = document.getElementById('objectSelect');
-    return objectSelect.value !== '' ? objectSelect.value : null;
+  const objectSelect = document.getElementById('objectSelect');
+  return objectSelect.value !== '' ? objectSelect.value : null;
 }
 
 function getSelectedAddresses() {
-    const addressSelect = document.getElementById('addressSelect');
-    const selectedAddresses = Array.from(addressSelect.selectedOptions)
-        .map(option => option.value)
-        .filter(value => value && value !== '');
-    return selectedAddresses.length > 0 ? selectedAddresses : null;
+  const addressSelect = document.getElementById('addressSelect');
+  const selectedAddresses = Array.from(addressSelect.selectedOptions)
+    .map(option => option.value)
+    .filter(value => value && value !== '');
+  return selectedAddresses.length > 0 ? selectedAddresses : null;
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ applyFilters() (ОДНА ВЕРСИЯ!)
 function applyFilters() {
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
-    
-    console.log('=== applyFilters ===');
-    console.log('selectedObject:', selectedObject);
-    console.log('selectedAddresses:', selectedAddresses);
-    
-    // Отфильтровываем строки с "Франшиза роялти" в адресе
-    let filteredData = allData.filter(row => {
-        const address = String(row.Адрес || '').trim();
-        return !address.toLowerCase().includes('франшиза роялти');
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+
+  console.log('=== applyFilters ===');
+  console.log('selectedObject:', selectedObject);
+  console.log('selectedAddresses:', selectedAddresses);
+
+  // Отфильтровываем строки с "Франшиза роялти" в адресе
+  let filteredData = allData.filter(row => {
+    const address = String(row.Адрес || '').trim();
+    return !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
     });
-    
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    
-    if (dateFrom && dateTo) {
-        filteredData = filteredData.filter(row => {
-            const rowDateStr = row.Дата;
-            if (!rowDateStr) return true;
-            try {
-                const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
-                const fromDate = new Date(dateFrom);
-                const toDate = new Date(dateTo);
-                return rowDate >= fromDate && rowDate <= toDate;
-            } catch (e) {
-                return true;
-            }
+  }
+
+  // СНАЧАЛА фильтруем по адресам, ЕСЛИ они выбраны
+  if (selectedAddresses && selectedAddresses.length > 0) {
+    // Исключаем пустое значение "Все адреса"
+    const validAddresses = selectedAddresses.filter(addr => addr && addr !== '');
+
+    if (validAddresses.length > 0) {
+      console.log('Фильтрация по адресам. Выбрано адресов:', validAddresses.length);
+      console.log('Выбранные адреса:', validAddresses);
+
+      // Создаем массив стандартизированных адресов для сравнения
+      const standardizedSelectedAddresses = validAddresses.map(addr => standardizeAddress(addr));
+      console.log('Стандартизированные выбранные адреса:', standardizedSelectedAddresses);
+
+      filteredData = filteredData.filter(row => {
+        const rowAddress = String(row.Адрес || '').trim();
+
+        // Если адрес строки пустой, исключаем его
+        if (!rowAddress) return false;
+
+        // Стандартизируем адрес строки
+        const rowStandardizedAddress = standardizeAddress(rowAddress);
+
+        // Проверяем 4 варианта сравнения:
+        // 1. Точное совпадение оригинальных адресов
+        if (validAddresses.includes(rowAddress)) {
+          console.log(`Совпадение по точному адресу: ${rowAddress}`);
+          return true;
+        }
+
+        // 2. Совпадение стандартизированных адресов
+        if (standardizedSelectedAddresses.includes(rowStandardizedAddress)) {
+          console.log(`Совпадение по стандартизированному адресу: ${rowAddress} -> ${rowStandardizedAddress}`);
+          return true;
+        }
+
+        // 3. Сравнение без учета регистра
+        const rowAddressLower = rowAddress.toLowerCase();
+        for (const selectedAddr of validAddresses) {
+          if (rowAddressLower === selectedAddr.toLowerCase()) {
+            console.log(`Совпадение без учета регистра: ${rowAddress} === ${selectedAddr}`);
+            return true;
+          }
+        }
+
+        // 4. Проверяем, содержит ли адрес строки выбранный адрес (для случаев типа "Шереметьевская РН")
+        for (const selectedAddr of validAddresses) {
+          if (rowAddress.includes(selectedAddr) || selectedAddr.includes(rowAddress)) {
+            console.log(`Частичное совпадение: ${rowAddress} содержит ${selectedAddr} или наоборот`);
+            return true;
+          }
+        }
+
+        return false;
+      });
+
+      console.log('После фильтрации по адресам осталось записей:', filteredData.length);
+
+      // Для отладки покажем первые несколько отфильтрованных записей
+      if (filteredData.length > 0) {
+        console.log('Примеры отфильтрованных записей:');
+        filteredData.slice(0, 3).forEach((row, i) => {
+          console.log(`${i + 1}. Адрес: "${row.Адрес}", Объект: "${row.Объект}"`);
         });
+      }
     }
-    
-    // СНАЧАЛА фильтруем по адресам, ЕСЛИ они выбраны
-    if (selectedAddresses && selectedAddresses.length > 0) {
-        // Исключаем пустое значение "Все адреса"
-        const validAddresses = selectedAddresses.filter(addr => addr && addr !== '');
-        
-        if (validAddresses.length > 0) {
-            console.log('Фильтрация по адресам. Выбрано адресов:', validAddresses.length);
-            console.log('Выбранные адреса:', validAddresses);
-            
-            // Создаем массив стандартизированных адресов для сравнения
-            const standardizedSelectedAddresses = validAddresses.map(addr => standardizeAddress(addr));
-            console.log('Стандартизированные выбранные адреса:', standardizedSelectedAddresses);
-            
-            filteredData = filteredData.filter(row => {
-                const rowAddress = String(row.Адрес || '').trim();
-                
-                // Если адрес строки пустой, исключаем его
-                if (!rowAddress) return false;
-                
-                // Стандартизируем адрес строки
-                const rowStandardizedAddress = standardizeAddress(rowAddress);
-                
-                // Проверяем 4 варианта сравнения:
-                // 1. Точное совпадение оригинальных адресов
-                if (validAddresses.includes(rowAddress)) {
-                    console.log(`Совпадение по точному адресу: ${rowAddress}`);
-                    return true;
-                }
-                
-                // 2. Совпадение стандартизированных адресов
-                if (standardizedSelectedAddresses.includes(rowStandardizedAddress)) {
-                    console.log(`Совпадение по стандартизированному адресу: ${rowAddress} -> ${rowStandardizedAddress}`);
-                    return true;
-                }
-                
-                // 3. Сравнение без учета регистра
-                const rowAddressLower = rowAddress.toLowerCase();
-                for (const selectedAddr of validAddresses) {
-                    if (rowAddressLower === selectedAddr.toLowerCase()) {
-                        console.log(`Совпадение без учета регистра: ${rowAddress} === ${selectedAddr}`);
-                        return true;
-                    }
-                }
-                
-                // 4. Проверяем, содержит ли адрес строки выбранный адрес (для случаев типа "Шереметьевская РН")
-                for (const selectedAddr of validAddresses) {
-                    if (rowAddress.includes(selectedAddr) || selectedAddr.includes(rowAddress)) {
-                        console.log(`Частичное совпадение: ${rowAddress} содержит ${selectedAddr} или наоборот`);
-                        return true;
-                    }
-                }
-                
-                return false;
-            });
-            
-            console.log('После фильтрации по адресам осталось записей:', filteredData.length);
-            
-            // Для отладки покажем первые несколько отфильтрованных записей
-            if (filteredData.length > 0) {
-                console.log('Примеры отфильтрованных записей:');
-                filteredData.slice(0, 3).forEach((row, i) => {
-                    console.log(`${i+1}. Адрес: "${row.Адрес}", Объект: "${row.Объект}"`);
-                });
-            }
-        }
-    }
-    
-    // ПОТОМ фильтруем по объекту, ЕСЛИ он выбран
-    if (selectedObject) {
-        if (selectedObject === 'all_retail') {
-            filteredData = filteredData.filter(row => retailObjects.includes(row.Объект));
-        } else {
-            filteredData = filteredData.filter(row => row.Объект === selectedObject);
-        }
-        console.log('После фильтрации по объекту осталось записей:', filteredData.length);
-    }
-    
-    console.log('Итоговое количество записей:', filteredData.length);
-    
-    updateSelectionInfo(dateFrom, dateTo, selectedObject, selectedAddresses, filteredData.length);
-    
-    if (filteredData.length > 0) {
-        buildChart(filteredData, selectedObject, selectedAddresses);
+  }
+
+  // ПОТОМ фильтруем по объекту, ЕСЛИ он выбран
+  if (selectedObject) {
+    if (selectedObject === 'all_retail') {
+      filteredData = filteredData.filter(row => retailObjects.includes(row.Объект));
     } else {
-        document.getElementById('chart').innerHTML = '<div style="text-align: center; padding: 50px; color: #666;">Нет данных для выбранных фильтров</div>';
+      filteredData = filteredData.filter(row => row.Объект === selectedObject);
     }
+    console.log('После фильтрации по объекту осталось записей:', filteredData.length);
+  }
+
+  console.log('Итоговое количество записей:', filteredData.length);
+
+  updateSelectionInfo(dateFrom, dateTo, selectedObject, selectedAddresses, filteredData.length);
+
+  if (filteredData.length > 0) {
+    buildChart(filteredData, selectedObject, selectedAddresses);
+  } else {
+    document.getElementById('chart').innerHTML = '<div style="text-align: center; padding: 50px; color: #666;">Нет данных для выбранных фильтров</div>';
+  }
 }
 
 function updateSelectionInfo(dateFrom, dateTo, object, addresses, count) {
-    let info = `Показано записей: ${count}`;
-    if (dateFrom && dateTo) {
-        info += ` | Период: ${dateFrom} - ${dateTo}`;
-    }
-    if (object) {
-        info += ` | Объект: ${object === 'all_retail' ? 'Вся розница' : object}`;
-    }
-    if (addresses) {
-        info += ` | Адресов: ${addresses.length}`;
-    }
-    document.getElementById('fileInfo').textContent = info;
+  let info = `Показано записей: ${count}`;
+  if (dateFrom && dateTo) {
+    info += ` | Период: ${dateFrom} - ${dateTo}`;
+  }
+  if (object) {
+    info += ` | Объект: ${object === 'all_retail' ? 'Вся розница' : object}`;
+  }
+  if (addresses) {
+    info += ` | Адресов: ${addresses.length}`;
+  }
+  document.getElementById('fileInfo').textContent = info;
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ buildChart() (ОДНА ВЕРСИЯ!)
 function buildChart(data, object, addresses) {
-    if (currentChart) {
-        currentChart.dispose();
-        currentChart = null;
-    }
+  // Удаляем второй график если он есть
+  const secondChart = document.getElementById('secondChart');
+  if (secondChart) {
+    secondChart.remove();
+  }
 
-    const chart = echarts.init(document.getElementById('chart'));
-    currentChart = chart;
+  if (currentChart) {
+    currentChart.dispose();
+    currentChart = null;
+  }
 
-    const aggregated = aggregateCategories(data);
+  const chart = echarts.init(document.getElementById('chart'));
+  currentChart = chart;
 
-    let categories = [
-        "Выручка",
-        "Автохимия",
-        "Коммунальные расходы",
-        "Аренда",
-        "Зарплата",
-        "Комиссии",
-        "Налоги",
-        "НДС",
-        "Прочие",
-        "Неделимый расход",
-        "Операционная прибыль"
-    ];
+  const aggregated = aggregateCategories(data);
 
-    const selectedObject = getSelectedObject();
-    const selectedAddresses = getSelectedAddresses();
+  let categories = [
+    "Выручка",
+    "Автохимия",
+    "Коммунальные расходы",
+    "Аренда",
+    "Зарплата",
+    "Комиссии",
+    "Налоги",
+    "НДС",
+    "Прочие",
+    "Неделимый расход",
+    "Операционная прибыль"
+  ];
 
-    let showFranchBonus = false;
-    const isAllObjectsAllAddresses = (!selectedObject || selectedObject === '') &&
-        (!selectedAddresses || selectedAddresses.length === 0);
-    const isFranchObject = selectedObject === 'Франшиза отдел сопровождения';
-    showFranchBonus = isAllObjectsAllAddresses || isFranchObject;
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
 
+  let showFranchBonus = false;
+  const isAllObjectsAllAddresses = (!selectedObject || selectedObject === '') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
+  const isFranchObject = selectedObject === 'Франшиза отдел сопровождения';
+  showFranchBonus = isAllObjectsAllAddresses || isFranchObject;
+
+  if (showFranchBonus) {
+    const profitIndex = categories.indexOf("Операционная прибыль");
+    categories.splice(profitIndex, 0, "Франшиза сопровождение бонус");
+  }
+
+  const isAllObjects = !object || object === '';
+  const isAllAddresses = !addresses || addresses.length === 0;
+  const showCompanyExpenses = isAllObjects && isAllAddresses;
+
+  if (showCompanyExpenses) {
+    let insertIndex;
     if (showFranchBonus) {
-        const profitIndex = categories.indexOf("Операционная прибыль");
-        categories.splice(profitIndex, 0, "Франшиза сопровождение бонус");
+      insertIndex = categories.indexOf("Франшиза сопровождение бонус");
+    } else {
+      insertIndex = categories.indexOf("Операционная прибыль");
     }
+    categories.splice(insertIndex, 0, "Общий расход", "З/п офис");
+  }
 
-    const isAllObjects = !object || object === '';
-    const isAllAddresses = !addresses || addresses.length === 0;
-    const showCompanyExpenses = isAllObjects && isAllAddresses;
-
-    if (showCompanyExpenses) {
-        let insertIndex;
-        if (showFranchBonus) {
-            insertIndex = categories.indexOf("Франшиза сопровождение бонус");
+  // ВАЖНОЕ ИСПРАВЛЕНИЕ: ПРАВИЛЬНЫЙ РАСЧЕТ "ПРОЧИЕ"
+  const values = categories.map(cat => {
+    switch (cat) {
+      case "Выручка":
+        if (selectedObject === 'Франшиза отдел сопровождения') {
+          // Для франшизы сопровождения используем данные из supportData
+          const dateFrom = document.getElementById('dateFrom').value;
+          const dateTo = document.getElementById('dateTo').value;
+          return getFranchiseSupportRevenueForPeriod(dateFrom, dateTo);
         } else {
-            insertIndex = categories.indexOf("Операционная прибыль");
+          return (aggregated['Выручка'] || 0) + (aggregated['Выручка Сайт'] || 0);
         }
-        categories.splice(insertIndex, 0, "Общий расход", "З/п офис");
+      case "Автохимия":
+        return -Math.abs(
+          (aggregated['Автохимия Шампунь Москва'] || 0) +
+          (aggregated['Автохимия Шампунь СПБ'] || 0) +
+          (aggregated['Автохимия Пена'] || 0) +
+          (aggregated['Автохимия Юр. Лица'] || 0) +
+          (aggregated['Автохимия Абонементы/сертификаты/подписки'] || 0)
+        );
+      case "Коммунальные расходы":
+        return -Math.abs(
+          (aggregated['Коммунальные расходы'] || 0) +
+          (aggregated['Коммунальные расходы Абонементы/сертификаты/подписки'] || 0)
+        );
+      case "Аренда":
+        return -Math.abs(aggregated['Аренда'] || 0);
+      case "Зарплата":
+        return -Math.abs(aggregated['Зарплата'] || 0);
+      case "Комиссии":
+        return -Math.abs(aggregated['Комиссии'] || 0);
+      case "Налоги":
+        return -Math.abs(aggregated['Налоги'] || 0);
+      case "НДС":
+        return -Math.abs(aggregated['НДС'] || 0);
+      case "Прочие":
+        // ИСПОЛЬЗУЕМ ИСПРАВЛЕННУЮ ФУНКЦИЮ
+        const filteredOtherExpenses = getFilteredOtherExpenses();
+        return filteredOtherExpenses.reduce((sum, item) => sum + item.сумма, 0);
+      case "Неделимый расход":
+        return getIndivisibleExpenseForDateRange(object, addresses);
+      case "Общий расход":
+        if (showCompanyExpenses) {
+          return getGeneralExpenseForDateRange();
+        }
+        return 0;
+      case "З/п офис":
+        if (showCompanyExpenses) {
+          return calculateSalaryForPeriod();
+        }
+        return 0;
+      case "Франшиза сопровождение бонус":
+        const franchBonus = aggregated['Франшиза сопровождение бонус'] ||
+          aggregated['Франшиза сопровождение бонус:'] || 0;
+        return Math.abs(franchBonus);
+      case "Операционная прибыль":
+        return 0;
+      default:
+        return 0;
     }
+  });
 
-    // ВАЖНОЕ ИСПРАВЛЕНИЕ: ПРАВИЛЬНЫЙ РАСЧЕТ "ПРОЧИЕ"
-    const values = categories.map(cat => {
-        switch (cat) {
-            case "Выручка":
-                return (aggregated['Выручка'] || 0) + (aggregated['Выручка Сайт'] || 0);
-            case "Автохимия":
-                return -Math.abs(
-                    (aggregated['Автохимия Шампунь Москва'] || 0) +
-                    (aggregated['Автохимия Шампунь СПБ'] || 0) +
-                    (aggregated['Автохимия Пена'] || 0) +
-                    (aggregated['Автохимия Юр. Лица'] || 0) +
-                    (aggregated['Автохимия Абонементы/сертификаты/подписки'] || 0)
-                );
-            case "Коммунальные расходы":
-                return -Math.abs(
-                    (aggregated['Коммунальные расходы'] || 0) +
-                    (aggregated['Коммунальные расходы Абонементы/сертификаты/подписки'] || 0)
-                );
-            case "Аренда":
-                return -Math.abs(aggregated['Аренда'] || 0);
-            case "Зарплата":
-                return -Math.abs(aggregated['Зарплата'] || 0);
-            case "Комиссии":
-                return -Math.abs(aggregated['Комиссии'] || 0);
-            case "Налоги":
-                return -Math.abs(aggregated['Налоги'] || 0);
-            case "НДС":
-                return -Math.abs(aggregated['НДС'] || 0);
-            case "Прочие":
-                // ИСПОЛЬЗУЕМ ИСПРАВЛЕННУЮ ФУНКЦИЮ
-                const filteredOtherExpenses = getFilteredOtherExpenses();
-                return filteredOtherExpenses.reduce((sum, item) => sum + item.сумма, 0);
-            case "Неделимый расход":
-                return getIndivisibleExpenseForDateRange(object, addresses);
-            case "Общий расход":
-                if (showCompanyExpenses) {
-                    return getGeneralExpenseForDateRange();
-                }
-                return 0;
-            case "З/п офис":
-                if (showCompanyExpenses) {
-                    return calculateSalaryForPeriod();
-                }
-                return 0;
-            case "Франшиза сопровождение бонус":
-                const franchBonus = aggregated['Франшиза сопровождение бонус'] ||
-                    aggregated['Франшиза сопровождение бонус:'] || 0;
-                return Math.abs(franchBonus);
-            case "Операционная прибыль":
-                return 0;
-            default:
-                return 0;
-        }
-    });
+  const waterfallData = [];
+  let currentLevel = 0;
 
-    const waterfallData = [];
-    let currentLevel = 0;
+  values.forEach((value, index) => {
+    const category = categories[index];
 
-    values.forEach((value, index) => {
-        const category = categories[index];
+    if (category === "Выручка") {
+      waterfallData.push({ value: value, start: 0, end: value });
+      currentLevel = value;
+    } else if (category === "Операционная прибыль") {
+      waterfallData.push({ value: currentLevel, start: 0, end: currentLevel });
+    } else if (category === "Франшиза сопровождение бонус") {
+      const start = currentLevel;
+      currentLevel += value;
+      waterfallData.push({ value: value, start: start, end: currentLevel });
+    } else {
+      const start = currentLevel;
+      currentLevel += value;
+      waterfallData.push({ value: value, start: start, end: currentLevel });
+    }
+  });
 
-        if (category === "Выручка") {
-            waterfallData.push({ value: value, start: 0, end: value });
-            currentLevel = value;
-        } else if (category === "Операционная прибыль") {
-            waterfallData.push({ value: currentLevel, start: 0, end: currentLevel });
-        } else if (category === "Франшиза сопровождение бонус") {
-            const start = currentLevel;
-            currentLevel += value;
-            waterfallData.push({ value: value, start: start, end: currentLevel });
-        } else {
-            const start = currentLevel;
-            currentLevel += value;
-            waterfallData.push({ value: value, start: start, end: currentLevel });
-        }
-    });
-
-    renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, currentLevel);
+  renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, currentLevel);
 }
 
 function aggregateCategories(data) {
-    const aggregated = {};
-    data.forEach(row => {
-        for (const key in row) {
-            if (key !== 'Неделя' && key !== '﻿Неделя' && key !== 'Объект' && key !== 'Адрес' && key !== 'Дата') {
-                if (!aggregated[key]) aggregated[key] = 0;
-                aggregated[key] += row[key] || 0;
-            }
-        }
-    });
-    return aggregated;
+  const aggregated = {};
+  data.forEach(row => {
+    for (const key in row) {
+      if (key !== 'Неделя' && key !== '﻿Неделя' && key !== 'Объект' && key !== 'Адрес' && key !== 'Дата') {
+        if (!aggregated[key]) aggregated[key] = 0;
+        aggregated[key] += row[key] || 0;
+      }
+    }
+  });
+  return aggregated;
 }
 
 function formatCurrency(value) {
-    if (value === 0) return '0';
-    const absValue = Math.abs(value);
-    if (absValue >= 1000000) {
-        return (value / 1000000).toFixed(1) + 'M';
-    } else if (absValue >= 1000) {
-        return (value / 1000).toFixed(0) + 'k';
-    }
-    return Math.round(value).toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  if (value === 0) return '0';
+  const absValue = Math.abs(value);
+  if (absValue >= 1000000) {
+    return (value / 1000000).toFixed(1) + 'M';
+  } else if (absValue >= 1000) {
+    return (value / 1000).toFixed(0) + 'k';
+  }
+  return Math.round(value).toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
 function renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, finalProfit) {
-    const revenueIndex = categories.indexOf("Выручка");
-    const franchBonusIndex = showFranchBonus ? categories.indexOf("Франшиза сопровождение бонус") : -1;
-    const profitIndex = categories.indexOf("Операционная прибыль");
+  const revenueIndex = categories.indexOf("Выручка");
+  const franchBonusIndex = showFranchBonus ? categories.indexOf("Франшиза сопровождение бонус") : -1;
+  const profitIndex = categories.indexOf("Операционная прибыль");
 
-    const revenue = waterfallData[revenueIndex].value;
-    const franchBonus = franchBonusIndex !== -1 ? waterfallData[franchBonusIndex].value : 0;
-    const profit = finalProfit;
-    const totalRevenue = revenue + franchBonus;
-    const profitability = totalRevenue !== 0 ? (profit / totalRevenue) * 100 : -100;
+  const revenue = waterfallData[revenueIndex].value;
+  const franchBonus = franchBonusIndex !== -1 ? waterfallData[franchBonusIndex].value : 0;
+  const profit = finalProfit;
+  const totalRevenue = revenue + franchBonus;
+  const profitability = totalRevenue !== 0 ? (profit / totalRevenue) * 100 : -100;
 
-    let titleText = 'Каскадная диаграмма - Финансовый анализ';
-    let subtitle = `Рентабельность: ${profitability.toFixed(1)}%`;
+  let titleText = 'Каскадная диаграмма - Финансовый анализ';
+  let subtitle = `Рентабельность: ${profitability.toFixed(1)}%`;
 
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    if (dateFrom && dateTo) {
-        subtitle += ` | Период: ${dateFrom} - ${dateTo}`;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  if (dateFrom && dateTo) {
+    subtitle += ` | Период: ${dateFrom} - ${dateTo}`;
+  }
+  if (object) {
+    subtitle += ` | ${object === 'all_retail' ? 'Вся розница' : object}`;
+  }
+  if (addresses) {
+    subtitle += ` | Адресов: ${addresses.length}`;
+  }
+
+  const seriesData = waterfallData.map((item, index) => {
+    const category = categories[index];
+    const isPositive = item.value >= 0;
+    const isProfit = category === "Операционная прибыль";
+
+    let color;
+    if (isProfit) {
+      color = item.value >= 0 ? '#28a745' : '#dc3545';
+    } else if (category === "Франшиза сопровождение бонус") {
+      color = '#4CAF50';
+    } else {
+      color = isPositive ? '#4CAF50' : '#F44336';
     }
-    if (object) {
-        subtitle += ` | ${object === 'all_retail' ? 'Вся розница' : object}`;
+
+    const itemStyle = { color: color };
+    const selectedObject = getSelectedObject();
+    const selectedAddresses = getSelectedAddresses();
+    const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+      (!selectedAddresses || selectedAddresses.length === 0);
+    const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
+      (!selectedAddresses || selectedAddresses.length === 0);
+    const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+
+    if (category === "Выручка") {
+      // Добавляем обработчик клика для столбца "Выручка"
+      if (isAllRetailAllAddresses || isFranchiseSupport) {
+        itemStyle.cursor = 'pointer';
+      } else {
+        itemStyle.cursor = 'default';
+      }
+    } else if (category === "Прочие" || category === "Общий расход" || category === "З/п офис") {
+      itemStyle.cursor = 'pointer';
+    } else if (category === "Неделимый расход") {
+      if (isDrilldownMode) {
+        itemStyle.cursor = 'pointer';
+      } else {
+        itemStyle.cursor = 'default';
+      }
+    } else if (category === "Франшиза сопровождение бонус") {
+      itemStyle.cursor = 'default';
     }
-    if (addresses) {
-        subtitle += ` | Адресов: ${addresses.length}`;
-    }
 
-    const seriesData = waterfallData.map((item, index) => {
-        const category = categories[index];
-        const isPositive = item.value >= 0;
-        const isProfit = category === "Операционная прибыль";
+    return {
+      value: item.value,
+      itemStyle: itemStyle,
+      category: category
+    };
+  });
 
-        let color;
-        if (isProfit) {
-            color = item.value >= 0 ? '#28a745' : '#dc3545';
-        } else if (category === "Франшиза сопровождение бонус") {
-            color = '#4CAF50';
-        } else {
-            color = isPositive ? '#4CAF50' : '#F44336';
-        }
-
-        const itemStyle = { color: color };
-        const selectedObject = getSelectedObject();
-        const selectedAddresses = getSelectedAddresses();
-        const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-            (!selectedAddresses || selectedAddresses.length === 0);
-
-        if (category === "Прочие" || category === "Общий расход" || category === "З/п офис") {
-            itemStyle.cursor = 'pointer';
-        } else if (category === "Неделимый расход") {
-            if (isDrilldownMode) {
-                itemStyle.cursor = 'pointer';
-            } else {
-                itemStyle.cursor = 'default';
-            }
-        } else if (category === "Франшиза сопровождение бонус") {
-            itemStyle.cursor = 'default';
-        }
-
-        return {
-            value: item.value,
-            itemStyle: itemStyle
-        };
-    });
-
-    const option = {
-        title: {
-            text: titleText,
-            subtext: subtitle,
-            left: 'center',
-            textStyle: {
-                fontSize: 16,
-                fontWeight: 'bold'
-            }
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            formatter: function (params) {
-                const tar = params[0];
-                const value = tar.value;
-                const category = categories[tar.dataIndex];
-                let tooltip = `
+  const option = {
+    title: {
+      text: titleText,
+      subtext: subtitle,
+      left: 'center',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        const tar = params[0];
+        const value = tar.value;
+        const category = tar.data.category || categories[tar.dataIndex];
+        let tooltip = `
                     <div style="text-align: left">
                         <strong>${category}</strong><br/>
                         Значение: ${formatCurrency(value)}
                 `;
 
-                const selectedObject = getSelectedObject();
-                const selectedAddresses = getSelectedAddresses();
-                const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-                    (!selectedAddresses || selectedAddresses.length === 0);
+        const selectedObject = getSelectedObject();
+        const selectedAddresses = getSelectedAddresses();
+        const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+          (!selectedAddresses || selectedAddresses.length === 0);
+        const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
+          (!selectedAddresses || selectedAddresses.length === 0);
+        const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
 
-                if (category === "Прочие") {
-                    const filteredExpenses = getFilteredOtherExpenses();
-                    tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
-                } else if (category === "Неделимый расход") {
-                    if (isDrilldownMode) {
-                        const filteredExpenses = getFilteredIndivisibleExpenses();
-                        tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
-                    } else {
-                        tooltip += `<br/><em>Данные из P&L (детализация доступна в режиме дриллдауна)</em>`;
-                    }
-                } else if (category === "Общий расход") {
-                    const filteredExpenses = getFilteredGeneralExpenseExpenses();
-                    tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
-                } else if (category === "З/п офис") {
-                    const filteredExpenses = getFilteredSalaryOfficeExpenses();
-                    tooltip += `<br/><em>Кликните для детализации сотрудников (${filteredExpenses.length} записей)</em>`;
-                } else if (category === "Франшиза сопровождение бонус") {
-                    tooltip += `<br/><em>Выручка от франшизы сопровождения (добавляется после расходов)</em>`;
-                }
-
-                tooltip += `</div>`;
-                return tooltip;
-            }
-        },
-        legend: {
-            show: false
-        },
-        grid: {
-            left: '5%',
-            right: '5%',
-            bottom: '15%',
-            top: '15%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            data: categories,
-            axisLabel: {
-                interval: 0,
-                rotate: 45,
-                fontSize: 11,
-                margin: 10
-            },
-            axisTick: {
-                alignWithLabel: true
-            }
-        },
-        yAxis: {
-            type: 'value',
-            scale: true,
-            axisLabel: {
-                formatter: formatCurrency
-            }
-        },
-        series: [
-            {
-                name: 'Финансовый поток',
-                type: 'bar',
-                barWidth: '60%',
-                itemStyle: {
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                },
-                label: {
-                    show: true,
-                    position: 'inside',
-                    formatter: function (params) {
-                        return formatCurrency(params.value);
-                    },
-                    fontSize: 10,
-                    color: '#fff',
-                    fontWeight: 'bold'
-                },
-                data: seriesData
-            }
-        ]
-    };
-
-    chart.setOption(option);
-
-    chart.on('click', function (params) {
-        if (params.componentType === 'series' && params.seriesType === 'bar') {
-            const category = categories[params.dataIndex];
-            const selectedObject = getSelectedObject();
-            const selectedAddresses = getSelectedAddresses();
-            const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-                (!selectedAddresses || selectedAddresses.length === 0);
-
-            if (category === "Прочие") {
-                showExpensesDetails();
-            } else if (category === "Неделимый расход") {
-                if (isDrilldownMode) {
-                    showIndivisibleDetails();
-                } else {
-                    alert('Детализация "Неделимый расход" доступна только в режиме дриллдауна (Все объекты/Вся розница + Все адреса)');
-                }
-            } else if (category === "Общий расход") {
-                showGeneralExpenseDetails();
-            } else if (category === "З/п офис") {
-                showSalaryOfficeDetails();
-            }
+        if (category === "Выручка") {
+          if (isAllRetailAllAddresses) {
+            tooltip += `<br/><em>Кликните для детализации выручки по адресам</em>`;
+          } else if (isFranchiseSupport) {
+            tooltip += `<br/><em>Кликните для детализации оплат от франчайзи</em>`;
+          } else {
+            tooltip += `<br/><em>Детализация доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"</em>`;
+          }
+        } else if (category === "Прочие") {
+          const filteredExpenses = getFilteredOtherExpenses();
+          tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+        } else if (category === "Неделимый расход") {
+          if (isDrilldownMode) {
+            const filteredExpenses = getFilteredIndivisibleExpenses();
+            tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+          } else {
+            tooltip += `<br/><em>Данные из P&L (детализация доступна в режиме дриллдауна)</em>`;
+          }
+        } else if (category === "Общий расход") {
+          const filteredExpenses = getFilteredGeneralExpenseExpenses();
+          tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+        } else if (category === "З/п офис") {
+          const filteredExpenses = getFilteredSalaryOfficeExpenses();
+          tooltip += `<br/><em>Кликните для детализации сотрудников (${filteredExpenses.length} записей)</em>`;
+        } else if (category === "Франшиза сопровождение бонус") {
+          tooltip += `<br/><em>Выручка от франшизы сопровождения (добавляется после расходов)</em>`;
         }
-    });
 
-    updateStats(revenue, franchBonus, profit, profitability, showFranchBonus);
+        tooltip += `</div>`;
+        return tooltip;
+      }
+    },
+    legend: {
+      show: false
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: categories,
+      axisLabel: {
+        interval: 0,
+        rotate: 45,
+        fontSize: 11,
+        margin: 10
+      },
+      axisTick: {
+        alignWithLabel: true
+      }
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      axisLabel: {
+        formatter: formatCurrency
+      }
+    },
+    series: [
+      {
+        name: 'Финансовый поток',
+        type: 'bar',
+        barWidth: '60%',
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: function (params) {
+            return formatCurrency(params.value);
+          },
+          fontSize: 10,
+          color: '#fff',
+          fontWeight: 'bold'
+        },
+        data: seriesData
+      }
+    ]
+  };
 
-    window.addEventListener('resize', function () {
-        chart.resize();
-    });
+  chart.setOption(option);
+
+  chart.on('click', function (params) {
+    if (params.componentType === 'series' && params.seriesType === 'bar') {
+      const category = params.data.category || categories[params.dataIndex];
+      const selectedObject = getSelectedObject();
+      const selectedAddresses = getSelectedAddresses();
+      const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+        (!selectedAddresses || selectedAddresses.length === 0);
+      const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
+        (!selectedAddresses || selectedAddresses.length === 0);
+      const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+
+      if (category === "Выручка") {
+        if (isAllRetailAllAddresses || isFranchiseSupport) {
+          showRevenueDetailsByAddress();
+        } else {
+          alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"');
+        }
+      } else if (category === "Прочие") {
+        showExpensesDetails();
+      } else if (category === "Неделимый расход") {
+        if (isDrilldownMode) {
+          showIndivisibleDetails();
+        } else {
+          alert('Детализация "Неделимый расход" доступна только в режиме дриллдауна (Все объекты/Вся розница + Все адреса)');
+        }
+      } else if (category === "Общий расход") {
+        showGeneralExpenseDetails();
+      } else if (category === "З/п офис") {
+        showSalaryOfficeDetails();
+      }
+    }
+  });
+
+  updateStats(revenue, franchBonus, profit, profitability, showFranchBonus);
+
+  window.addEventListener('resize', function () {
+    chart.resize();
+  });
 }
 
 function updateStats(revenue, franchBonus, profit, profitability, showFranchBonus) {
-    let statsHtml = `
+  let statsHtml = `
         <div class="stat-item">Выручка: ${formatCurrency(revenue)}</div>
     `;
 
-    if (showFranchBonus) {
-        statsHtml += `
+  if (showFranchBonus) {
+    statsHtml += `
             <div class="stat-item" style="background-color: #4CAF50;">Франшиза бонус: ${formatCurrency(franchBonus)}</div>
         `;
-    }
+  }
 
-    const totalRevenue = revenue + franchBonus;
+  const totalRevenue = revenue + franchBonus;
 
-    if (showFranchBonus) {
-        statsHtml += `
+  if (showFranchBonus) {
+    statsHtml += `
             <div class="stat-item" style="background-color: #ffc107;">Общая выручка: ${formatCurrency(totalRevenue)}</div>
         `;
-    }
+  }
 
-    statsHtml += `
+  statsHtml += `
         <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">Прибыль: ${formatCurrency(profit)}</div>
         <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность: ${profitability.toFixed(1)}%</div>
     `;
 
-    document.getElementById('statsInfo').innerHTML = statsHtml;
+  document.getElementById('statsInfo').innerHTML = statsHtml;
 }
 
 function updateSortInfo() {
-    const sortInfo = document.getElementById('sortInfo');
-    const fieldNames = {
-        'сумма': 'сумме',
-        'статья': 'статье',
-        'наименование': 'наименованию',
-        'мойка': 'мойке',
-        'команда': 'команде',
-        'дата': 'дате'
-    };
-    const directionNames = {
-        'asc': 'по возрастанию',
-        'desc': 'по убыванию'
-    };
-    sortInfo.textContent = `Отсортировано по ${fieldNames[currentSortField]} (${directionNames[currentSortDirection]})`;
+  const sortInfo = document.getElementById('sortInfo');
+  const fieldNames = {
+    'сумма': 'сумме',
+    'статья': 'статье',
+    'наименование': 'наименованию',
+    'мойка': 'мойке',
+    'команда': 'команде',
+    'дата': 'дате'
+  };
+  const directionNames = {
+    'asc': 'по возрастанию',
+    'desc': 'по убыванию'
+  };
+  sortInfo.textContent = `Отсортировано по ${fieldNames[currentSortField]} (${directionNames[currentSortDirection]})`;
 }
 
 function updateSortButtons() {
-    const sortByAmount = document.getElementById('sortByAmount');
-    const sortByDate = document.getElementById('sortByDate');
-    const sortByArticle = document.getElementById('sortByArticle');
+  const sortByAmount = document.getElementById('sortByAmount');
+  const sortByDate = document.getElementById('sortByDate');
+  const sortByArticle = document.getElementById('sortByArticle');
 
-    sortByAmount.textContent = 'Сортировать по сумме';
-    sortByDate.textContent = 'Сортировать по дате';
-    sortByArticle.textContent = 'Сортировать по статье';
+  sortByAmount.textContent = 'Сортировать по сумме';
+  sortByDate.textContent = 'Сортировать по дате';
+  sortByArticle.textContent = 'Сортировать по статье';
 
-    if (currentSortField === 'сумма') {
-        sortByAmount.textContent = `Сумма ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentSortField === 'дата') {
-        sortByDate.textContent = `Дата ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentSortField === 'статья') {
-        sortByArticle.textContent = `Статья ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
-    }
+  if (currentSortField === 'сумма') {
+    sortByAmount.textContent = `Сумма ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentSortField === 'дата') {
+    sortByDate.textContent = `Дата ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentSortField === 'статья') {
+    sortByArticle.textContent = `Статья ${currentSortDirection === 'desc' ? '▼' : '▲'}`;
+  }
 }
 
 function updateIndivisibleSortInfo() {
-    const sortInfo = document.getElementById('indivisibleSortInfo');
-    const fieldNames = {
-        'сумма': 'сумме',
-        'статья': 'статье',
-        'наименование': 'наименованию',
-        'мойка': 'мойке',
-        'команда': 'команде',
-        'дата': 'дате'
-    };
-    const directionNames = {
-        'asc': 'по возрастанию',
-        'desc': 'по убыванию'
-    };
-    sortInfo.textContent = `Отсортировано по ${fieldNames[currentIndivisibleSortField]} (${directionNames[currentIndivisibleSortDirection]})`;
+  const sortInfo = document.getElementById('indivisibleSortInfo');
+  const fieldNames = {
+    'сумма': 'сумме',
+    'статья': 'статье',
+    'наименование': 'наименованию',
+    'мойка': 'мойке',
+    'команда': 'команде',
+    'дата': 'дате'
+  };
+  const directionNames = {
+    'asc': 'по возрастанию',
+    'desc': 'по убыванию'
+  };
+  sortInfo.textContent = `Отсортировано по ${fieldNames[currentIndivisibleSortField]} (${directionNames[currentIndivisibleSortDirection]})`;
 }
 
 function updateGeneralExpenseSortInfo() {
-    const sortInfo = document.getElementById('generalExpenseSortInfo');
-    const fieldNames = {
-        'сумма': 'сумме',
-        'статья': 'статье',
-        'наименование': 'наименованию',
-        'мойка': 'мойке',
-        'команда': 'команде',
-        'дата': 'дате'
-    };
-    const directionNames = {
-        'asc': 'по возрастанию',
-        'desc': 'по убыванию'
-    };
-    sortInfo.textContent = `Отсортировано по ${fieldNames[currentGeneralExpenseSortField]} (${directionNames[currentGeneralExpenseSortDirection]})`;
+  const sortInfo = document.getElementById('generalExpenseSortInfo');
+  const fieldNames = {
+    'сумма': 'сумме',
+    'статья': 'статье',
+    'наименование': 'наименованию',
+    'мойка': 'мойке',
+    'команда': 'команде',
+    'дата': 'дате'
+  };
+  const directionNames = {
+    'asc': 'по возрастанию',
+    'desc': 'по убыванию'
+  };
+  sortInfo.textContent = `Отсортировано по ${fieldNames[currentGeneralExpenseSortField]} (${directionNames[currentGeneralExpenseSortDirection]})`;
 }
 
 function updateSalaryOfficeSortInfo() {
-    const sortInfo = document.getElementById('salaryOfficeSortInfo');
-    const fieldNames = {
-        'сотрудник': 'сотруднику',
-        'должность': 'должности',
-        'зарплата': 'зарплате'
-    };
-    const directionNames = {
-        'asc': 'по возрастанию',
-        'desc': 'по убыванию'
-    };
-    sortInfo.textContent = `Отсортировано по ${fieldNames[currentSalaryOfficeSortField]} (${directionNames[currentSalaryOfficeSortDirection]})`;
+  const sortInfo = document.getElementById('salaryOfficeSortInfo');
+  const fieldNames = {
+    'сотрудник': 'сотруднику',
+    'должность': 'должности',
+    'зарплата': 'зарплате'
+  };
+  const directionNames = {
+    'asc': 'по возрастанию',
+    'desc': 'по убыванию'
+  };
+  sortInfo.textContent = `Отсортировано по ${fieldNames[currentSalaryOfficeSortField]} (${directionNames[currentSalaryOfficeSortDirection]})`;
 }
 
 function updateIndivisibleSortButtons() {
-    const sortByAmount = document.getElementById('indivisibleSortByAmount');
-    const sortByDate = document.getElementById('indivisibleSortByDate');
-    const sortByArticle = document.getElementById('indivisibleSortByArticle');
+  const sortByAmount = document.getElementById('indivisibleSortByAmount');
+  const sortByDate = document.getElementById('indivisibleSortByDate');
+  const sortByArticle = document.getElementById('indivisibleSortByArticle');
 
-    sortByAmount.textContent = 'Сортировать по сумме';
-    sortByDate.textContent = 'Сортировать по дате';
-    sortByArticle.textContent = 'Сортировать по статье';
+  sortByAmount.textContent = 'Сортировать по сумме';
+  sortByDate.textContent = 'Сортировать по дате';
+  sortByArticle.textContent = 'Сортировать по статье';
 
-    if (currentIndivisibleSortField === 'сумма') {
-        sortByAmount.textContent = `Сумма ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentIndivisibleSortField === 'дата') {
-        sortByDate.textContent = `Дата ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentIndivisibleSortField === 'статья') {
-        sortByArticle.textContent = `Статья ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
-    }
+  if (currentIndivisibleSortField === 'сумма') {
+    sortByAmount.textContent = `Сумма ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentIndivisibleSortField === 'дата') {
+    sortByDate.textContent = `Дата ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentIndivisibleSortField === 'статья') {
+    sortByArticle.textContent = `Статья ${currentIndivisibleSortDirection === 'desc' ? '▼' : '▲'}`;
+  }
 }
 
 function updateGeneralExpenseSortButtons() {
-    const sortByAmount = document.getElementById('generalExpenseSortByAmount');
-    const sortByDate = document.getElementById('generalExpenseSortByDate');
-    const sortByArticle = document.getElementById('generalExpenseSortByArticle');
+  const sortByAmount = document.getElementById('generalExpenseSortByAmount');
+  const sortByDate = document.getElementById('generalExpenseSortByDate');
+  const sortByArticle = document.getElementById('generalExpenseSortByArticle');
 
-    sortByAmount.textContent = 'Сортировать по сумме';
-    sortByDate.textContent = 'Сортировать по дате';
-    sortByArticle.textContent = 'Сортировать по статье';
+  sortByAmount.textContent = 'Сортировать по сумме';
+  sortByDate.textContent = 'Сортировать по дате';
+  sortByArticle.textContent = 'Сортировать по статье';
 
-    if (currentGeneralExpenseSortField === 'сумма') {
-        sortByAmount.textContent = `Сумма ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentGeneralExpenseSortField === 'дата') {
-        sortByDate.textContent = `Дата ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentGeneralExpenseSortField === 'статья') {
-        sortByArticle.textContent = `Статья ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
-    }
+  if (currentGeneralExpenseSortField === 'сумма') {
+    sortByAmount.textContent = `Сумма ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentGeneralExpenseSortField === 'дата') {
+    sortByDate.textContent = `Дата ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentGeneralExpenseSortField === 'статья') {
+    sortByArticle.textContent = `Статья ${currentGeneralExpenseSortDirection === 'desc' ? '▼' : '▲'}`;
+  }
 }
 
 function updateSalaryOfficeSortButtons() {
-    const sortByAmount = document.getElementById('salaryOfficeSortByAmount');
-    const sortByEmployee = document.getElementById('salaryOfficeSortByEmployee');
-    const sortByPosition = document.getElementById('salaryOfficeSortByPosition');
+  const sortByAmount = document.getElementById('salaryOfficeSortByAmount');
+  const sortByEmployee = document.getElementById('salaryOfficeSortByEmployee');
+  const sortByPosition = document.getElementById('salaryOfficeSortByPosition');
 
-    sortByAmount.textContent = 'Сортировать по зарплате';
-    sortByEmployee.textContent = 'Сортировать по сотруднику';
-    sortByPosition.textContent = 'Сортировать по должности';
+  sortByAmount.textContent = 'Сортировать по зарплате';
+  sortByEmployee.textContent = 'Сортировать по сотруднику';
+  sortByPosition.textContent = 'Сортировать по должности';
 
-    if (currentSalaryOfficeSortField === 'зарплата') {
-        sortByAmount.textContent = `Зарплата ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentSalaryOfficeSortField === 'сотрудник') {
-        sortByEmployee.textContent = `Сотрудник ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
-    } else if (currentSalaryOfficeSortField === 'должность') {
-        sortByPosition.textContent = `Должность ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
-    }
+  if (currentSalaryOfficeSortField === 'зарплата') {
+    sortByAmount.textContent = `Зарплата ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentSalaryOfficeSortField === 'сотрудник') {
+    sortByEmployee.textContent = `Сотрудник ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
+  } else if (currentSalaryOfficeSortField === 'должность') {
+    sortByPosition.textContent = `Должность ${currentSalaryOfficeSortDirection === 'desc' ? '▼' : '▲'}`;
+  }
 }
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function () {
-    // Автоматически загружаем данные
-    loadEmbeddedData();
+  // Автоматически загружаем данные
+  loadEmbeddedData();
 
-    // Настраиваем модальные окна
-    const modals = [
-        'expensesModal',
-        'indivisibleModal',
-        'generalExpenseModal',
-        'salaryOfficeModal'
-    ];
+  // Настраиваем модальные окна
+  const modals = [
+    'expensesModal',
+    'indivisibleModal',
+    'generalExpenseModal',
+    'salaryOfficeModal'
+  ];
 
-    modals.forEach(modalId => {
-        const modal = document.getElementById(modalId);
-        const closeBtn = modal.querySelector('.close');
+  modals.forEach(modalId => {
+    const modal = document.getElementById(modalId);
+    const closeBtn = modal.querySelector('.close');
 
-        closeBtn.onclick = function () {
-            modal.style.display = 'none';
-        };
+    closeBtn.onclick = function () {
+      modal.style.display = 'none';
+    };
 
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-    });
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };
+  });
 
-    // Настраиваем обработчики для кнопок сортировки
-    document.getElementById('sortByAmount').addEventListener('click', function () {
-        changeSort('сумма');
-    });
-    document.getElementById('sortByDate').addEventListener('click', function () {
-        changeSort('дата');
-    });
-    document.getElementById('sortByArticle').addEventListener('click', function () {
-        changeSort('статья');
-    });
+  // Настраиваем обработчики для кнопок сортировки
+  document.getElementById('sortByAmount').addEventListener('click', function () {
+    changeSort('сумма');
+  });
+  document.getElementById('sortByDate').addEventListener('click', function () {
+    changeSort('дата');
+  });
+  document.getElementById('sortByArticle').addEventListener('click', function () {
+    changeSort('статья');
+  });
 
-    document.getElementById('indivisibleSortByAmount').addEventListener('click', function () {
-        changeIndivisibleSort('сумма');
-    });
-    document.getElementById('indivisibleSortByDate').addEventListener('click', function () {
-        changeIndivisibleSort('дата');
-    });
-    document.getElementById('indivisibleSortByArticle').addEventListener('click', function () {
-        changeIndivisibleSort('статья');
-    });
+  document.getElementById('indivisibleSortByAmount').addEventListener('click', function () {
+    changeIndivisibleSort('сумма');
+  });
+  document.getElementById('indivisibleSortByDate').addEventListener('click', function () {
+    changeIndivisibleSort('дата');
+  });
+  document.getElementById('indivisibleSortByArticle').addEventListener('click', function () {
+    changeIndivisibleSort('статья');
+  });
 
-    document.getElementById('generalExpenseSortByAmount').addEventListener('click', function () {
-        changeGeneralExpenseSort('сумма');
-    });
-    document.getElementById('generalExpenseSortByDate').addEventListener('click', function () {
-        changeGeneralExpenseSort('дата');
-    });
-    document.getElementById('generalExpenseSortByArticle').addEventListener('click', function () {
-        changeGeneralExpenseSort('статья');
-    });
+  document.getElementById('generalExpenseSortByAmount').addEventListener('click', function () {
+    changeGeneralExpenseSort('сумма');
+  });
+  document.getElementById('generalExpenseSortByDate').addEventListener('click', function () {
+    changeGeneralExpenseSort('дата');
+  });
+  document.getElementById('generalExpenseSortByArticle').addEventListener('click', function () {
+    changeGeneralExpenseSort('статья');
+  });
 
-    document.getElementById('salaryOfficeSortByAmount').addEventListener('click', function () {
-        changeSalaryOfficeSort('зарплата');
-    });
-    document.getElementById('salaryOfficeSortByEmployee').addEventListener('click', function () {
-        changeSalaryOfficeSort('сотрудник');
-    });
-    document.getElementById('salaryOfficeSortByPosition').addEventListener('click', function () {
-        changeSalaryOfficeSort('должность');
-    });
+  document.getElementById('salaryOfficeSortByAmount').addEventListener('click', function () {
+    changeSalaryOfficeSort('зарплата');
+  });
+  document.getElementById('salaryOfficeSortByEmployee').addEventListener('click', function () {
+    changeSalaryOfficeSort('сотрудник');
+  });
+  document.getElementById('salaryOfficeSortByPosition').addEventListener('click', function () {
+    changeSalaryOfficeSort('должность');
+  });
 
-    // Настраиваем обработчики для фильтров
-    document.getElementById('dateFrom').addEventListener('change', applyFilters);
-    document.getElementById('dateTo').addEventListener('change', applyFilters);
-    document.getElementById('objectSelect').addEventListener('change', applyFilters);
-    document.getElementById('addressSelect').addEventListener('change', applyFilters);
+  // Настраиваем обработчики для фильтров
+  document.getElementById('dateFrom').addEventListener('change', applyFilters);
+  document.getElementById('dateTo').addEventListener('change', applyFilters);
+  document.getElementById('objectSelect').addEventListener('change', applyFilters);
+  document.getElementById('addressSelect').addEventListener('change', applyFilters);
 });
