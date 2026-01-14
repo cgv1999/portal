@@ -123,17 +123,9 @@ body {
     background: #dc3545;
 }
 
-/* ОБНОВЛЯЕМ ЭТОТ СЕКЦИЮ: */
 #chart {
     width: 100%;
-    min-height: 400px;
-    /* Изменяем на min-height */
-    margin-top: 20px;
-}
-
-#secondChart {
-    width: 100%;
-    height: 400px;
+    height: 700px;
     margin-top: 20px;
 }
 
