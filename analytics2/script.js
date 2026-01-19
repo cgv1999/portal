@@ -79148,6 +79148,28 @@ function isDateInRange(dateStr, fromStr, toStr) {
     }
 }
 
+// Функция для проверки, нужно ли скрывать подписи на столбцах
+function checkIfShouldHideLabels(dateRange) {
+    if (!dateRange.from || !dateRange.to) {
+        return false;
+    }
+
+    try {
+        const fromDate = new Date(dateRange.from);
+        const toDate = new Date(dateRange.to);
+        
+        // Добавляем 1 день, чтобы включить последний день периода
+        const diffTime = Math.abs(toDate - fromDate);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        console.log(`Период: ${diffDays} дней, скрывать подписи: ${diffDays > 60}`);
+        return diffDays > 60;
+    } catch (e) {
+        console.warn('Ошибка при расчете периода для скрытия подписей:', e);
+        return false;
+    }
+}
+
 function formatCurrency(value) {
     if (value === 0) return '0';
     const absValue = Math.abs(value);
@@ -79206,7 +79228,6 @@ function getExpensesForDate(date) {
     return { generalExpense: 0, salaryExpense: 0 };
 }
 
-// Функция для преобразования недельных данных в дневные
 // Функция для преобразования недельных данных в дневные
 function convertWeeklyToDailyData(data) {
     const dailyData = [];
@@ -79865,6 +79886,9 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
         subtitle += ' | Учтен: Франшиза сопровождение бонус';
     }
 
+    // Определяем, нужно ли скрывать подписи на столбцах и по оси X
+    const hideColumnLabels = checkIfShouldHideLabels(dateRange);
+
     const option = {
         title: {
             text: titleText,
@@ -80010,6 +80034,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
             splitLine: { show: false },
             splitArea: { show: false },
             axisLabel: {
+                show: !hideColumnLabels, // Скрываем подписи по оси X если период > 60 дней
                 interval: 0,
                 rotate: 45,
                 formatter: function (value) {
@@ -80042,7 +80067,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FF9800'
                 },
                 label: {
-                    show: true,
+                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
                     position: 'inside',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
@@ -80062,7 +80087,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FF9800'
                 },
                 label: {
-                    show: true,
+                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
                     position: 'inside',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
@@ -80081,7 +80106,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FFE0B2'
                 },
                 label: {
-                    show: true,
+                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
                     position: 'top',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
