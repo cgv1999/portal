@@ -90373,6 +90373,7 @@ function combineAllData() {
 }
 
 // Функция для построения графика
+// Функция для построения графика
 function buildExpenseChart(combinedData) {
     const { categories, allDates, totalExpenses } = combinedData;
 
@@ -90444,12 +90445,50 @@ function buildExpenseChart(combinedData) {
         };
     }
 
+    // Настройки tooltip для всех периодов
+    const tooltipConfig = {
+        trigger: 'axis',
+        formatter: function (params) {
+            let tooltip = '';
+            if (params.length > 0) {
+                const date = params[0].axisValue;
+                tooltip += '<div style="font-size: 12px; margin-bottom: 8px; font-weight: bold; color: #333;">' + date + '</div>';
+            }
+            
+            params.forEach(param => {
+                const value = param.value;
+                // Получаем значение из данных
+                let amount = 0;
+                if (typeof value === 'number') {
+                    amount = value;
+                } else if (Array.isArray(value)) {
+                    // value может быть массивом данных из dataset
+                    amount = value[param.seriesIndex + 1] || 0;
+                }
+                
+                tooltip += '<div style="margin: 4px 0; display: flex; align-items: center;">';
+                tooltip += '<span style="display:inline-block;margin-right:8px;border-radius:50%;width:10px;height:10px;background-color:' + param.color + '"></span>';
+                tooltip += '<span style="flex-grow: 1;">' + param.seriesName + '</span>';
+                tooltip += '<span style="font-weight:bold; margin-left: 20px;">' + formatCurrency(amount) + '</span>';
+                tooltip += '</div>';
+            });
+            
+            return tooltip;
+        },
+        backgroundColor: 'rgba(255, 255, 255, 0.98)',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        padding: [10, 15],
+        textStyle: {
+            color: '#333',
+            fontSize: 12
+        },
+        extraCssText: 'box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px;'
+    };
+
     const option = {
         legend: {},
-        tooltip: {
-            trigger: 'axis',
-            showContent: false
-        },
+        tooltip: tooltipConfig,
         dataset: {
             source: datasetSource
         },
@@ -90480,7 +90519,10 @@ function buildExpenseChart(combinedData) {
                     smooth: true,
                     seriesLayoutBy: 'row',
                     emphasis: {
-                        focus: 'series'
+                        focus: 'series',
+                        lineStyle: {
+                            width: 3
+                        }
                     },
                     name: category,
                     lineStyle: {
@@ -90497,28 +90539,43 @@ function buildExpenseChart(combinedData) {
                 });
             });
 
-            // Добавляем круговую диаграмму с улучшенным форматированием
+            // Добавляем круговую диаграмму
             series.push({
                 type: 'pie',
                 id: 'pie',
                 radius: '30%',
                 center: ['50%', '25%'],
                 emphasis: {
-                    focus: 'self'
+                    focus: 'self',
+                    scale: true,
+                    scaleSize: 5
                 },
                 label: {
                     formatter: function (params) {
                         const name = params.name;
-                        const value = formatCurrencyWithSeparators(params.value);
+                        // params.value сейчас должен быть одним числом, а не массивом
+                        let value;
+                        if (Array.isArray(params.value)) {
+                            // Если это массив, берем первое значение (для текущей даты)
+                            value = params.value[0] || params.value;
+                        } else {
+                            value = params.value;
+                        }
+                        const formattedValue = formatCurrencyWithSeparators(value);
                         const percent = params.percent.toFixed(1);
-                        return `${name}\n${value} (${percent}%)`;
+                        return `${name}\n${formattedValue} (${percent}%)`;
                     },
                     fontSize: 12,
                     lineHeight: 16
                 },
+                labelLine: {
+                    length: 10,
+                    length2: 5,
+                    smooth: 0.2
+                },
                 encode: {
                     itemName: 'product',
-                    value: allDates[0],
+                    value: allDates[0], // Первая дата изначально
                     tooltip: allDates[0]
                 }
             });
@@ -90527,48 +90584,16 @@ function buildExpenseChart(combinedData) {
         })()
     };
 
-    // Для длинных периодов добавляем дополнительный tooltip для отображения даты
-    if (isLongPeriod) {
-        option.tooltip = {
-            trigger: 'axis',
-            formatter: function (params) {
-                let tooltip = '';
-                if (params.length > 0) {
-                    const date = params[0].axisValue;
-                    tooltip += '<div style="font-size: 12px; margin-bottom: 5px; color: #666;">' + date + '</div>';
-                }
-                
-                params.forEach(param => {
-                    const value = param.value;
-                    const amount = typeof value === 'number' ? value : value[param.seriesIndex + 1];
-                    tooltip += '<div style="margin: 2px 0;">';
-                    tooltip += '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:' + param.color + '"></span>';
-                    tooltip += param.seriesName + ': <span style="font-weight:bold;float:right;margin-left:10px;">' + formatCurrency(amount) + '</span>';
-                    tooltip += '</div>';
-                });
-                
-                return tooltip;
-            },
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            borderColor: '#ccc',
-            borderWidth: 1,
-            textStyle: {
-                color: '#333',
-                fontSize: 11
-            }
-        };
-    }
-
     // Обработчик для обновления круговой диаграммы при наведении
     chart.on('updateAxisPointer', function (event) {
         const xAxisInfo = event.axesInfo[0];
         if (xAxisInfo) {
-            const dimension = xAxisInfo.value + 1;
+            const dimension = xAxisInfo.value + 1; // +1 потому что первая колонка - названия категорий
             chart.setOption({
                 series: {
                     id: 'pie',
                     encode: {
-                        value: dimension,
+                        value: dimension, // Меняем на колонку с данными для выбранной даты
                         tooltip: dimension
                     }
                 }
