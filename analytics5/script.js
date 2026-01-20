@@ -90039,6 +90039,14 @@ function formatDate(date) {
     return `${day}.${month}.${year}`;
 }
 
+// Функция для форматирования даты в короткий формат (дд.мм)
+function formatShortDate(date) {
+    if (!(date instanceof Date) || isNaN(date.getTime())) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${day}.${month}`;
+}
+
 // Функция для форматирования валюты
 function formatCurrency(value) {
     if (value === 0) return '0';
@@ -90049,6 +90057,16 @@ function formatCurrency(value) {
         return (value / 1000).toFixed(0) + 'k';
     }
     return value.toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+// Функция для форматирования валюты с разделителями тысяч (для pie)
+function formatCurrencyWithSeparators(value) {
+    if (value === 0) return '0';
+    return value.toLocaleString('ru-RU', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        useGrouping: true
+    });
 }
 
 // Функция для обработки недельного диапазона дат
@@ -90181,14 +90199,14 @@ function getAllDatesInPeriod() {
 // Функция для определения категории по статье и наименованию
 function determineCategory(article, name) {
     const articleLower = (article || '').toLowerCase().trim();
-    
+
     // Точное соответствие статей категориям
     const articleToCategory = {
         'маркетинг и реклама': 'Маркетинг и реклама',
         'оборудование для мойки': 'Оборудование для мойки',
         'расх. материалы, ремонт робота, з/ч робота': 'Материалы робота'
     };
-    
+
     return articleToCategory[articleLower] || null;
 }
 
@@ -90379,6 +90397,10 @@ function buildExpenseChart(combinedData) {
     const chart = echarts.init(chartElement);
     currentChart = chart;
 
+    // Проверяем количество дней в периоде
+    const daysCount = allDates.length;
+    const isLongPeriod = daysCount > 60;
+
     // Подготавливаем данные для dataset
     const datasetSource = [['product'].concat(allDates)];
 
@@ -90395,6 +90417,33 @@ function buildExpenseChart(combinedData) {
     // Обновляем статистику
     updateStats(totalExpenses, Object.keys(categories).length, allDates.length);
 
+    // Настройки для оси X в зависимости от количества дней
+    const xAxisConfig = {
+        type: 'category',
+        axisTick: {
+            show: true,
+            alignWithLabel: true
+        }
+    };
+
+    if (isLongPeriod) {
+        // Для длинных периодов скрываем подписи дат
+        xAxisConfig.axisLabel = {
+            show: false // Скрываем подписи дат
+        };
+    } else {
+        // Для коротких периодов показываем все даты
+        xAxisConfig.axisLabel = {
+            interval: 0, // Показываем все даты
+            rotate: 45,
+            fontSize: 10,
+            margin: 8,
+            formatter: function (value) {
+                return value; // Полный формат дд.мм.гггг
+            }
+        };
+    }
+
     const option = {
         legend: {},
         tooltip: {
@@ -90404,22 +90453,7 @@ function buildExpenseChart(combinedData) {
         dataset: {
             source: datasetSource
         },
-        xAxis: {
-            type: 'category',
-            axisLabel: {
-                interval: 0, // Показываем все даты
-                rotate: 45,
-                fontSize: 10,
-                margin: 8,
-                formatter: function (value) {
-                    return value; // Показываем полную дату дд.мм.гггг
-                }
-            },
-            axisTick: {
-                show: true,
-                alignWithLabel: true
-            }
-        },
+        xAxis: xAxisConfig,
         yAxis: {
             gridIndex: 0,
             axisLabel: {
@@ -90457,12 +90491,13 @@ function buildExpenseChart(combinedData) {
                         color: colors[index % colors.length]
                     },
                     symbol: 'circle',
-                    symbolSize: 6,
-                    showSymbol: true
+                    symbolSize: isLongPeriod ? 0 : 6, // Для длинных периодов скрываем точки
+                    showSymbol: !isLongPeriod, // Для длинных периодов не показываем символы
+                    connectNulls: true
                 });
             });
 
-            // Добавляем круговую диаграмму
+            // Добавляем круговую диаграмму с улучшенным форматированием
             series.push({
                 type: 'pie',
                 id: 'pie',
@@ -90472,7 +90507,14 @@ function buildExpenseChart(combinedData) {
                     focus: 'self'
                 },
                 label: {
-                    formatter: '{b}: {@' + allDates[0] + '} ({d}%)'
+                    formatter: function (params) {
+                        const name = params.name;
+                        const value = formatCurrencyWithSeparators(params.value);
+                        const percent = params.percent.toFixed(1);
+                        return `${name}\n${value} (${percent}%)`;
+                    },
+                    fontSize: 12,
+                    lineHeight: 16
                 },
                 encode: {
                     itemName: 'product',
@@ -90485,6 +90527,38 @@ function buildExpenseChart(combinedData) {
         })()
     };
 
+    // Для длинных периодов добавляем дополнительный tooltip для отображения даты
+    if (isLongPeriod) {
+        option.tooltip = {
+            trigger: 'axis',
+            formatter: function (params) {
+                let tooltip = '';
+                if (params.length > 0) {
+                    const date = params[0].axisValue;
+                    tooltip += '<div style="font-size: 12px; margin-bottom: 5px; color: #666;">' + date + '</div>';
+                }
+                
+                params.forEach(param => {
+                    const value = param.value;
+                    const amount = typeof value === 'number' ? value : value[param.seriesIndex + 1];
+                    tooltip += '<div style="margin: 2px 0;">';
+                    tooltip += '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:' + param.color + '"></span>';
+                    tooltip += param.seriesName + ': <span style="font-weight:bold;float:right;margin-left:10px;">' + formatCurrency(amount) + '</span>';
+                    tooltip += '</div>';
+                });
+                
+                return tooltip;
+            },
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#ccc',
+            borderWidth: 1,
+            textStyle: {
+                color: '#333',
+                fontSize: 11
+            }
+        };
+    }
+
     // Обработчик для обновления круговой диаграммы при наведении
     chart.on('updateAxisPointer', function (event) {
         const xAxisInfo = event.axesInfo[0];
@@ -90493,9 +90567,6 @@ function buildExpenseChart(combinedData) {
             chart.setOption({
                 series: {
                     id: 'pie',
-                    label: {
-                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-                    },
                     encode: {
                         value: dimension,
                         tooltip: dimension
