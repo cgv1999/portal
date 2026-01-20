@@ -78998,18 +78998,48 @@ const retailObjects = [
 
 // ==================== ФУНКЦИИ ДЛЯ РАБОТЫ С ДАТАМИ ====================
 
-function formatDate(date) {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
+// Функция для форматирования даты в формат DD.MM.YYYY (получает строку)
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    try {
+        // Если уже отформатированная дата, возвращаем как есть
+        if (typeof dateStr === 'string' && dateStr.includes('.')) {
+            // Проверяем формат DD.MM.YYYY
+            const parts = dateStr.split('.');
+            if (parts.length === 3 && parts[0].length === 2 && parts[1].length === 2) {
+                return dateStr;
+            }
+        }
+        
+        const date = parseDate(dateStr);
+        if (!date) return dateStr;
+        
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        
+        return `${day}.${month}.${year}`;
+    } catch (e) {
+        console.warn('Ошибка форматирования даты:', dateStr, e);
+        return dateStr;
+    }
 }
 
+// Функция для парсинга даты из строки в формате DD.MM.YYYY
 function parseDate(dateStr) {
     try {
         if (!dateStr) return null;
-        const [day, month, year] = dateStr.split('.').map(Number);
-        return new Date(year, month - 1, day);
+        
+        // Если это уже объект Date, возвращаем его
+        if (dateStr instanceof Date) return dateStr;
+        
+        // Обрабатываем строку
+        if (typeof dateStr === 'string') {
+            const [day, month, year] = dateStr.split('.').map(Number);
+            return new Date(year, month - 1, day);
+        }
+        
+        return null;
     } catch (e) {
         console.warn('Ошибка парсинга даты:', dateStr, e);
         return null;
@@ -79017,6 +79047,14 @@ function parseDate(dateStr) {
 }
 
 function getWeekStart(date) {
+    if (!date) return null;
+    
+    // Если это строка, парсим ее
+    if (typeof date === 'string') {
+        date = parseDate(date);
+        if (!date) return null;
+    }
+    
     const day = date.getDay(); // 0-воскресенье, 1-понедельник, ..., 6-суббота
     const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Приводим к понедельнику
     const monday = new Date(date);
@@ -79026,6 +79064,8 @@ function getWeekStart(date) {
 }
 
 function getWeekEnd(startDate) {
+    if (!startDate) return null;
+    
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 6);
     return endDate;
@@ -79042,16 +79082,22 @@ function extractAllWeeksFromData() {
     
     // 1. Обрабатываем pnlData
     if (pnlData && Array.isArray(pnlData)) {
+        console.log('Обработка pnlData, записей:', pnlData.length);
+        
         pnlData.forEach((entry, index) => {
             // Для записей, которые уже имеют поле "Неделя"
             if (entry["Неделя"]) {
                 const [startStr] = entry["Неделя"].split(" - ");
                 const startDate = parseDate(startStr);
                 const weekStart = getWeekStart(startDate);
+                if (!weekStart) return;
+                
                 const weekKey = weekStart.toISOString().split('T')[0];
                 
                 if (!weeksMap.has(weekKey)) {
                     const weekEnd = getWeekEnd(weekStart);
+                    if (!weekEnd) return;
+                    
                     weeksMap.set(weekKey, {
                         start: weekStart,
                         startStr: formatDate(weekStart),
@@ -79065,10 +79111,14 @@ function extractAllWeeksFromData() {
             else if (entry["Дата"]) {
                 const date = parseDate(entry["Дата"]);
                 const weekStart = getWeekStart(date);
+                if (!weekStart) return;
+                
                 const weekKey = weekStart.toISOString().split('T')[0];
                 
                 if (!weeksMap.has(weekKey)) {
                     const weekEnd = getWeekEnd(weekStart);
+                    if (!weekEnd) return;
+                    
                     weeksMap.set(weekKey, {
                         start: weekStart,
                         startStr: formatDate(weekStart),
@@ -79083,14 +79133,20 @@ function extractAllWeeksFromData() {
     
     // 2. Обрабатываем expensesData
     if (expensesData && Array.isArray(expensesData)) {
+        console.log('Обработка expensesData, записей:', expensesData.length);
+        
         expensesData.forEach(entry => {
             if (entry["Дата"]) {
                 const date = parseDate(entry["Дата"]);
                 const weekStart = getWeekStart(date);
+                if (!weekStart) return;
+                
                 const weekKey = weekStart.toISOString().split('T')[0];
                 
                 if (!weeksMap.has(weekKey)) {
                     const weekEnd = getWeekEnd(weekStart);
+                    if (!weekEnd) return;
+                    
                     weeksMap.set(weekKey, {
                         start: weekStart,
                         startStr: formatDate(weekStart),
@@ -79135,6 +79191,8 @@ function getWeekNumberForDate(dateStr) {
     if (!targetDate) return null;
     
     const targetWeekStart = getWeekStart(targetDate);
+    if (!targetWeekStart) return null;
+    
     const targetWeekKey = targetWeekStart.toISOString().split('T')[0];
     
     // Ищем неделю в списке
@@ -79323,7 +79381,7 @@ function formatCurrency(value) {
     } else if (absValue >= 1000) {
         return (value / 1000).toFixed(0) + 'k';
     }
-    return value.toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return Math.round(value).toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
 function formatNumber(value) {
@@ -79344,7 +79402,8 @@ function loadCompanyExpensesData(data) {
     data.forEach(row => {
         const date = row['Дата'];
         if (date) {
-            const formattedDate = formatDate(date);
+            // Упрощенная версия - просто используем дату как есть
+            const formattedDate = date; // Не форматируем, т.к. уже в правильном формате
             const generalExpense = parseFloat(String(row['Общий расход']).replace(',', '.')) || 0;
             const salaryExpense = parseFloat(String(row['З/п офис']).replace(',', '.')) || 0;
 
@@ -79356,7 +79415,7 @@ function loadCompanyExpensesData(data) {
         }
     });
 
-    console.log('Загружены данные о расходах компании:', companyExpensesData);
+    console.log('Загружены данные о расходах компании:', companyExpensesData.length, 'записей');
     companyExpensesFileLoaded = true;
 }
 
@@ -79530,6 +79589,11 @@ function populateFiltersForWeeks(data) {
 
     // Настраиваем фильтр объектов
     const objectSelect = document.getElementById('objectSelect');
+    if (!objectSelect) {
+        console.error('Элемент objectSelect не найден!');
+        return;
+    }
+    
     objectSelect.innerHTML = '<option value="">Все объекты</option>';
 
     const allRetailOption = document.createElement('option');
@@ -79586,6 +79650,11 @@ function populateFiltersForWeeks(data) {
 
     // Настраиваем фильтр адресов
     const addressSelect = document.getElementById('addressSelect');
+    if (!addressSelect) {
+        console.error('Элемент addressSelect не найден!');
+        return;
+    }
+    
     addressSelect.innerHTML = '<option value="">Все адреса</option>';
     
     addresses.sort((a, b) => a.localeCompare(b));
@@ -79601,13 +79670,19 @@ function populateFiltersForWeeks(data) {
     populateWeekFilter(allWeeks);
 
     // Показываем фильтры
-    document.getElementById('filters').style.display = 'flex';
+    const filtersElement = document.getElementById('filters');
+    if (filtersElement) {
+        filtersElement.style.display = 'flex';
+    }
 
     // Добавляем обработчики событий
-    document.getElementById('weekSelect').addEventListener('change', function () {
-        updateSelectedInfo('weekSelected', this);
-        applyFiltersForWeeks();
-    });
+    const weekSelect = document.getElementById('weekSelect');
+    if (weekSelect) {
+        weekSelect.addEventListener('change', function () {
+            updateSelectedInfo('weekSelected', this);
+            applyFiltersForWeeks();
+        });
+    }
 
     objectSelect.addEventListener('change', function () {
         updateSelectedInfo('objectSelected', this);
@@ -79630,6 +79705,8 @@ function populateFiltersForWeeks(data) {
 // Функция для обновления списка адресов при выборе объекта
 function updateAddressFilter(selectedObject, data) {
     const addressSelect = document.getElementById('addressSelect');
+    if (!addressSelect) return;
+    
     const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
     
     let filteredAddresses;
@@ -79677,12 +79754,13 @@ function updateAddressFilter(selectedObject, data) {
 }
 
 function updateSelectedInfo(containerId, selectElement) {
+    const container = document.getElementById(containerId);
+    if (!container || !selectElement) return;
+    
     const selectedOptions = Array.from(selectElement.selectedOptions)
         .map(option => option.value)
         .filter(value => value && value !== '');
 
-    const container = document.getElementById(containerId);
-    
     if (selectElement.id === 'weekSelect') {
         if (selectedOptions.length === 0 || selectedOptions.includes('all')) {
             container.textContent = 'Все недели';
@@ -79719,6 +79797,8 @@ function updateSelectedInfo(containerId, selectElement) {
 
 function getSelectedWeeks() {
     const weekSelect = document.getElementById('weekSelect');
+    if (!weekSelect) return null;
+    
     const selectedWeeks = Array.from(weekSelect.selectedOptions)
         .map(option => option.value)
         .filter(value => value && value !== 'all')
@@ -79729,6 +79809,8 @@ function getSelectedWeeks() {
 
 function getSelectedObjects() {
     const objectSelect = document.getElementById('objectSelect');
+    if (!objectSelect) return null;
+    
     const selectedObjects = Array.from(objectSelect.selectedOptions)
         .map(option => option.value)
         .filter(value => value && value !== '');
@@ -79738,6 +79820,8 @@ function getSelectedObjects() {
 
 function getSelectedAddresses() {
     const addressSelect = document.getElementById('addressSelect');
+    if (!addressSelect) return null;
+    
     const selectedAddresses = Array.from(addressSelect.selectedOptions)
         .map(option => option.value)
         .filter(value => value && value !== '');
@@ -79770,13 +79854,23 @@ function applyFiltersForWeeks() {
         infoText += ' | Учтен: Франшиза сопровождение бонус';
     }
 
-    document.getElementById('companyFileInfo').textContent = infoText;
+    const companyFileInfo = document.getElementById('companyFileInfo');
+    if (companyFileInfo) {
+        companyFileInfo.textContent = infoText;
+    }
 
+    const chartContainer = document.getElementById('companyChart');
     if (dataToDisplay.length > 0) {
         buildChartForWeeks(dataToDisplay, selectedObjects, selectedAddresses);
     } else {
-        document.getElementById('companyChart').innerHTML = '<div class="loading">Нет данных для выбранных фильтров</div>';
-        document.getElementById('statsInfo').innerHTML = '';
+        if (chartContainer) {
+            chartContainer.innerHTML = '<div class="loading">Нет данных для выбранных фильтров</div>';
+        }
+        
+        const statsInfo = document.getElementById('statsInfo');
+        if (statsInfo) {
+            statsInfo.innerHTML = '';
+        }
     }
 }
 
@@ -79784,6 +79878,8 @@ function applyFiltersForWeeks() {
 
 function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
     const chartContainer = document.getElementById('companyChart');
+    if (!chartContainer) return;
+    
     chartContainer.innerHTML = '';
 
     try {
@@ -80115,6 +80211,9 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
 }
 
 function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFranchiseBonus = false) {
+    const statsInfo = document.getElementById('statsInfo');
+    if (!statsInfo) return;
+    
     let statsHtml = `
         <div class="stat-item revenue">Выручка: ${formatCurrency(revenue)}</div>
     `;
@@ -80128,7 +80227,7 @@ function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFra
         <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность: ${profitability.toFixed(1)}%</div>
     `;
 
-    document.getElementById('statsInfo').innerHTML = statsHtml;
+    statsInfo.innerHTML = statsHtml;
 }
 
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
@@ -80142,11 +80241,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Обрабатываем данные для работы с неделями
     companyData = processCompanyDataForWeeks(pnlData);
     
+    const chartLoading = document.getElementById('chartLoading');
+    if (chartLoading) {
+        chartLoading.style.display = 'none';
+    }
+    
     if (companyData.length > 0) {
         populateFiltersForWeeks(companyData);
-        document.getElementById('chartLoading').style.display = 'none';
     } else {
-        document.getElementById('companyFileInfo').textContent = 'Нет данных для построения графика';
+        const companyFileInfo = document.getElementById('companyFileInfo');
+        if (companyFileInfo) {
+            companyFileInfo.textContent = 'Нет данных для построения графика';
+        }
     }
     
     console.log('Приложение инициализировано');
