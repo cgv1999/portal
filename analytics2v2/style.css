@@ -42,117 +42,64 @@ body {
     font-weight: bold;
     margin-bottom: 6px;
     color: #333;
-    font-size: 13px;
+    font-size: 16px;
     white-space: nowrap;
 }
 
-/* ==================== ТОЧНЫЕ РАЗМЕРЫ СЕЛЕКТОРОВ ==================== */
+/* ==================== ТОЧНЫЕ СТИЛИ КАК В АНАЛИТИКЕ 3 ==================== */
 
-/* Базовые стили для всех селекторов */
+/* Базовые стили для всех селекторов (ТОЧНО как в Аналитике 3) */
 .filter-group select {
-    padding: 8px 10px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background: white;
-    font-size: 13px;
+    font-size: 14px;
 }
 
-/* Стили для селекторов с множественным выбором */
+/* Стили для селекторов с множественным выбором (ТОЛЬКО высота как в Аналитике 3) */
 .filter-group select[multiple] {
-    height: 120px !important;
-    padding: 6px 10px;
-    font-size: 13px;
-    border: 1px solid #bbb;
-    border-radius: 6px;
-    background: white;
-    line-height: 1.4;
-    overflow-y: auto;
-    resize: none !important;
+    height: 120px;
 }
 
-/* Конкретные размеры для каждого селектора */
+/* Конкретные размеры для каждого селектора (БЕЗ !important) */
 
 /* Период (Недели) - 236.92 * 120 */
 #weekSelect {
-    width: 236.92px !important;
-    min-width: 236.92px !important;
-    max-width: 236.92px !important;
-    height: 120px !important;
+    width: 236.92px;
+    min-width: 236.92px;
+    max-width: 236.92px;
+    height: 120px;
 }
 
 /* Объект - 265.31 * 120 */
 #objectSelect {
-    width: 265.31px !important;
-    min-width: 265.31px !important;
-    max-width: 265.31px !important;
-    height: 120px !important;
+    width: 265.31px;
+    min-width: 265.31px;
+    max-width: 265.31px;
+    height: 120px;
 }
 
 /* Адреса - 264.94 * 120 */
 #addressSelect {
-    width: 264.94px !important;
-    min-width: 264.94px !important;
-    max-width: 264.94px !important;
-    height: 120px !important;
+    width: 264.94px;
+    min-width: 264.94px;
+    max-width: 264.94px;
+    height: 120px;
 }
 
-/* Для месячного селектора в аналитике 3 */
+/* Для месячного селектора */
 #monthSelect {
-    width: 236.92px !important;
-    min-width: 236.92px !important;
-    max-width: 236.92px !important;
-    height: 120px !important;
-}
-
-/* Стили для опций внутри селекторов */
-.filter-group select[multiple] option {
-    padding: 3px 5px;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.filter-group select[multiple] option:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-}
-
-.filter-group select[multiple] option:checked {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Стили для скроллбара */
-.filter-group select[multiple]::-webkit-scrollbar {
-    width: 8px;
-}
-
-.filter-group select[multiple]::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.filter-group select[multiple]::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.filter-group select[multiple]::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* Для Firefox */
-.filter-group select[multiple] {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
+    width: 236.92px;
+    min-width: 236.92px;
+    max-width: 236.92px;
+    height: 120px;
 }
 
 .filter-info {
-    font-size: 11px;
+    font-size: 12px;
     color: #666;
-    margin-top: 3px;
-    font-style: italic;
+    margin-top: 5px;
 }
 
 .info {
@@ -167,15 +114,7 @@ body {
 .selected-items {
     font-size: 12px;
     color: #666;
-    margin-top: 3px;
-    padding: 3px 6px;
-    background: #f8f9fa;
-    border-radius: 3px;
-    border: 1px solid #e9ecef;
-    min-height: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    margin-top: 5px;
 }
 
 .stats {
@@ -255,17 +194,17 @@ body {
     }
     
     .filter-group select[multiple] {
-        width: 100% !important;
-        min-width: 100% !important;
-        max-width: 100% !important;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
     }
     
     #weekSelect,
     #monthSelect,
     #objectSelect,
     #addressSelect {
-        width: 100% !important;
-        min-width: 100% !important;
-        max-width: 100% !important;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
     }
 }
