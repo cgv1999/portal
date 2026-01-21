@@ -42,7 +42,7 @@ body {
     font-weight: bold;
     margin-bottom: 6px;
     color: #333;
-    font-size: 13px;
+    font-size: 16px;
     white-space: nowrap;
 }
 
@@ -100,7 +100,6 @@ body {
     font-size: 11px;
     color: #666;
     margin-top: 3px;
-    font-style: italic;
 }
 
 .info {
@@ -115,15 +114,7 @@ body {
 .selected-items {
     font-size: 12px;
     color: #666;
-    margin-top: 3px;
-    padding: 3px 6px;
-    background: #f8f9fa;
-    border-radius: 3px;
-    border: 1px solid #e9ecef;
-    min-height: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    margin-top: 5px;
 }
 
 .stats {
