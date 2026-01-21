@@ -16,7 +16,8 @@
         <div class="filters" id="filters">
             <div class="filter-group">
                 <label for="weekSelect">Недели (множественный выбор):</label>
-                <select id="weekSelect" multiple style="width: 300px; height: 200px;">
+                <!-- УБРАТЬ style="width: 300px; height: 200px;" -->
+                <select id="weekSelect" multiple>
                     <!-- Недели будут заполнены динамически -->
                 </select>
                 <div class="filter-info">Ctrl+Click для выбора нескольких недель</div>
@@ -25,16 +26,19 @@
             
             <div class="filter-group">
                 <label for="objectSelect">Объект (множественный выбор):</label>
-                <select id="objectSelect" multiple style="width: 250px; height: 150px;">
+                <!-- УБРАТЬ style="width: 250px; height: 150px;" -->
+                <select id="objectSelect" multiple>
                     <option value="all">Все объекты</option>
                     <option value="all_retail">Вся розница</option>
                 </select>
                 <div class="filter-info">Ctrl+Click для выбора нескольких объектов</div>
                 <div class="selected-items" id="objectSelected">Все</div>
             </div>
+            
             <div class="filter-group">
                 <label for="addressSelect">Адреса (множественный выбор):</label>
-                <select id="addressSelect" multiple style="width: 250px; height: 150px;">
+                <!-- УБРАТЬ style="width: 250px; height: 150px;" -->
+                <select id="addressSelect" multiple>
                     <option value="all">Все адреса</option>
                 </select>
                 <div class="filter-info">Ctrl+Click для выбора нескольких адресов</div>
