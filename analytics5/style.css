@@ -26,11 +26,13 @@ body {
 /* Стили для управления периодом */
 .period-controls {
     margin: 20px 0;
-    padding: 20px;
+    padding: 15px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: #f8f9fa;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .date-input-group {
