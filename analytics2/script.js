@@ -102095,8 +102095,6 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     const isAllObjects = !selectedObjects || selectedObjects.length === 0;
     const isAllAddresses = !selectedAddresses || selectedAddresses.length === 0;
     const shouldIncludeCompanyExpenses = isAllObjects && isAllAddresses && companyExpensesFileLoaded;
-    
-    // Franchise bonus включаем при полном выборе ИЛИ при выборе "Франшиза отдел сопровождения"
     const shouldIncludeFranchiseBonus = (isAllObjects && isAllAddresses) || 
         (selectedObjects && selectedObjects.includes('Франшиза отдел сопровождения'));
     
@@ -102107,6 +102105,12 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     console.log('isAllAddresses:', isAllAddresses);
     console.log('shouldIncludeCompanyExpenses:', shouldIncludeCompanyExpenses);
     console.log('shouldIncludeFranchiseBonus:', shouldIncludeFranchiseBonus);
+    
+    // Сохраняем ВСЕ исходные столбцы при первом вызове
+    if (data.length > 0 && allColumns.length === 0) {
+        allColumns = Object.keys(data[0]);
+        console.log('Сохранены все столбцы:', allColumns);
+    }
     
     data.forEach(row => {
         const date = row['Дата'];
@@ -102157,22 +102161,14 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
                 // Если нет точного совпадения, проверяем стандартизированные адреса
                 const standardizedAddress = standardizeAddress(address);
                 for (const selectedAddr of selectedAddresses) {
-                    const standardizedSelectedAddr = standardizeAddress(selectedAddr);
-                    
-                    // ОБЯЗАТЕЛЬНО: Логирование для отладки
-                    console.log(`Сравнение адресов: "${standardizedAddress}" vs "${standardizedSelectedAddr}"`);
-                    
-                    if (standardizedAddress === standardizedSelectedAddr) {
+                    if (compareAddresses(standardizedAddress, selectedAddr)) {
                         addressMatch = true;
                         break;
                     }
                 }
             }
             
-            if (!addressMatch) {
-                console.log(`Адрес "${address}" не прошел фильтрацию`);
-                return;
-            }
+            if (!addressMatch) return;
         }
         
         if (!dailyAggregated[date]) {
@@ -102193,11 +102189,15 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
                 generalExpense: 0,
                 salaryOfficeExpense: 0,
                 adjustedOperatingProfit: 0,
-                rawData: JSON.parse(JSON.stringify(row))
+                // СОХРАНЯЕМ МАССИВ ВСЕХ СТРОК для этой даты
+                allRows: []
             };
         }
         
         const dayData = dailyAggregated[date];
+        
+        // Сохраняем исходную строку
+        dayData.allRows.push(JSON.parse(JSON.stringify(row)));
         
         dayData.revenue += (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0);
         
@@ -102255,7 +102255,7 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     if (result.length > 0) {
         console.log('Первые 3 дня агрегированных данных:');
         for (let i = 0; i < Math.min(3, result.length); i++) {
-            console.log(`  ${result[i].date}: Выручка=${result[i].revenue}, Прибыль=${result[i].operatingProfit}, Скорректированная прибыль=${result[i].adjustedOperatingProfit}`);
+            console.log(`  ${result[i].date}: Выручка=${result[i].revenue}, Прибыль=${result[i].operatingProfit}, Скорректированная прибыль=${result[i].adjustedOperatingProfit}, Количество строк=${result[i].allRows ? result[i].allRows.length : 0}`);
         }
     }
     
@@ -102744,7 +102744,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                 dataView: {
                     show: true,
                     readOnly: true,
-                    title: 'Данные',
+                    title: 'Детальные данные',
                     lang: ['Таблица данных', 'Закрыть', 'Обновить'],
                     optionToContent: function (opt) {
                         const table = document.createElement('div');
@@ -102754,26 +102754,25 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
 
                         const tableContent = document.createElement('table');
                         tableContent.className = 'data-view-table';
+                        tableContent.style.borderCollapse = 'collapse';
+                        tableContent.style.width = '100%';
 
                         const thead = document.createElement('thead');
                         const headerRow = document.createElement('tr');
 
-                        const dateHeader = document.createElement('th');
-                        dateHeader.textContent = 'Дата';
-                        dateHeader.style.textAlign = 'center';
-                        dateHeader.style.position = 'sticky';
-                        dateHeader.style.left = '0';
-                        dateHeader.style.zIndex = '20';
-                        dateHeader.style.backgroundColor = '#f2f2f2';
-                        headerRow.appendChild(dateHeader);
-
-                        allColumns.forEach(column => {
-                            if (column !== 'Дата' && column !== 'Объект' && column !== 'Адрес') {
-                                const th = document.createElement('th');
-                                th.textContent = column;
-                                th.style.textAlign = 'center';
-                                headerRow.appendChild(th);
-                            }
+                        // Заголовки столбцов
+                        const headers = ['Дата', 'Объект', 'Адрес', 'Выручка', 'Выручка Сайт', 'Операционная прибыль'];
+                        
+                        headers.forEach(header => {
+                            const th = document.createElement('th');
+                            th.textContent = header;
+                            th.style.padding = '8px';
+                            th.style.border = '1px solid #ddd';
+                            th.style.backgroundColor = '#f2f2f2';
+                            th.style.textAlign = 'center';
+                            th.style.position = 'sticky';
+                            th.style.top = '0';
+                            headerRow.appendChild(th);
                         });
 
                         thead.appendChild(headerRow);
@@ -102781,37 +102780,155 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
 
                         const tbody = document.createElement('tbody');
 
+                        // Собираем ВСЕ строки из всех дней
+                        let totalRows = 0;
+                        let totalRevenue = 0;
+                        let totalProfit = 0;
+                        
                         dailyData.forEach(dayData => {
-                            const row = document.createElement('tr');
-
-                            const dateCell = document.createElement('td');
-                            dateCell.textContent = dayData.date;
-                            dateCell.style.textAlign = 'center';
-                            dateCell.style.position = 'sticky';
-                            dateCell.style.left = '0';
-                            dateCell.style.zIndex = '10';
-                            dateCell.style.backgroundColor = 'white';
-                            row.appendChild(dateCell);
-
-                            allColumns.forEach(column => {
-                                if (column !== 'Дата' && column !== 'Объект' && column !== 'Адрес') {
-                                    const td = document.createElement('td');
-                                    let value = 0;
-
-                                    if (dayData.rawData && dayData.rawData[column] !== undefined) {
-                                        value = dayData.rawData[column];
-                                    }
-
-                                    td.textContent = formatNumber(value);
-                                    row.appendChild(td);
-                                }
-                            });
-
-                            tbody.appendChild(row);
+                            // Если есть несколько строк для этой даты (при выборе нескольких адресов)
+                            if (dayData.allRows && dayData.allRows.length > 0) {
+                                dayData.allRows.forEach(row => {
+                                    const tr = document.createElement('tr');
+                                    
+                                    // Дата
+                                    const dateCell = document.createElement('td');
+                                    dateCell.textContent = dayData.date;
+                                    dateCell.style.padding = '8px';
+                                    dateCell.style.border = '1px solid #ddd';
+                                    dateCell.style.textAlign = 'center';
+                                    tr.appendChild(dateCell);
+                                    
+                                    // Объект
+                                    const objectCell = document.createElement('td');
+                                    objectCell.textContent = row['Объект'] || '';
+                                    objectCell.style.padding = '8px';
+                                    objectCell.style.border = '1px solid #ddd';
+                                    objectCell.style.textAlign = 'left';
+                                    tr.appendChild(objectCell);
+                                    
+                                    // Адрес
+                                    const addressCell = document.createElement('td');
+                                    addressCell.textContent = row['Адрес'] || '';
+                                    addressCell.style.padding = '8px';
+                                    addressCell.style.border = '1px solid #ddd';
+                                    addressCell.style.textAlign = 'left';
+                                    tr.appendChild(addressCell);
+                                    
+                                    // Выручка
+                                    const revenueCell = document.createElement('td');
+                                    const revenue = (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0);
+                                    revenueCell.textContent = formatNumber(revenue);
+                                    revenueCell.style.padding = '8px';
+                                    revenueCell.style.border = '1px solid #ddd';
+                                    revenueCell.style.textAlign = 'right';
+                                    tr.appendChild(revenueCell);
+                                    
+                                    // Выручка Сайт
+                                    const revenueSiteCell = document.createElement('td');
+                                    revenueSiteCell.textContent = formatNumber(row['Выручка Сайт'] || 0);
+                                    revenueSiteCell.style.padding = '8px';
+                                    revenueSiteCell.style.border = '1px solid #ddd';
+                                    revenueSiteCell.style.textAlign = 'right';
+                                    tr.appendChild(revenueSiteCell);
+                                    
+                                    // Операционная прибыль
+                                    const profitCell = document.createElement('td');
+                                    const profit = row['Операционная прибыль'] || 0;
+                                    profitCell.textContent = formatNumber(profit);
+                                    profitCell.style.padding = '8px';
+                                    profitCell.style.border = '1px solid #ddd';
+                                    profitCell.style.textAlign = 'right';
+                                    tr.appendChild(profitCell);
+                                    
+                                    tbody.appendChild(tr);
+                                    
+                                    totalRows++;
+                                    totalRevenue += revenue;
+                                    totalProfit += profit;
+                                });
+                            } else {
+                                // Если нет массива строк (старая структура) - показываем агрегированные данные
+                                const tr = document.createElement('tr');
+                                
+                                const dateCell = document.createElement('td');
+                                dateCell.textContent = dayData.date;
+                                dateCell.style.padding = '8px';
+                                dateCell.style.border = '1px solid #ddd';
+                                dateCell.style.textAlign = 'center';
+                                tr.appendChild(dateCell);
+                                
+                                // Объект (агрегировано)
+                                const objectCell = document.createElement('td');
+                                objectCell.textContent = 'Агрегированные данные';
+                                objectCell.style.padding = '8px';
+                                objectCell.style.border = '1px solid #ddd';
+                                objectCell.style.textAlign = 'left';
+                                objectCell.style.fontStyle = 'italic';
+                                tr.appendChild(objectCell);
+                                
+                                // Адрес (агрегировано)
+                                const addressCell = document.createElement('td');
+                                addressCell.textContent = '-';
+                                addressCell.style.padding = '8px';
+                                addressCell.style.border = '1px solid #ddd';
+                                addressCell.style.textAlign = 'left';
+                                tr.appendChild(addressCell);
+                                
+                                // Выручка (агрегированная)
+                                const revenueCell = document.createElement('td');
+                                revenueCell.textContent = formatNumber(dayData.revenue);
+                                revenueCell.style.padding = '8px';
+                                revenueCell.style.border = '1px solid #ddd';
+                                revenueCell.style.textAlign = 'right';
+                                tr.appendChild(revenueCell);
+                                
+                                // Выручка Сайт (неизвестно)
+                                const revenueSiteCell = document.createElement('td');
+                                revenueSiteCell.textContent = '-';
+                                revenueSiteCell.style.padding = '8px';
+                                revenueSiteCell.style.border = '1px solid #ddd';
+                                revenueSiteCell.style.textAlign = 'right';
+                                tr.appendChild(revenueSiteCell);
+                                
+                                // Операционная прибыль (агрегированная)
+                                const profitCell = document.createElement('td');
+                                profitCell.textContent = formatNumber(dayData.operatingProfit);
+                                profitCell.style.padding = '8px';
+                                profitCell.style.border = '1px solid #ddd';
+                                profitCell.style.textAlign = 'right';
+                                tr.appendChild(profitCell);
+                                
+                                tbody.appendChild(tr);
+                                
+                                totalRows++;
+                                totalRevenue += dayData.revenue;
+                                totalProfit += dayData.operatingProfit;
+                            }
                         });
 
                         tableContent.appendChild(tbody);
                         table.appendChild(tableContent);
+
+                        // Добавляем итоги
+                        const totalsDiv = document.createElement('div');
+                        totalsDiv.style.marginTop = '20px';
+                        totalsDiv.style.padding = '10px';
+                        totalsDiv.style.backgroundColor = '#f8f9fa';
+                        totalsDiv.style.border = '1px solid #ddd';
+                        totalsDiv.style.borderRadius = '4px';
+                        
+                        const overallProfitability = totalRevenue !== 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : '0.0';
+                        
+                        totalsDiv.innerHTML = `
+                            <strong>Итоги за период:</strong><br>
+                            Количество записей: ${totalRows}<br>
+                            Выручка: ${formatCurrency(totalRevenue)}<br>
+                            Операционная прибыль: ${formatCurrency(totalProfit)}<br>
+                            Рентабельность: ${overallProfitability}%
+                        `;
+                        
+                        table.appendChild(totalsDiv);
 
                         return table;
                     },
@@ -102834,7 +102951,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
             splitLine: { show: false },
             splitArea: { show: false },
             axisLabel: {
-                show: !hideColumnLabels, // Скрываем подписи по оси X если период > 60 дней
+                show: !hideColumnLabels,
                 interval: 0,
                 rotate: 45,
                 formatter: function (value) {
@@ -102867,7 +102984,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FF9800'
                 },
                 label: {
-                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
+                    show: !hideColumnLabels,
                     position: 'inside',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
@@ -102887,7 +103004,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FF9800'
                 },
                 label: {
-                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
+                    show: !hideColumnLabels,
                     position: 'inside',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
@@ -102906,7 +103023,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                     color: '#FFE0B2'
                 },
                 label: {
-                    show: !hideColumnLabels, // Скрываем подписи если период > 60 дней
+                    show: !hideColumnLabels,
                     position: 'top',
                     formatter: function (params) {
                         return params.value !== 0 ? formatCurrency(params.value) : '';
