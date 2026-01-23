@@ -99861,7 +99861,8 @@ const unitCategories = {
         "Мозговой Филипп",
         "Данилов Алексей",
         "Ичко Роман",
-        "Юрлов Денис"
+        "Юрлов Денис",
+        "Неизвестный управляющий"
     ],
     'franchise_sales': ["Франшиза отдел продаж"],
     'sales_agency': ["Развитие"],
@@ -99875,6 +99876,55 @@ const unitTypeNames = {
     'franchise_support': 'Франшиза отдел сопровождения'
 };
 
+// Адреса в нужном порядке
+const addressOrder = [
+    "ДМИТРОВСКОЕ",
+    "ПЯТНИЦКОЕ",
+    "Пятницкое шоссе 20",
+    "ХИМКИ",
+    "ШЕРЕМЕТЬЕВСКАЯ",
+    "МИЧУРИНСКИЙ",
+    "ЛОБАЧЕВСКОГО 37",
+    "ЛОБАЧЕВСКОГО 92",
+    "РУБЛЕВКА91",
+    "РУБЛЕВСКОЕ вл.4",
+    "Минская",
+    "ПРАВОБЕРЕЖНАЯ",
+    "Носовихинское",
+    "Пр Мира 94 А",
+    "ТТК",
+    "МЫТИЩИ",
+    "ПЛЕЩЕЕВА",
+    "ВЕРНАДСКОГО",
+    "НОВОЯСЕНЕВСКИЙ",
+    "ПРОФСОЮЗНАЯ",
+    "Дзержинский, Угрешская",
+    "ЗАГОРОДНОЕ",
+    "ПРИВОЛЬНАЯ",
+    "ЛЮБЛИНСКАЯ 135",
+    "Каспийская",
+    "КАШИРСКОЕ 24",
+    "Коломенский пр-д",
+    "ВДНХ",
+    "Куликовская",
+    "Чертановская",
+    "СПб, Маршала Жукова",
+    "ПАПЕРНИКА вл.22",
+    "СЕРПУХОВ",
+    "ПРИШВИНА",
+    "Франшиза отдел продаж",
+    "Развитие",
+    "Франшиза отдел сопровождения"
+];
+
+// Адреса, которые нужно исключить из фильтра (кроме специальных)
+const excludedAddresses = [
+    "Подписка на мойку",
+    "Франшиза роялти", 
+    "Абонементы/сертификаты",
+    "Юр. лица"
+];
+
 // Функция для определения типа юнита по объекту
 function getUnitType(object) {
     for (const [unitType, objects] of Object.entries(unitCategories)) {
@@ -99885,23 +99935,201 @@ function getUnitType(object) {
     return null;
 }
 
-// Функция для получения номера недели по ISO 8601
-function getWeekNumber(date) {
+// Вспомогательная функция для нахождения понедельника недели
+function getMondayOfWeek(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+}
+
+// Вспомогательная функция для нахождения воскресенья недели
+function getSundayOfWeek(date) {
+    const monday = getMondayOfWeek(date);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    return sunday;
+}
+
+// Кэш для номеров недель (для производительности)
+const weekNumberCache = new Map();
+
+// Основная функция для получения номера недели по вашей системе
+function getWeekNumberForDate(date) {
     if (!date) return null;
     
-    // Создаем копию даты, чтобы не изменять оригинал
-    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    // Проверяем кэш
+    const cacheKey = date.toISOString().split('T')[0];
+    if (weekNumberCache.has(cacheKey)) {
+        return weekNumberCache.get(cacheKey);
+    }
     
-    // Устанавливаем на четверг этой недели
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
-    // Получаем начало года
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    // Находим понедельник этой недели
+    const monday = getMondayOfWeek(d);
+    const mondayStr = formatDate(monday);
     
-    // Вычисляем номер недели
-    const weekNumber = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    // БАЗОВАЯ ТОЧКА ОТСЧЕТА: 06.01.2025 = неделя 2
+    const baseDate = new Date(2025, 0, 6); // 06.01.2025
+    const baseMonday = getMondayOfWeek(baseDate);
     
+    // Если дата до базовой точки (06.01.2025)
+    if (monday < baseMonday) {
+        // Даты до 06.01.2025 - это недели предыдущего года
+        // Вычисляем разницу в обратную сторону
+        
+        // Находим последний понедельник перед 06.01.2025
+        let currentMonday = new Date(baseMonday);
+        let weekNumber = 2; // Начинаем с недели 2
+        
+        // Идем назад по неделям
+        while (currentMonday > monday) {
+            currentMonday.setDate(currentMonday.getDate() - 7);
+            weekNumber--;
+        }
+        
+        // Если вышли за пределы разумного (меньше 1), устанавливаем 1
+        if (weekNumber < 1) {
+            weekNumber = 1;
+        }
+        
+        weekNumberCache.set(cacheKey, weekNumber);
+        return weekNumber;
+    }
+    
+    // Вычисляем номер недели от базовой точки
+    const diffTime = monday.getTime() - baseMonday.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const weeksDiff = Math.floor(diffDays / 7);
+    let weekNumber = weeksDiff + 2; // Начинаем с недели 2
+    
+    weekNumberCache.set(cacheKey, weekNumber);
     return weekNumber;
+}
+
+// Альтернативная функция для получения номера недели по диапазону дат
+function getWeekNumberFromRange(startDateStr, endDateStr) {
+    const startDate = parseDate(startDateStr);
+    if (!startDate) return null;
+    
+    // Для 2025 года и первых недель 2026 - специальная таблица
+    const weekMap = {
+        // 2025 год
+        '06.01.2025-12.01.2025': 2,
+        '13.01.2025-19.01.2025': 3,
+        '20.01.2025-26.01.2025': 4,
+        '27.01.2025-02.02.2025': 5,
+        '03.02.2025-09.02.2025': 6,
+        '10.02.2025-16.02.2025': 7,
+        '17.02.2025-23.02.2025': 8,
+        '24.02.2025-02.03.2025': 9,
+        '03.03.2025-09.03.2025': 10,
+        '10.03.2025-16.03.2025': 11,
+        '17.03.2025-23.03.2025': 12,
+        '24.03.2025-30.03.2025': 13,
+        '31.03.2025-06.04.2025': 14,
+        '07.04.2025-13.04.2025': 15,
+        '14.04.2025-20.04.2025': 16,
+        '21.04.2025-27.04.2025': 17,
+        '28.04.2025-04.05.2025': 18,
+        '05.05.2025-11.05.2025': 19,
+        '12.05.2025-18.05.2025': 20,
+        '19.05.2025-25.05.2025': 21,
+        '26.05.2025-01.06.2025': 22,
+        '02.06.2025-08.06.2025': 23,
+        '09.06.2025-15.06.2025': 24,
+        '16.06.2025-22.06.2025': 25,
+        '23.06.2025-29.06.2025': 26,
+        '30.06.2025-06.07.2025': 27,
+        '07.07.2025-13.07.2025': 28,
+        '14.07.2025-20.07.2025': 29,
+        '21.07.2025-27.07.2025': 30,
+        '28.07.2025-03.08.2025': 31,
+        '04.08.2025-10.08.2025': 32,
+        '11.08.2025-17.08.2025': 33,
+        '18.08.2025-24.08.2025': 34,
+        '25.08.2025-31.08.2025': 35,
+        '01.09.2025-07.09.2025': 36,
+        '08.09.2025-14.09.2025': 37,
+        '15.09.2025-21.09.2025': 38,
+        '22.09.2025-28.09.2025': 39,
+        '29.09.2025-05.10.2025': 40,
+        '06.10.2025-12.10.2025': 41,
+        '13.10.2025-19.10.2025': 42,
+        '20.10.2025-26.10.2025': 43,
+        '27.10.2025-02.11.2025': 44,
+        '03.11.2025-09.11.2025': 45,
+        '10.11.2025-16.11.2025': 46,
+        '17.11.2025-23.11.2025': 47,
+        '24.11.2025-30.11.2025': 48,
+        '01.12.2025-07.12.2025': 49,
+        '08.12.2025-14.12.2025': 50,
+        '15.12.2025-21.12.2025': 51,
+        '22.12.2025-28.12.2025': 52,
+        '29.12.2025-04.01.2026': 53,
+        // 2026 год
+        '05.01.2026-11.01.2026': 54,
+        '12.01.2026-18.01.2026': 55,
+        '19.01.2026-25.01.2026': 56,
+        '26.01.2026-01.02.2026': 57,
+        '02.02.2026-08.02.2026': 58,
+        '09.02.2026-15.02.2026': 59,
+        '16.02.2026-22.02.2026': 60,
+        '23.02.2026-01.03.2026': 61,
+        '02.03.2026-08.03.2026': 62,
+        '09.03.2026-15.03.2026': 63,
+        '16.03.2026-22.03.2026': 64,
+        '23.03.2026-29.03.2026': 65,
+        '30.03.2026-05.04.2026': 66,
+        '06.04.2026-12.04.2026': 67,
+        '13.04.2026-19.04.2026': 68,
+        '20.04.2026-26.04.2026': 69,
+        '27.04.2026-03.05.2026': 70,
+        '04.05.2026-10.05.2026': 71,
+        '11.05.2026-17.05.2026': 72,
+        '18.05.2026-24.05.2026': 73,
+        '25.05.2026-31.05.2026': 74,
+        '01.06.2026-07.06.2026': 75,
+        '08.06.2026-14.06.2026': 76,
+        '15.06.2026-21.06.2026': 77,
+        '22.06.2026-28.06.2026': 78,
+        '29.06.2026-05.07.2026': 79,
+        '06.07.2026-12.07.2026': 80,
+        '13.07.2026-19.07.2026': 81,
+        '20.07.2026-26.07.2026': 82,
+        '27.07.2026-02.08.2026': 83,
+        '03.08.2026-09.08.2026': 84,
+        '10.08.2026-16.08.2026': 85,
+        '17.08.2026-23.08.2026': 86,
+        '24.08.2026-30.08.2026': 87,
+        '31.08.2026-06.09.2026': 88,
+        '07.09.2026-13.09.2026': 89,
+        '14.09.2026-20.09.2026': 90,
+        '21.09.2026-27.09.2026': 91,
+        '28.09.2026-04.10.2026': 92,
+        '05.10.2026-11.10.2026': 93,
+        '12.10.2026-18.10.2026': 94,
+        '19.10.2026-25.10.2026': 95,
+        '26.10.2026-01.11.2026': 96,
+        '02.11.2026-08.11.2026': 97,
+        '09.11.2026-15.11.2026': 98,
+        '16.11.2026-22.11.2026': 99,
+        '23.11.2026-29.11.2026': 100,
+        '30.11.2026-06.12.2026': 101,
+        '07.12.2026-13.12.2026': 102,
+        '14.12.2026-20.12.2026': 103,
+        '21.12.2026-27.12.2026': 104,
+        '28.12.2026-03.01.2027': 105
+    };
+    
+    const key = `${startDateStr}-${endDateStr}`.replace(/ /g, '');
+    if (weekMap[key]) {
+        return weekMap[key];
+    }
+    
+    // Если нет в таблице, используем расчет
+    return getWeekNumberForDate(startDate);
 }
 
 // Функция для получения номера недели по строке даты DD.MM.YYYY
@@ -99909,7 +100137,7 @@ function getWeekNumberFromDateString(dateStr) {
     const date = parseDate(dateStr);
     if (!date) return null;
     
-    return getWeekNumber(date);
+    return getWeekNumberForDate(date);
 }
 
 // Функция для парсинга недельного диапазона и получения номера недели
@@ -99923,7 +100151,8 @@ function getWeekInfoFromRange(weekRange) {
         const startDate = parseDate(startDateStr);
         if (!startDate) return null;
         
-        const weekNumber = getWeekNumber(startDate);
+        // Используем специальную функцию для получения номера недели из диапазона
+        const weekNumber = getWeekNumberFromRange(startDateStr, endDateStr);
         
         return {
             weekNumber: weekNumber,
@@ -99962,13 +100191,10 @@ function getWeekRangeFromDate(dateStr) {
     const date = parseDate(dateStr);
     if (!date) return null;
     
-    const weekNumber = getWeekNumber(date);
+    const weekNumber = getWeekNumberForDate(date);
     
     // Находим понедельник этой недели
-    const monday = new Date(date);
-    const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    monday.setDate(diff);
+    const monday = getMondayOfWeek(date);
     
     // Находим воскресенье
     const sunday = new Date(monday);
@@ -100000,7 +100226,11 @@ function formatNumber(value) {
         if (isNaN(num)) return value;
         value = num;
     }
-    return value.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return value.toLocaleString('ru-RU', { 
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0,
+        useGrouping: true
+    });
 }
 
 function processCompanyData(data) {
@@ -100080,10 +100310,10 @@ function aggregateUnitsData(data, selectedWeeks = null, selectedAddresses = null
                 weekRange: weekRange,
                 weekKey: weekKey,
                 units: {
-                    'retail': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-                    'franchise_sales': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-                    'sales_agency': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-                    'franchise_support': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 }
+                    'retail': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+                    'franchise_sales': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+                    'sales_agency': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+                    'franchise_support': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 }
                 }
             };
         }
@@ -100091,18 +100321,18 @@ function aggregateUnitsData(data, selectedWeeks = null, selectedAddresses = null
         const weekData = weeksAggregated[weekKey];
         const unitData = weekData.units[unitType];
         
-        // Учитываем бонус франшизы в выручке
-        const franchiseBonus = row['Франшиза сопровождение бонус'] || 0;
-        unitData.revenue += (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0) + franchiseBonus;
-        unitData.franchiseBonus += franchiseBonus;
-        unitData.operatingProfit += row['Операционная прибыль'] || 0;
+        // Собираем все показатели отдельно
+        unitData.revenue += (row['Выручка'] || 0);
+        unitData.revenueSite += (row['Выручка Сайт'] || 0);
+        unitData.franchiseBonus += (row['Франшиза сопровождение бонус'] || 0);
+        unitData.operatingProfit += (row['Операционная прибыль'] || 0);
     });
     
     const unitsAggregated = {
-        'retail': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-        'franchise_sales': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-        'sales_agency': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 },
-        'franchise_support': { revenue: 0, operatingProfit: 0, franchiseBonus: 0 }
+        'retail': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+        'franchise_sales': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+        'sales_agency': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 },
+        'franchise_support': { revenue: 0, revenueSite: 0, operatingProfit: 0, franchiseBonus: 0 }
     };
     
     Object.values(weeksAggregated).forEach(weekData => {
@@ -100115,12 +100345,49 @@ function aggregateUnitsData(data, selectedWeeks = null, selectedAddresses = null
             const aggregatedUnitData = unitsAggregated[unitType];
             
             aggregatedUnitData.revenue += weekUnitData.revenue;
-            aggregatedUnitData.operatingProfit += weekUnitData.operatingProfit;
+            aggregatedUnitData.revenueSite += weekUnitData.revenueSite;
             aggregatedUnitData.franchiseBonus += weekUnitData.franchiseBonus;
+            aggregatedUnitData.operatingProfit += weekUnitData.operatingProfit;
         });
     });
     
     return unitsAggregated;
+}
+
+// Функция для получения всех уникальных адресов из данных в нужном порядке
+function getFilteredAddresses(data) {
+    const allAddresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
+    
+    // Фильтруем адреса, исключая указанные в excludedAddresses
+    const filteredAddresses = allAddresses.filter(address => {
+        const addressLower = address.toLowerCase().trim();
+        return !excludedAddresses.some(excluded => 
+            addressLower.includes(excluded.toLowerCase().trim())
+        );
+    });
+    
+    // Сортируем адреса по заданному порядку
+    const sortedAddresses = [];
+    
+    // Сначала добавляем адреса в заданном порядке
+    addressOrder.forEach(address => {
+        const foundAddress = filteredAddresses.find(addr => 
+            addr.toUpperCase().trim() === address.toUpperCase().trim() ||
+            addr.toLowerCase().trim() === address.toLowerCase().trim()
+        );
+        if (foundAddress) {
+            sortedAddresses.push(foundAddress);
+        }
+    });
+    
+    // Затем добавляем оставшиеся адреса (если есть)
+    filteredAddresses.forEach(address => {
+        if (!sortedAddresses.includes(address)) {
+            sortedAddresses.push(address);
+        }
+    });
+    
+    return sortedAddresses;
 }
 
 function populateFilters(data) {
@@ -100141,7 +100408,8 @@ function populateFilters(data) {
         return weekNumA - weekNumB;
     });
     
-    const addresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
+    // Получаем отфильтрованные адреса в нужном порядке
+    const addresses = getFilteredAddresses(data);
 
     const weekSelect = document.getElementById('weekSelect');
     weekSelect.innerHTML = '<option value="all">Все недели</option>';
@@ -100281,7 +100549,10 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
     
     Object.keys(unitTypeNames).forEach(unitType => {
         const unitData = aggregatedData[unitType];
-        revenueData.push(unitData.revenue);
+        
+        // Выручка = Выручка + Выручка Сайт + Франшиза сопровождение бонус
+        const totalRevenue = unitData.revenue + unitData.revenueSite + unitData.franchiseBonus;
+        revenueData.push(totalRevenue);
         
         const profit = unitData.operatingProfit;
         if (profit > 0) {
@@ -100295,7 +100566,8 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
             negativeProfitData.push(0);
         }
         
-        const profitability = unitData.revenue !== 0 ? (profit / unitData.revenue) * 100 : -100;
+        // Рентабельность = Операционная прибыль / (Выручка + Выручка Сайт + Франшиза сопровождение бонус)
+        const profitability = totalRevenue !== 0 ? (profit / totalRevenue) * 100 : -100;
         profitabilityData.push(profitability);
         franchiseBonusData.push(unitData.franchiseBonus);
     });
@@ -100307,14 +100579,15 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
         }
     };
 
-    const totalRevenue = revenueData.reduce((sum, revenue) => sum + revenue, 0);
-    const totalProfit = positiveProfitData.reduce((sum, profit) => sum + profit, 0) + 
+    // Рассчитываем общие показатели для заголовка
+    const totalRevenueAll = revenueData.reduce((sum, revenue) => sum + revenue, 0);
+    const totalProfitAll = positiveProfitData.reduce((sum, profit) => sum + profit, 0) + 
                       negativeProfitData.reduce((sum, profit) => sum + profit, 0);
-    const totalFranchiseBonus = franchiseBonusData.reduce((sum, bonus) => sum + bonus, 0);
-    const avgProfitability = totalRevenue !== 0 ? (totalProfit / totalRevenue) * 100 : -100;
+    const totalFranchiseBonusAll = franchiseBonusData.reduce((sum, bonus) => sum + bonus, 0);
+    const avgProfitabilityAll = totalRevenueAll !== 0 ? (totalProfitAll / totalRevenueAll) * 100 : -100;
 
     let titleText = 'Сравнение юнитов по финансовым показателям';
-    let subtitle = `Рентабельность: ${avgProfitability.toFixed(1)}%`;
+    let subtitle = `Рентабельность: ${avgProfitabilityAll.toFixed(1)}%`;
     
     if (selectedWeeks) {
         if (selectedWeeks.length === 1) {
@@ -100332,8 +100605,8 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
         subtitle += ` | Все адреса`;
     }
 
-    if (totalFranchiseBonus > 0) {
-        subtitle += ` | Бонус франшизы: ${formatCurrency(totalFranchiseBonus)}`;
+    if (totalFranchiseBonusAll > 0) {
+        subtitle += ` | Бонус франшизы: ${formatCurrency(totalFranchiseBonusAll)}`;
     }
     
     const option = {
@@ -100393,7 +100666,7 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
                 dataView: {
                     show: true,
                     readOnly: true,
-                    title: 'Данные',
+                    title: 'Сравнение юнитов',
                     lang: ['Таблица данных', 'Закрыть', 'Обновить'],
                     optionToContent: function (opt) {
                         const table = document.createElement('div');
@@ -100403,108 +100676,284 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
 
                         const tableContent = document.createElement('table');
                         tableContent.className = 'data-view-table';
+                        tableContent.style.borderCollapse = 'collapse';
+                        tableContent.style.width = '100%';
+                        tableContent.style.fontSize = '12px';
 
                         const thead = document.createElement('thead');
                         const headerRow = document.createElement('tr');
+                        headerRow.style.backgroundColor = '#f2f2f2';
 
-                        // Колонка "Юнит"
-                        const unitHeader = document.createElement('th');
-                        unitHeader.textContent = 'Юнит';
-                        unitHeader.style.textAlign = 'center';
-                        headerRow.appendChild(unitHeader);
-
-                        // Колонка "Выручка"
-                        const revenueHeader = document.createElement('th');
-                        revenueHeader.textContent = 'Выручка';
-                        revenueHeader.style.textAlign = 'center';
-                        headerRow.appendChild(revenueHeader);
-
-                        // Колонка "Прибыль"
-                        const profitHeader = document.createElement('th');
-                        profitHeader.textContent = 'Прибыль';
-                        profitHeader.style.textAlign = 'center';
-                        headerRow.appendChild(profitHeader);
-
-                        // Колонка "Рентабельность"
-                        const profitabilityHeader = document.createElement('th');
-                        profitabilityHeader.textContent = 'Рентабельность';
-                        profitabilityHeader.style.textAlign = 'center';
-                        headerRow.appendChild(profitabilityHeader);
-
-                        // Колонка "Бонус франшизы"
-                        const bonusHeader = document.createElement('th');
-                        bonusHeader.textContent = 'Франшиза сопровождение бонус';
-                        bonusHeader.style.textAlign = 'center';
-                        headerRow.appendChild(bonusHeader);
+                        // Заголовки столбцов для сравнения юнитов
+                        const headers = [
+                            'Юнит', 
+                            'Выручка', 
+                            'Выручка Сайт',
+                            'Франшиза сопровождение бонус',
+                            'Общая выручка',
+                            'Операционная прибыль',
+                            'Рентабельность'
+                        ];
+                        
+                        headers.forEach(header => {
+                            const th = document.createElement('th');
+                            th.textContent = header;
+                            th.style.padding = '8px';
+                            th.style.border = '1px solid #ddd';
+                            th.style.textAlign = 'center';
+                            th.style.position = 'sticky';
+                            th.style.top = '0';
+                            th.style.backgroundColor = '#f2f2f2';
+                            th.style.fontWeight = 'bold';
+                            headerRow.appendChild(th);
+                        });
 
                         thead.appendChild(headerRow);
                         tableContent.appendChild(thead);
 
                         const tbody = document.createElement('tbody');
 
+                        let totalRevenueTable = 0;
+                        let totalRevenueSiteTable = 0;
+                        let totalFranchiseBonusTable = 0;
+                        let totalGrossRevenueTable = 0;
+                        let totalProfitTable = 0;
+                        
+                        // Добавляем строки для каждого юнита
                         Object.keys(unitTypeNames).forEach((unitType, index) => {
                             const unitData = aggregatedData[unitType];
-                            const row = document.createElement('tr');
-
+                            const unitLabel = unitTypeNames[unitType];
+                            const profit = unitData.operatingProfit;
+                            const grossRevenue = unitData.revenue + unitData.revenueSite + unitData.franchiseBonus;
+                            const profitability = grossRevenue !== 0 ? (profit / grossRevenue) * 100 : -100;
+                            
+                            const tr = document.createElement('tr');
+                            
                             // Юнит
                             const unitCell = document.createElement('td');
-                            unitCell.textContent = unitTypeNames[unitType];
+                            unitCell.textContent = unitLabel;
+                            unitCell.style.padding = '8px';
+                            unitCell.style.border = '1px solid #ddd';
                             unitCell.style.textAlign = 'left';
-                            row.appendChild(unitCell);
-
+                            unitCell.style.fontWeight = 'bold';
+                            tr.appendChild(unitCell);
+                            
                             // Выручка
                             const revenueCell = document.createElement('td');
                             revenueCell.textContent = formatNumber(unitData.revenue);
-                            row.appendChild(revenueCell);
-
-                            // Прибыль
+                            revenueCell.style.padding = '8px';
+                            revenueCell.style.border = '1px solid #ddd';
+                            revenueCell.style.textAlign = 'right';
+                            tr.appendChild(revenueCell);
+                            
+                            // Выручка Сайт
+                            const revenueSiteCell = document.createElement('td');
+                            revenueSiteCell.textContent = formatNumber(unitData.revenueSite);
+                            revenueSiteCell.style.padding = '8px';
+                            revenueSiteCell.style.border = '1px solid #ddd';
+                            revenueSiteCell.style.textAlign = 'right';
+                            tr.appendChild(revenueSiteCell);
+                            
+                            // Франшиза сопровождение бонус
+                            const franchiseBonusCell = document.createElement('td');
+                            franchiseBonusCell.textContent = formatNumber(unitData.franchiseBonus);
+                            franchiseBonusCell.style.padding = '8px';
+                            franchiseBonusCell.style.border = '1px solid #ddd';
+                            franchiseBonusCell.style.textAlign = 'right';
+                            if (unitData.franchiseBonus !== 0) {
+                                franchiseBonusCell.style.backgroundColor = '#e8f5e9';
+                                franchiseBonusCell.style.fontWeight = 'bold';
+                            }
+                            tr.appendChild(franchiseBonusCell);
+                            
+                            // Общая выручка
+                            const grossRevenueCell = document.createElement('td');
+                            grossRevenueCell.textContent = formatNumber(grossRevenue);
+                            grossRevenueCell.style.padding = '8px';
+                            grossRevenueCell.style.border = '1px solid #ddd';
+                            grossRevenueCell.style.textAlign = 'right';
+                            grossRevenueCell.style.fontWeight = 'bold';
+                            tr.appendChild(grossRevenueCell);
+                            
+                            // Операционная прибыль
                             const profitCell = document.createElement('td');
-                            profitCell.textContent = formatNumber(unitData.operatingProfit);
-                            row.appendChild(profitCell);
-
+                            profitCell.textContent = formatNumber(profit);
+                            profitCell.style.padding = '8px';
+                            profitCell.style.border = '1px solid #ddd';
+                            profitCell.style.textAlign = 'right';
+                            // Цвет в зависимости от прибыли
+                            if (profit > 0) {
+                                profitCell.style.color = '#28a745';
+                                profitCell.style.fontWeight = 'bold';
+                            } else if (profit < 0) {
+                                profitCell.style.color = '#dc3545';
+                                profitCell.style.fontWeight = 'bold';
+                            }
+                            tr.appendChild(profitCell);
+                            
                             // Рентабельность
                             const profitabilityCell = document.createElement('td');
-                            const profitability = unitData.revenue !== 0 ? (unitData.operatingProfit / unitData.revenue) * 100 : -100;
                             profitabilityCell.textContent = profitability.toFixed(1) + '%';
-                            row.appendChild(profitabilityCell);
-
-                            // Бонус франшизы
-                            const bonusCell = document.createElement('td');
-                            bonusCell.textContent = formatNumber(unitData.franchiseBonus);
-                            row.appendChild(bonusCell);
-
-                            tbody.appendChild(row);
+                            profitabilityCell.style.padding = '8px';
+                            profitabilityCell.style.border = '1px solid #ddd';
+                            profitabilityCell.style.textAlign = 'right';
+                            profitabilityCell.style.fontWeight = 'bold';
+                            // Цвет в зависимости от рентабельности
+                            if (profitability >= 0) {
+                                profitabilityCell.style.color = '#28a745';
+                            } else {
+                                profitabilityCell.style.color = '#dc3545';
+                            }
+                            tr.appendChild(profitabilityCell);
+                            
+                            tbody.appendChild(tr);
+                            
+                            totalRevenueTable += unitData.revenue;
+                            totalRevenueSiteTable += unitData.revenueSite;
+                            totalFranchiseBonusTable += unitData.franchiseBonus;
+                            totalGrossRevenueTable += grossRevenue;
+                            totalProfitTable += profit;
                         });
 
-                        // Итоговая строка
+                        tableContent.appendChild(tbody);
+                        table.appendChild(tableContent);
+
+                        // Добавляем итоговую строку
                         const totalRow = document.createElement('tr');
                         totalRow.style.backgroundColor = '#f2f2f2';
                         totalRow.style.fontWeight = 'bold';
 
+                        // Юнит - ИТОГО
                         const totalLabelCell = document.createElement('td');
                         totalLabelCell.textContent = 'ИТОГО';
+                        totalLabelCell.style.padding = '8px';
+                        totalLabelCell.style.border = '1px solid #ddd';
                         totalLabelCell.style.textAlign = 'left';
                         totalRow.appendChild(totalLabelCell);
 
+                        // Итоговая выручка
                         const totalRevenueCell = document.createElement('td');
-                        totalRevenueCell.textContent = formatNumber(totalRevenue);
+                        totalRevenueCell.textContent = formatNumber(totalRevenueTable);
+                        totalRevenueCell.style.padding = '8px';
+                        totalRevenueCell.style.border = '1px solid #ddd';
+                        totalRevenueCell.style.textAlign = 'right';
                         totalRow.appendChild(totalRevenueCell);
 
-                        const totalProfitCell = document.createElement('td');
-                        totalProfitCell.textContent = formatNumber(totalProfit);
-                        totalRow.appendChild(totalProfitCell);
+                        // Итоговая выручка Сайт
+                        const totalRevenueSiteCell = document.createElement('td');
+                        totalRevenueSiteCell.textContent = formatNumber(totalRevenueSiteTable);
+                        totalRevenueSiteCell.style.padding = '8px';
+                        totalRevenueSiteCell.style.border = '1px solid #ddd';
+                        totalRevenueSiteCell.style.textAlign = 'right';
+                        totalRow.appendChild(totalRevenueSiteCell);
 
-                        const totalProfitabilityCell = document.createElement('td');
-                        totalProfitabilityCell.textContent = avgProfitability.toFixed(1) + '%';
-                        totalRow.appendChild(totalProfitabilityCell);
-
+                        // Итоговый бонус франшизы
                         const totalBonusCell = document.createElement('td');
-                        totalBonusCell.textContent = formatNumber(totalFranchiseBonus);
+                        totalBonusCell.textContent = formatNumber(totalFranchiseBonusTable);
+                        totalBonusCell.style.padding = '8px';
+                        totalBonusCell.style.border = '1px solid #ddd';
+                        totalBonusCell.style.textAlign = 'right';
+                        if (totalFranchiseBonusTable !== 0) {
+                            totalBonusCell.style.backgroundColor = '#e8f5e9';
+                        }
                         totalRow.appendChild(totalBonusCell);
 
-                        tbody.appendChild(totalRow);
-                        tableContent.appendChild(tbody);
-                        table.appendChild(tableContent);
+                        // Итоговая общая выручка
+                        const totalGrossRevenueCell = document.createElement('td');
+                        totalGrossRevenueCell.textContent = formatNumber(totalGrossRevenueTable);
+                        totalGrossRevenueCell.style.padding = '8px';
+                        totalGrossRevenueCell.style.border = '1px solid #ddd';
+                        totalGrossRevenueCell.style.textAlign = 'right';
+                        totalGrossRevenueCell.style.fontWeight = 'bold';
+                        totalRow.appendChild(totalGrossRevenueCell);
+
+                        // Итоговая прибыль
+                        const totalProfitCell = document.createElement('td');
+                        totalProfitCell.textContent = formatNumber(totalProfitTable);
+                        totalProfitCell.style.padding = '8px';
+                        totalProfitCell.style.border = '1px solid #ddd';
+                        totalProfitCell.style.textAlign = 'right';
+                        // Цвет в зависимости от прибыли
+                        if (totalProfitTable > 0) {
+                            totalProfitCell.style.color = '#28a745';
+                        } else if (totalProfitTable < 0) {
+                            totalProfitCell.style.color = '#dc3545';
+                        }
+                        totalRow.appendChild(totalProfitCell);
+
+                        // Итоговая рентабельность
+                        const totalProfitabilityCell = document.createElement('td');
+                        const totalProfitability = totalGrossRevenueTable !== 0 ? 
+                            (totalProfitTable / totalGrossRevenueTable) * 100 : -100;
+                        totalProfitabilityCell.textContent = totalProfitability.toFixed(1) + '%';
+                        totalProfitabilityCell.style.padding = '8px';
+                        totalProfitabilityCell.style.border = '1px solid #ddd';
+                        totalProfitabilityCell.style.textAlign = 'right';
+                        totalProfitabilityCell.style.fontWeight = 'bold';
+                        // Цвет в зависимости от рентабельности
+                        if (totalProfitability >= 0) {
+                            totalProfitabilityCell.style.color = '#28a745';
+                        } else {
+                            totalProfitabilityCell.style.color = '#dc3545';
+                        }
+                        totalRow.appendChild(totalProfitabilityCell);
+
+                        // Добавляем итоговую строку в таблицу
+                        const tfoot = document.createElement('tfoot');
+                        tfoot.appendChild(totalRow);
+                        tableContent.appendChild(tfoot);
+
+                        // Добавляем информацию о фильтрах
+                        const infoDiv = document.createElement('div');
+                        infoDiv.style.marginTop = '20px';
+                        infoDiv.style.padding = '15px';
+                        infoDiv.style.backgroundColor = '#f8f9fa';
+                        infoDiv.style.border = '1px solid #ddd';
+                        infoDiv.style.borderRadius = '4px';
+                        infoDiv.style.fontSize = '14px';
+                        
+                        let infoHTML = `
+                            <div style="margin-bottom: 10px;">
+                                <strong style="font-size: 16px;">Параметры сравнения:</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 200px; margin-bottom: 10px;">
+                        `;
+                        
+                        if (selectedWeeks) {
+                            if (selectedWeeks.length === 1) {
+                                infoHTML += `<strong>Неделя:</strong> ${selectedWeeks[0].split(' (')[0]}<br>`;
+                            } else {
+                                infoHTML += `<strong>Количество недель:</strong> ${selectedWeeks.length}<br>`;
+                            }
+                        } else {
+                            infoHTML += `<strong>Недели:</strong> Все<br>`;
+                        }
+                        
+                        if (selectedAddresses) {
+                            infoHTML += `<strong>Количество адресов:</strong> ${selectedAddresses.length}`;
+                        } else {
+                            infoHTML += `<strong>Адреса:</strong> Все`;
+                        }
+                        
+                        infoHTML += `
+                                </div>
+                                <div style="flex: 1; min-width: 200px; margin-bottom: 10px;">
+                                    <strong>Общая выручка:</strong> ${formatCurrency(totalRevenueTable)}<br>
+                                    <strong>Выручка Сайт:</strong> ${formatCurrency(totalRevenueSiteTable)}<br>
+                                    <strong>Бонус франшизы:</strong> ${formatCurrency(totalFranchiseBonusTable)}<br>
+                                    <strong>Общая выручка:</strong> ${formatCurrency(totalGrossRevenueTable)}<br>
+                                    <strong>Общая прибыль:</strong> ${formatCurrency(totalProfitTable)}<br>
+                                    <strong style="color: ${totalProfitability >= 0 ? '#28a745' : '#dc3545'}; font-size: 16px;">
+                                        Общая рентабельность: ${totalProfitability.toFixed(1)}%
+                                    </strong>
+                                </div>
+                            </div>
+                        `;
+                        
+                        infoDiv.innerHTML = infoHTML;
+                        
+                        table.appendChild(infoDiv);
 
                         return table;
                     },
@@ -100614,8 +101063,8 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
 
     chart.setOption(option);
     
-    const showFranchiseBonus = totalFranchiseBonus > 0;
-    updateStats(totalRevenue, totalProfit, avgProfitability, totalFranchiseBonus, showFranchiseBonus);
+    const showFranchiseBonus = totalFranchiseBonusAll > 0;
+    updateStats(totalRevenueAll, totalProfitAll, avgProfitabilityAll, totalFranchiseBonusAll, showFranchiseBonus);
 
     const resizeHandler = function () {
         try {
@@ -100647,9 +101096,33 @@ function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFra
     document.getElementById('statsInfo').innerHTML = statsHtml;
 }
 
+// Тестовая функция для проверки номеров недель
+function testWeekNumbers() {
+    const testRanges = [
+        '06.01.2025 - 12.01.2025',
+        '13.01.2025 - 19.01.2025',
+        '27.01.2025 - 02.02.2025',
+        '28.04.2025 - 04.05.2025',
+        '29.12.2025 - 04.01.2026',
+        '05.01.2026 - 11.01.2026',
+        '12.01.2026 - 18.01.2026'
+    ];
+    
+    console.log('Тест номеров недель по диапазонам:');
+    testRanges.forEach(range => {
+        const weekInfo = getWeekInfoFromRange(range);
+        if (weekInfo) {
+            console.log(`${range}: ${weekInfo.weekNumber}н`);
+        }
+    });
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function () {
     companyData = processCompanyData(mainData);
+    
+    // Запускаем тест
+    testWeekNumbers();
     
     if (companyData.length > 0) {
         populateFilters(companyData);
