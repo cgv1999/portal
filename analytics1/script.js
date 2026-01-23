@@ -130266,7 +130266,6 @@ const embeddedData = {
   ],
 };
 
-// Глобальные переменные
 let allData = [];
 let otherExpensesData = [];
 let salaryOfficeData = [];
