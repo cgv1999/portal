@@ -101776,10 +101776,8 @@ function compareAddresses(address1, address2) {
     const addr1 = standardizeAddress(address1);
     const addr2 = standardizeAddress(address2);
     
-    return addr1 === addr2 || 
-           addr1.includes(addr2) || 
-           addr2.includes(addr1) ||
-           address1.toLowerCase() === address2.toLowerCase();
+    // ТОЛЬКО точное совпадение
+    return addr1 === addr2;
 }
 
 // Функция для парсинга даты из строки в формате DD.MM.YYYY
@@ -102097,13 +102095,18 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     const isAllObjects = !selectedObjects || selectedObjects.length === 0;
     const isAllAddresses = !selectedAddresses || selectedAddresses.length === 0;
     const shouldIncludeCompanyExpenses = isAllObjects && isAllAddresses && companyExpensesFileLoaded;
-    const shouldIncludeFranchiseBonus = isAllObjects && isAllAddresses;
+    
+    // Franchise bonus включаем при полном выборе ИЛИ при выборе "Франшиза отдел сопровождения"
+    const shouldIncludeFranchiseBonus = (isAllObjects && isAllAddresses) || 
+        (selectedObjects && selectedObjects.includes('Франшиза отдел сопровождения'));
     
     console.log('=== aggregateDailyData ===');
     console.log('selectedObjects:', selectedObjects);
     console.log('selectedAddresses:', selectedAddresses);
     console.log('isAllObjects:', isAllObjects);
     console.log('isAllAddresses:', isAllAddresses);
+    console.log('shouldIncludeCompanyExpenses:', shouldIncludeCompanyExpenses);
+    console.log('shouldIncludeFranchiseBonus:', shouldIncludeFranchiseBonus);
     
     data.forEach(row => {
         const date = row['Дата'];
@@ -102116,7 +102119,6 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         if (object && 
             (object.toString().toLowerCase().includes('франшиза роялти') || 
              object.toString().toLowerCase().includes('франшизароялти'))) {
-            console.log('Пропускаем строку с франшизой роялти:', { object, address, date });
             return;
         }
         
@@ -102124,7 +102126,6 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         if (address && 
             (address.toString().toLowerCase().includes('франшиза роялти') || 
              address.toString().toLowerCase().includes('франшизароялти'))) {
-            console.log('Пропускаем строку с франшизой роялти по адресу:', { object, address, date });
             return;
         }
         
@@ -102140,17 +102141,6 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
             } else {
                 // Проверяем точное совпадение объектов
                 objectMatch = selectedObjects.includes(object);
-                
-                // Если нет точного совпадения, проверяем стандартизированные названия
-                if (!objectMatch) {
-                    const standardizedObject = standardizeAddress(object);
-                    for (const selectedObj of selectedObjects) {
-                        if (compareAddresses(standardizedObject, selectedObj)) {
-                            objectMatch = true;
-                            break;
-                        }
-                    }
-                }
             }
             
             if (!objectMatch) return;
@@ -102167,14 +102157,22 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
                 // Если нет точного совпадения, проверяем стандартизированные адреса
                 const standardizedAddress = standardizeAddress(address);
                 for (const selectedAddr of selectedAddresses) {
-                    if (compareAddresses(standardizedAddress, selectedAddr)) {
+                    const standardizedSelectedAddr = standardizeAddress(selectedAddr);
+                    
+                    // ОБЯЗАТЕЛЬНО: Логирование для отладки
+                    console.log(`Сравнение адресов: "${standardizedAddress}" vs "${standardizedSelectedAddr}"`);
+                    
+                    if (standardizedAddress === standardizedSelectedAddr) {
                         addressMatch = true;
                         break;
                     }
                 }
             }
             
-            if (!addressMatch) return;
+            if (!addressMatch) {
+                console.log(`Адрес "${address}" не прошел фильтрацию`);
+                return;
+            }
         }
         
         if (!dailyAggregated[date]) {
@@ -102252,6 +102250,15 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     result.sort((a, b) => compareDates(a.date, b.date));
     
     console.log('Агрегировано дней (без франшизы роялти):', result.length);
+    
+    // Отладка: выводим несколько дней
+    if (result.length > 0) {
+        console.log('Первые 3 дня агрегированных данных:');
+        for (let i = 0; i < Math.min(3, result.length); i++) {
+            console.log(`  ${result[i].date}: Выручка=${result[i].revenue}, Прибыль=${result[i].operatingProfit}, Скорректированная прибыль=${result[i].adjustedOperatingProfit}`);
+        }
+    }
+    
     return result;
 }
 
