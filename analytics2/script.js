@@ -102022,8 +102022,17 @@ function convertWeeklyToDailyData(data) {
                         } else if (typeof row[key] === 'number') {
                             // Делим числовые значения на 7
                             dailyRow[key] = row[key] / 7;
+                        } else if (typeof row[key] === 'string') {
+                            // Проверяем, является ли это числовым значением
+                            const numValue = parseFloat(row[key].replace(',', '.').replace(/\s/g, ''));
+                            if (!isNaN(numValue)) {
+                                dailyRow[key] = numValue / 7;
+                            } else {
+                                // Копируем текстовые значения как есть
+                                dailyRow[key] = row[key];
+                            }
                         } else {
-                            // Копируем текстовые значения как есть
+                            // Копируем другие значения как есть
                             dailyRow[key] = row[key];
                         }
                     }
@@ -102053,7 +102062,7 @@ function convertWeeklyToDailyData(data) {
     if (dailyData.length > 0) {
         console.log('Первые 3 дневные записи:');
         for (let i = 0; i < Math.min(3, dailyData.length); i++) {
-            console.log(`  ${i + 1}: ${dailyData[i]['Дата']} - Выручка: ${dailyData[i]['Выручка']}`);
+            console.log(`  ${i + 1}: ${dailyData[i]['Дата']} - Выручка: ${dailyData[i]['Выручка']}, Франшиза бонус: ${dailyData[i]['Франшиза сопровождение бонус']}`);
         }
     }
     
@@ -102079,10 +102088,17 @@ function processCompanyData(data) {
             } else {
                 let value = row[key];
                 if (typeof value === 'string') {
+                    // Удаляем пробелы и заменяем запятую на точку
                     value = value.replace(/\s/g, '').replace(',', '.');
+                    // Удаляем все нецифровые символы кроме точек и минусов
                     value = value.replace(/[^\d.-]/g, '');
                 }
-                processedRow[key] = parseFloat(value) || 0;
+                // Для столбца "Франшиза сопровождение бонус" обрабатываем отдельно
+                if (key === 'Франшиза сопровождение бонус') {
+                    processedRow[key] = parseFloat(value) || 0;
+                } else {
+                    processedRow[key] = parseFloat(value) || 0;
+                }
             }
         }
         return processedRow;
@@ -102110,9 +102126,19 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     if (data.length > 0 && allColumns.length === 0) {
         allColumns = Object.keys(data[0]);
         console.log('Сохранены все столбцы:', allColumns);
+        
+        // Проверяем наличие столбца Франшиза сопровождение бонус
+        const franchiseBonusColumn = allColumns.find(col => 
+            col === 'Франшиза сопровождение бонус'
+        );
+        console.log('Столбец "Франшиза сопровождение бонус" найден:', franchiseBonusColumn);
     }
     
-    data.forEach(row => {
+    // Счетчик для отладки
+    let totalFranchiseBonusInData = 0;
+    let rowsWithFranchiseBonus = 0;
+    
+    data.forEach((row, index) => {
         const date = row['Дата'];
         const object = row['Объект'];
         const address = row['Адрес'];
@@ -102189,7 +102215,6 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
                 generalExpense: 0,
                 salaryOfficeExpense: 0,
                 adjustedOperatingProfit: 0,
-                // СОХРАНЯЕМ МАССИВ ВСЕХ СТРОК для этой даты
                 allRows: []
             };
         }
@@ -102199,10 +102224,22 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         // Сохраняем исходную строку
         dayData.allRows.push(JSON.parse(JSON.stringify(row)));
         
+        // Выручка (без учета бонуса)
         dayData.revenue += (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0);
         
+        // Добавляем Франшиза сопровождение бонус если нужно
         if (shouldIncludeFranchiseBonus) {
+            // Получаем значение бонуса (может быть 0 или больше)
             const franchiseBonus = row['Франшиза сопровождение бонус'] || 0;
+            
+            // Отладочная информация
+            if (franchiseBonus !== 0) {
+                console.log(`Строка ${index + 1}, Дата ${date}, Объект ${object}: Франшиза сопровождение бонус = ${franchiseBonus}`);
+                rowsWithFranchiseBonus++;
+                totalFranchiseBonusInData += franchiseBonus;
+            }
+            
+            // Добавляем бонус к выручке
             dayData.revenue += franchiseBonus;
             dayData.franchiseBonus += franchiseBonus;
         }
@@ -102229,6 +102266,11 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
         dayData.indivisibleExpense += row['Неделимый расход'] || 0;
     });
     
+    // Отладочная информация
+    console.log(`Всего строк обработано: ${data.length}`);
+    console.log(`Строк с ненулевым бонусом франшизы: ${rowsWithFranchiseBonus}`);
+    console.log(`Общая сумма бонусов франшизы в данных: ${totalFranchiseBonusInData}`);
+    
     if (shouldIncludeCompanyExpenses) {
         Object.keys(dailyAggregated).forEach(date => {
             const expenses = getExpensesForDate(date);
@@ -102251,12 +102293,16 @@ function aggregateDailyData(data, dateFrom = null, dateTo = null, selectedObject
     
     console.log('Агрегировано дней (без франшизы роялти):', result.length);
     
-    // Отладка: выводим несколько дней
+    // Отладка: выводим несколько дней с информацией о франшизе сопровождения
     if (result.length > 0) {
         console.log('Первые 3 дня агрегированных данных:');
         for (let i = 0; i < Math.min(3, result.length); i++) {
-            console.log(`  ${result[i].date}: Выручка=${result[i].revenue}, Прибыль=${result[i].operatingProfit}, Скорректированная прибыль=${result[i].adjustedOperatingProfit}, Количество строк=${result[i].allRows ? result[i].allRows.length : 0}`);
+            console.log(`  ${result[i].date}: Выручка=${result[i].revenue}, Франшиза бонус=${result[i].franchiseBonus}, Прибыль=${result[i].operatingProfit}, Скорректированная прибыль=${result[i].adjustedOperatingProfit}`);
         }
+        
+        // Подсчет общего бонуса за период
+        const totalFranchiseBonus = result.reduce((sum, day) => sum + (day.franchiseBonus || 0), 0);
+        console.log(`Общая сумма Франшиза сопровождение бонус за период: ${totalFranchiseBonus}`);
     }
     
     return result;
@@ -102275,21 +102321,23 @@ function populateFilters(data) {
         document.getElementById('dateTo').value = maxDate;
     }
 
-    // ИСКЛЮЧАЕМ ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА ОБЪЕКТОВ
+    // ИСКЛЮЧАЕМ ТОЛЬКО ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА ОБЪЕКТОВ
     const objects = [...new Set(data.map(row => row['Объект']))]
         .filter(Boolean)
         .filter(obj => {
             const objStr = String(obj).toLowerCase();
+            // Исключаем только франшизу роялти
             return !objStr.includes('франшиза роялти') && 
                    !objStr.includes('франшизароялти') &&
                    obj !== "Продажа объекта/агентские";
         });
 
-    // ИСКЛЮЧАЕМ ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА АДРЕСОВ
+    // ИСКЛЮЧАЕМ ТОЛЬКО ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА АДРЕСОВ
     const addresses = [...new Set(data.map(row => row['Адрес']))]
         .filter(Boolean)
         .filter(addr => {
             const addrStr = String(addr).toLowerCase();
+            // Исключаем только франшизу роялти
             return !addrStr.includes('франшиза роялти') && 
                    !addrStr.includes('франшизароялти');
         });
@@ -102761,7 +102809,15 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                         const headerRow = document.createElement('tr');
 
                         // Заголовки столбцов
-                        const headers = ['Дата', 'Объект', 'Адрес', 'Выручка', 'Выручка Сайт', 'Операционная прибыль'];
+                        const headers = [
+                            'Дата', 
+                            'Объект', 
+                            'Адрес', 
+                            'Выручка', 
+                            'Выручка Сайт', 
+                            'Франшиза сопровождение бонус',
+                            'Операционная прибыль'
+                        ];
                         
                         headers.forEach(header => {
                             const th = document.createElement('th');
@@ -102783,7 +102839,11 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                         // Собираем ВСЕ строки из всех дней
                         let totalRows = 0;
                         let totalRevenue = 0;
+                        let totalRevenueSite = 0;
+                        let totalFranchiseBonus = 0;
                         let totalProfit = 0;
+                        let totalGeneralExpense = 0;
+                        let totalSalaryOfficeExpense = 0;
                         
                         dailyData.forEach(dayData => {
                             // Если есть несколько строк для этой даты (при выборе нескольких адресов)
@@ -102817,7 +102877,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                     
                                     // Выручка
                                     const revenueCell = document.createElement('td');
-                                    const revenue = (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0);
+                                    const revenue = (row['Выручка'] || 0);
                                     revenueCell.textContent = formatNumber(revenue);
                                     revenueCell.style.padding = '8px';
                                     revenueCell.style.border = '1px solid #ddd';
@@ -102826,11 +102886,25 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                     
                                     // Выручка Сайт
                                     const revenueSiteCell = document.createElement('td');
-                                    revenueSiteCell.textContent = formatNumber(row['Выручка Сайт'] || 0);
+                                    const revenueSite = (row['Выручка Сайт'] || 0);
+                                    revenueSiteCell.textContent = formatNumber(revenueSite);
                                     revenueSiteCell.style.padding = '8px';
                                     revenueSiteCell.style.border = '1px solid #ddd';
                                     revenueSiteCell.style.textAlign = 'right';
                                     tr.appendChild(revenueSiteCell);
+                                    
+                                    // Франшиза сопровождение бонус
+                                    const franchiseBonusCell = document.createElement('td');
+                                    const franchiseBonus = row['Франшиза сопровождение бонус'] || 0;
+                                    franchiseBonusCell.textContent = formatNumber(franchiseBonus);
+                                    franchiseBonusCell.style.padding = '8px';
+                                    franchiseBonusCell.style.border = '1px solid #ddd';
+                                    franchiseBonusCell.style.textAlign = 'right';
+                                    if (franchiseBonus !== 0) {
+                                        franchiseBonusCell.style.backgroundColor = '#e8f5e9';
+                                        franchiseBonusCell.style.fontWeight = 'bold';
+                                    }
+                                    tr.appendChild(franchiseBonusCell);
                                     
                                     // Операционная прибыль
                                     const profitCell = document.createElement('td');
@@ -102845,6 +102919,8 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                     
                                     totalRows++;
                                     totalRevenue += revenue;
+                                    totalRevenueSite += revenueSite;
+                                    totalFranchiseBonus += franchiseBonus;
                                     totalProfit += profit;
                                 });
                             } else {
@@ -102858,7 +102934,6 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                 dateCell.style.textAlign = 'center';
                                 tr.appendChild(dateCell);
                                 
-                                // Объект (агрегировано)
                                 const objectCell = document.createElement('td');
                                 objectCell.textContent = 'Агрегированные данные';
                                 objectCell.style.padding = '8px';
@@ -102867,7 +102942,6 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                 objectCell.style.fontStyle = 'italic';
                                 tr.appendChild(objectCell);
                                 
-                                // Адрес (агрегировано)
                                 const addressCell = document.createElement('td');
                                 addressCell.textContent = '-';
                                 addressCell.style.padding = '8px';
@@ -102875,15 +102949,13 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                 addressCell.style.textAlign = 'left';
                                 tr.appendChild(addressCell);
                                 
-                                // Выручка (агрегированная)
                                 const revenueCell = document.createElement('td');
-                                revenueCell.textContent = formatNumber(dayData.revenue);
+                                revenueCell.textContent = '-';
                                 revenueCell.style.padding = '8px';
                                 revenueCell.style.border = '1px solid #ddd';
                                 revenueCell.style.textAlign = 'right';
                                 tr.appendChild(revenueCell);
                                 
-                                // Выручка Сайт (неизвестно)
                                 const revenueSiteCell = document.createElement('td');
                                 revenueSiteCell.textContent = '-';
                                 revenueSiteCell.style.padding = '8px';
@@ -102891,7 +102963,13 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                 revenueSiteCell.style.textAlign = 'right';
                                 tr.appendChild(revenueSiteCell);
                                 
-                                // Операционная прибыль (агрегированная)
+                                const franchiseBonusCell = document.createElement('td');
+                                franchiseBonusCell.textContent = formatNumber(dayData.franchiseBonus || 0);
+                                franchiseBonusCell.style.padding = '8px';
+                                franchiseBonusCell.style.border = '1px solid #ddd';
+                                franchiseBonusCell.style.textAlign = 'right';
+                                tr.appendChild(franchiseBonusCell);
+                                
                                 const profitCell = document.createElement('td');
                                 profitCell.textContent = formatNumber(dayData.operatingProfit);
                                 profitCell.style.padding = '8px';
@@ -102902,8 +102980,8 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                                 tbody.appendChild(tr);
                                 
                                 totalRows++;
-                                totalRevenue += dayData.revenue;
                                 totalProfit += dayData.operatingProfit;
+                                totalFranchiseBonus += (dayData.franchiseBonus || 0);
                             }
                         });
 
@@ -102918,15 +102996,58 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                         totalsDiv.style.border = '1px solid #ddd';
                         totalsDiv.style.borderRadius = '4px';
                         
-                        const overallProfitability = totalRevenue !== 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : '0.0';
+                        // Общая выручка (Выручка + Выручка Сайт + Франшиза сопровождение бонус)
+                        const totalGrossRevenue = totalRevenue + totalRevenueSite + totalFranchiseBonus;
                         
-                        totalsDiv.innerHTML = `
+                        // Рассчитываем итоговую прибыль с учетом расходов только за выбранный период
+                        let finalTotalProfit = totalProfit;
+                        
+                        // Если выбраны все объекты и адреса, добавляем расходы только за выбранный период
+                        if (isAllObjects && isAllAddresses && companyExpensesFileLoaded) {
+                            // Фильтруем расходы по выбранному периоду
+                            const selectedDates = dailyData.map(day => day.date);
+                            
+                            selectedDates.forEach(date => {
+                                const expenses = getExpensesForDate(date);
+                                totalGeneralExpense += expenses.generalExpense;
+                                totalSalaryOfficeExpense += expenses.salaryExpense;
+                            });
+                            
+                            finalTotalProfit = totalProfit + totalGeneralExpense + totalSalaryOfficeExpense;
+                        }
+                        
+                        // Рентабельность = Итоговая прибыль / Общая выручка
+                        const overallProfitability = totalGrossRevenue !== 0 ? 
+                            ((finalTotalProfit / totalGrossRevenue) * 100).toFixed(1) : '0.0';
+                        
+                        let totalsHTML = `
                             <strong>Итоги за период:</strong><br>
                             Количество записей: ${totalRows}<br>
                             Выручка: ${formatCurrency(totalRevenue)}<br>
+                            Выручка Сайт: ${formatCurrency(totalRevenueSite)}<br>
+                            Франшиза сопровождение бонус: ${formatCurrency(totalFranchiseBonus)}<br>
+                            <strong>Общая выручка: ${formatCurrency(totalGrossRevenue)}</strong><br>
                             Операционная прибыль: ${formatCurrency(totalProfit)}<br>
-                            Рентабельность: ${overallProfitability}%
                         `;
+                        
+                        // Добавляем информацию о расходах если они учитываются
+                        if (isAllObjects && isAllAddresses && companyExpensesFileLoaded) {
+                            totalsHTML += `
+                                Общий расход: ${formatCurrency(totalGeneralExpense)}<br>
+                                З/п офис: ${formatCurrency(totalSalaryOfficeExpense)}<br>
+                                <strong>Итоговая прибыль: ${formatCurrency(finalTotalProfit)}</strong><br>
+                            `;
+                        } else {
+                            totalsHTML += `<strong>Итоговая прибыль: ${formatCurrency(finalTotalProfit)}</strong><br>`;
+                        }
+                        
+                        totalsHTML += `
+                            <strong style="color: ${parseFloat(overallProfitability) >= 0 ? '#28a745' : '#dc3545'}">
+                                Рентабельность: ${overallProfitability}%
+                            </strong>
+                        `;
+                        
+                        totalsDiv.innerHTML = totalsHTML;
                         
                         table.appendChild(totalsDiv);
 
@@ -103051,23 +103172,6 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
     window.addEventListener('resize', resizeHandler);
 
     chart.resizeHandler = resizeHandler;
-}
-
-function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFranchiseBonus = false) {
-    let statsHtml = `
-        <div class="stat-item revenue">Выручка: ${formatCurrency(revenue)}</div>
-    `;
-
-    if (showFranchiseBonus && franchiseBonus !== 0) {
-        statsHtml += `<div class="stat-item bonus">Франшиза сопровождение бонус: ${formatCurrency(franchiseBonus)}</div>`;
-    }
-
-    statsHtml += `
-        <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">Прибыль: ${formatCurrency(profit)}</div>
-        <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность: ${profitability.toFixed(1)}%</div>
-    `;
-
-    document.getElementById('statsInfo').innerHTML = statsHtml;
 }
 
 // Инициализация при загрузке страницы
