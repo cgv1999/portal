@@ -101756,7 +101756,8 @@ const retailObjects = [
     "Мозговой Филипп",
     "Данилов Алексей",
     "Ичко Роман",
-    "Юрлов Денис"
+    "Юрлов Денис",
+    "Неизвестный управляющий"
 ];
 
 // Функция для стандартизации адреса
@@ -102332,8 +102333,39 @@ function populateFilters(data) {
                    obj !== "Продажа объекта/агентские";
         });
 
-    // ИСКЛЮЧАЕМ ТОЛЬКО ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА АДРЕСОВ
-    const addresses = [...new Set(data.map(row => row['Адрес']))]
+    const objectSelect = document.getElementById('objectSelect');
+    
+    // Если объекты уже заданы в HTML в правильном порядке, не перезаписываем их
+    // Просто добавляем только те объекты из данных, которых еще нет в списке
+    const existingObjects = Array.from(objectSelect.options)
+        .map(opt => opt.value)
+        .filter(value => value && value !== '' && value !== 'all_retail');
+    
+    console.log('Существующие объекты в HTML:', existingObjects);
+    console.log('Объекты из данных:', objects);
+    
+    // Добавляем только те объекты из данных, которых еще нет в списке
+    objects.forEach(obj => {
+        if (!existingObjects.includes(obj)) {
+            const option = document.createElement('option');
+            option.value = obj;
+            option.textContent = obj;
+            objectSelect.appendChild(option);
+        }
+    });
+
+    const addressSelect = document.getElementById('addressSelect');
+    
+    // Если адреса уже заданы в HTML (в нужном порядке для "Вся розница"), не перезаписываем их
+    // Просто добавляем динамически найденные адреса, которых еще нет
+    const existingAddresses = Array.from(addressSelect.options)
+        .map(opt => opt.value)
+        .filter(value => value && value !== '');
+    
+    console.log('Существующие адреса в HTML:', existingAddresses.length);
+    
+    // Собираем уникальные адреса из данных
+    const addressesFromData = [...new Set(data.map(row => row['Адрес']))]
         .filter(Boolean)
         .filter(addr => {
             const addrStr = String(addr).toLowerCase();
@@ -102341,73 +102373,17 @@ function populateFilters(data) {
             return !addrStr.includes('франшиза роялти') && 
                    !addrStr.includes('франшизароялти');
         });
-
-    const objectSelect = document.getElementById('objectSelect');
-    objectSelect.innerHTML = '<option value="">Все объекты</option>';
-
-    const allRetailOption = document.createElement('option');
-    allRetailOption.value = 'all_retail';
-    allRetailOption.textContent = 'Вся розница';
-    objectSelect.appendChild(allRetailOption);
-
-    const orderedObjects = [];
-
-    const retailOrder = [
-        "Козубенко Денис",
-        "Сенатов Кирилл",
-        "Большаков Максим",
-        "Мозговой Филипп",
-        "Данилов Алексей",
-        "Ичко Роман",
-        "Юрлов Денис"
-    ];
-
-    retailOrder.forEach(retailObj => {
-        if (objects.includes(retailObj)) {
-            orderedObjects.push(retailObj);
-        }
-    });
-
-    const specialObjects = [
-        "Юр. Лица",
-        "Абонементы/сертификаты",
-        "Подписка на мойку",
-        "Франшиза отдел продаж",
-        "Развитие",
-        "Франшиза отдел сопровождения"
-    ];
-
-    specialObjects.forEach(specialObj => {
-        if (objects.includes(specialObj)) {
-            orderedObjects.push(specialObj);
-        }
-    });
-
-    const remainingObjects = objects.filter(obj =>
-        ![...retailOrder, ...specialObjects].includes(obj)
-    );
-
-    remainingObjects.sort((a, b) => a.localeCompare(b));
-    orderedObjects.push(...remainingObjects);
-
-    orderedObjects.forEach(object => {
-        const option = document.createElement('option');
-        option.value = object;
-        option.textContent = object;
-        objectSelect.appendChild(option);
-    });
-
-    const addressSelect = document.getElementById('addressSelect');
-    addressSelect.innerHTML = '<option value="">Все адреса</option>';
     
-    // Сортируем адреса для удобства
-    addresses.sort((a, b) => a.localeCompare(b));
+    console.log('Адреса из данных (после фильтрации):', addressesFromData.length);
     
-    addresses.forEach(address => {
-        const option = document.createElement('option');
-        option.value = address;
-        option.textContent = address;
-        addressSelect.appendChild(option);
+    // Добавляем только те адреса, которых еще нет в списке
+    addressesFromData.forEach(address => {
+        if (!existingAddresses.includes(address)) {
+            const option = document.createElement('option');
+            option.value = address;
+            option.textContent = address;
+            addressSelect.appendChild(option);
+        }
     });
 
     document.getElementById('filters').style.display = 'flex';
@@ -102437,6 +102413,7 @@ function populateFilters(data) {
 }
 
 // Функция для обновления фильтра адресов в зависимости от выбранного объекта
+// Функция для обновления фильтра адресов в зависимости от выбранного объекта
 function updateAddressFilter(selectedObject, data) {
     const addressSelect = document.getElementById('addressSelect');
     const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
@@ -102448,28 +102425,96 @@ function updateAddressFilter(selectedObject, data) {
     let filteredAddresses;
     
     if (selectedObject === 'all_retail') {
-        // Все адреса для розничных объектов
-        filteredAddresses = [...new Set(data
-            .filter(row => retailObjects.includes(row['Объект']))
-            .map(row => row['Адрес']))].filter(Boolean);
+        // Для "Вся розница" показываем адреса в заданном порядке из HTML
+        const retailAddressesOrder = [
+            "ДМИТРОВСКОЕ",
+            "ПЯТНИЦКОЕ",
+            "Пятницкое шоссе 20",
+            "ХИМКИ",
+            "ШЕРЕМЕТЬЕВСКАЯ",
+            "МИЧУРИНСКИЙ",
+            "ЛОБАЧЕВСКОГО 37",
+            "ЛОБАЧЕВСКОГО 92",
+            "РУБЛЕВКА91",
+            "РУБЛЕВСКОЕ вл.4",
+            "Минская",
+            "ПРАВОБЕРЕЖНАЯ",
+            "Носовихинское",
+            "Пр Мира 94 А",
+            "ТТК",
+            "МЫТИЩИ",
+            "ПЛЕЩЕЕВА",
+            "ВЕРНАДСКОГО",
+            "НОВОЯСЕНЕВСКИЙ",
+            "ПРОФСОЮЗНАЯ",
+            "Дзержинский, Угрешская",
+            "ЗАГОРОДНОЕ",
+            "ПРИВОЛЬНАЯ",
+            "ЛЮБЛИНСКАЯ 135",
+            "Каспийская",
+            "КАШИРСКОЕ 24",
+            "Коломенский пр-д",
+            "ВДНХ",
+            "Куликовская",
+            "Чертановская",
+            "СПб, Маршала Жукова",
+            "ПАПЕРНИКА вл.22",
+            "СЕРПУХОВ",
+            "ПРИШВИНА"
+        ];
+        
+        // Фильтруем адреса из порядка, которые реально существуют в данных
+        filteredAddresses = retailAddressesOrder.filter(address => {
+            // Проверяем, есть ли этот адрес в данных
+            return data.some(row => {
+                const rowAddress = row['Адрес'];
+                if (!rowAddress) return false;
+                
+                // Сначала проверяем точное совпадение
+                if (rowAddress === address) return true;
+                
+                // Затем проверяем стандартизированные адреса
+                if (compareAddresses(rowAddress, address)) return true;
+                
+                return false;
+            });
+        });
+        
+        console.log('Адреса для "Вся розница" (в заданном порядке):', filteredAddresses);
     } else if (selectedObject) {
         // Адреса для конкретного объекта
         filteredAddresses = [...new Set(data
             .filter(row => row['Объект'] === selectedObject)
             .map(row => row['Адрес']))].filter(Boolean);
+            
+        // Фильтруем адреса, исключая франшизу роялти
+        filteredAddresses = filteredAddresses.filter(address => {
+            const addr = String(address).toLowerCase().trim();
+            return !addr.includes('франшиза роялти') && !addr.includes('франшизароялти');
+        });
+        
+        // Сортируем адреса для конкретного объекта
+        filteredAddresses.sort((a, b) => a.localeCompare(b));
     } else {
         // Все адреса (исключая франшизу роялти)
         filteredAddresses = [...new Set(data.map(row => row['Адрес']))].filter(Boolean);
+        filteredAddresses = filteredAddresses.filter(address => {
+            const addr = String(address).toLowerCase().trim();
+            return !addr.includes('франшиза роялти') && !addr.includes('франшизароялти');
+        });
+        
+        // Сохраняем существующий порядок из HTML для "Все объекты"
+        const htmlOptions = Array.from(addressSelect.options)
+            .map(opt => opt.value)
+            .filter(value => value && value !== '');
+        
+        // Оставляем только те адреса, которые есть в данных
+        filteredAddresses = htmlOptions.filter(addr => filteredAddresses.includes(addr));
+        
+        // Добавляем адреса из данных, которых нет в HTML
+        const missingAddresses = filteredAddresses.filter(addr => !htmlOptions.includes(addr));
+        filteredAddresses = [...filteredAddresses, ...missingAddresses];
     }
-    
-    // ИСКЛЮЧАЕМ ФРАНШИЗУ РОЯЛТИ ИЗ СПИСКА АДРЕСОВ
-    filteredAddresses = filteredAddresses.filter(address => {
-        const addr = String(address).toLowerCase().trim();
-        return !addr.includes('франшиза роялти') && !addr.includes('франшизароялти');
-    });
-    
-    // Сортируем адреса
-    filteredAddresses.sort((a, b) => a.localeCompare(b));
     
     console.log('Доступные адреса для выбора:', filteredAddresses);
     

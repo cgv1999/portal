@@ -130289,54 +130289,55 @@ const retailObjects = [
   "Мозговой Филипп",
   "Данилов Алексей",
   "Ичко Роман",
-  "Юрлов Денис"
+  "Юрлов Денис",
+  "Неизвестный управляющий"
 ];
 
 const addressMapping = {
-  "Каспийская": "Каспийская",
-  "ТТК": "ТТК",
-  "ттк": "ТТК",
-  "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
-  "ВДНХ РН": "ВДНХ",
-  "Дмитровка РН": "ДМИТРОВСКОЕ",
-  "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
-  "профсоюзная РН": "ПРОФСОЮЗНАЯ",
-  "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
-  "Мытищи ЭКА": "МЫТИЩИ",
-  "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
-  "Химки": "ХИМКИ",
-  "химки": "ХИМКИ",
-  "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
-  "Загородное ВР": "ЗАГОРОДНОЕ",
-  "Пятницкое шоссе 20": "Пятницкое шоссе 20",
-  "Привольная ВР": "ПРИВОЛЬНАЯ",
-  "Мичуринский ВР": "МИЧУРИНСКИЙ",
-  "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
-  "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
-  "Вернадского РН": "ВЕРНАДСКОГО",
-  "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
-  "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
-  "Плещеева ВР": "ПЛЕЩЕЕВА",
-  "Паперника ВР": "ПАПЕРНИКА вл.22",
-  "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
-  "Проспект мира 94": "Пр Мира 94 А",
-  "Проспект Мира 94": "Пр Мира 94 А",
-  "Коломенский пр-д": "Коломенский пр-д",
-  "Правобережная": "ПРАВОБЕРЕЖНАЯ",
-  "Носовихинское": "Носовихинское",
-  "Куликовская": "Куликовская",
-  "Чертановская": "Чертановская",
-  "Минская": "Минская",
-  "СПБ Маршала Жукова": "СПб, Маршала Жукова",
-  "Франшиза отдел продаж": "Франшиза отдел продаж",
-  "франшиза отдел продаж": "Франшиза отдел продаж",
-  "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-  "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-  "Угрешская 5": "Дзержинский, Угрешская",
-  "Каширское 24": "КАШИРСКОЕ 24",
-  "Развитие": "Развитие",
-  "Франшиза": "Франшиза отдел продаж",
-  "Общий расход": "Общий расход"
+    "Каспийская": "Каспийская",
+    "ТТК": "ТТК",
+    "ттк": "ТТК",
+    "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
+    "ВДНХ РН": "ВДНХ",
+    "Дмитровка РН": "ДМИТРОВСКОЕ",
+    "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
+    "профсоюзная РН": "ПРОФСОЮЗНАЯ",
+    "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
+    "Мытищи ЭКА": "МЫТИЩИ",
+    "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
+    "Химки": "ХИМКИ",
+    "химки": "ХИМКИ",
+    "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
+    "Загородное ВР": "ЗАГОРОДНОЕ",
+    "Пятницкое шоссе 20": "Пятницкое шоссе 20",
+    "Привольная ВР": "ПРИВОЛЬНАЯ",
+    "Мичуринский ВР": "МИЧУРИНСКИЙ",
+    "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
+    "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
+    "Вернадского РН": "ВЕРНАДСКОГО",
+    "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
+    "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
+    "Плещеева ВР": "ПЛЕЩЕЕВА",
+    "Паперника ВР": "ПАПЕРНИКА вл.22",
+    "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
+    "Проспект мира 94": "Пр Мира 94 А",
+    "Проспект Мира 94": "Пр Мира 94 А",
+    "Коломенский пр-д": "Коломенский пр-д",
+    "Правобережная": "ПРАВОБЕРЕЖНАЯ",
+    "Носовихинское": "Носовихинское",
+    "Куликовская": "Куликовская",
+    "Чертановская": "Чертановская",
+    "Минская": "Минская",
+    "СПБ Маршала Жукова": "СПб, Маршала Жукова",
+    "Франшиза отдел продаж": "Франшиза отдел продаж",
+    "франшиза отдел продаж": "Франшиза отдел продаж",
+    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+    "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+    "Угрешская 5": "Дзержинский, Угрешская",
+    "Каширское 24": "КАШИРСКОЕ 24",
+    "Развитие": "Развитие",
+    "Франшиза": "Франшиза отдел продаж",
+    "Общий расход": "Общий расход"
 };
 
 // Функция для стандартизации адреса (УЛУЧШЕННАЯ ВЕРСИЯ)
@@ -130369,47 +130370,49 @@ function standardizeAddress(address) {
   return addressStr.toUpperCase();
 }
 
-// Функция для определения объекта по адресу (ТАКАЯ ЖЕ КАК В ПЕРВОМ КОДЕ)
+// Функция для определения объекта по адресу
 function getObjectByAddress(address) {
-  const objectMapping = {
-    "ДМИТРОВСКОЕ": "Козубенко Денис",
-    "ПЯТНИЦКОЕ": "Козубенко Денис",
-    "Пятницкое шоссе 20": "Козубенко Денис",
-    "ХИМКИ": "Козубенко Денис",
-    "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
-    "МИЧУРИНСКИЙ": "Сенатов Кирилл",
-    "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
-    "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
-    "РУБЛЕВКА91": "Сенатов Кирилл",
-    "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
-    "Минская": "Сенатов Кирилл",
-    "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
-    "Носовихинское": "Большаков Максим",
-    "Пр Мира 94 А": "Большаков Максим",
-    "ТТК": "Большаков Максим",
-    "МЫТИЩИ": "Большаков Максим",
-    "ВЕРНАДСКОГО": "Мозговой Филипп",
-    "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
-    "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
-    "Дзержинский, Угрешская": "Мозговой Филипп",
-    "ЗАГОРОДНОЕ": "Данилов Алексей",
-    "ПРИВОЛЬНАЯ": "Данилов Алексей",
-    "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
-    "Каспийская": "Данилов Алексей",
-    "КАШИРСКОЕ 24": "Данилов Алексей",
-    "Коломенский пр-д": "Данилов Алексей",
-    "ВДНХ": "Ичко Роман",
-    "ПЛЕЩЕЕВА": "Ичко Роман",
-    "Куликовская": "Юрлов Денис",
-    "Чертановская": "Юрлов Денис",
-    "СПб, Маршала Жукова": "Юрлов Денис",
-    "ПАПЕРНИКА вл.22": "Юрлов Денис",
-    "Франшиза отдел продаж": "Франшиза отдел продаж",
-    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-    "Развитие": "Развитие"
-  };
+    const objectMapping = {
+        "ДМИТРОВСКОЕ": "Козубенко Денис",
+        "ПЯТНИЦКОЕ": "Козубенко Денис",
+        "Пятницкое шоссе 20": "Козубенко Денис",
+        "ХИМКИ": "Козубенко Денис",
+        "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
+        "МИЧУРИНСКИЙ": "Сенатов Кирилл",
+        "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
+        "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
+        "РУБЛЕВКА91": "Сенатов Кирилл",
+        "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
+        "Минская": "Сенатов Кирилл",
+        "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
+        "Носовихинское": "Большаков Максим",
+        "Пр Мира 94 А": "Большаков Максим",
+        "ТТК": "Большаков Максим",
+        "МЫТИЩИ": "Большаков Максим",
+        "ПЛЕЩЕЕВА": "Ичко Роман",  // Исправлено: было "ВЕРНАДСКОГО"
+        "ВЕРНАДСКОГО": "Мозговой Филипп",
+        "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
+        "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
+        "Дзержинский, Угрешская": "Мозговой Филипп",
+        "ЗАГОРОДНОЕ": "Данилов Алексей",
+        "ПРИВОЛЬНАЯ": "Данилов Алексей",
+        "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
+        "Каспийская": "Данилов Алексей",
+        "КАШИРСКОЕ 24": "Данилов Алексей",
+        "Коломенский пр-д": "Данилов Алексей",
+        "ВДНХ": "Ичко Роман",
+        "Куликовская": "Юрлов Денис",
+        "Чертановская": "Юрлов Денис",
+        "СПб, Маршала Жукова": "Юрлов Денис",
+        "ПАПЕРНИКА вл.22": "Юрлов Денис",
+        "СЕРПУХОВ": "Неизвестный управляющий",
+        "ПРИШВИНА": "Неизвестный управляющий",
+        "Франшиза отдел продаж": "Франшиза отдел продаж",
+        "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+        "Развитие": "Развитие"
+    };
 
-  return objectMapping[address] || "Общий расход";
+    return objectMapping[address] || "Общий расход";
 }
 
 // Функция для получения недели из даты (КАК В ПЕРВОМ КОДЕ)
@@ -132246,74 +132249,48 @@ function populateFilters(data) {
     .filter(Boolean)
     .filter(obj => obj !== "Продажа объекта/агентские");
 
-  const addresses = [...new Set(filteredData.map(row => row.Адрес))]
+  const objectsSelect = document.getElementById('objectSelect');
+  
+  // Если объекты уже заданы в HTML в правильном порядке, не перезаписываем их
+  // Просто добавляем только те объекты из данных, которых еще нет в списке
+  const existingObjects = Array.from(objectsSelect.options)
+    .map(opt => opt.value)
+    .filter(value => value && value !== '' && value !== 'all_retail');
+  
+  // Добавляем только те объекты из данных, которых еще нет в списке
+  objects.forEach(obj => {
+    if (!existingObjects.includes(obj)) {
+      const option = document.createElement('option');
+      option.value = obj;
+      option.textContent = obj;
+      objectsSelect.appendChild(option);
+    }
+  });
+
+  const addressSelect = document.getElementById('addressSelect');
+  
+  // Если адреса уже заданы в HTML (в нужном порядке), не перезаписываем их
+  // Просто добавляем динамически найденные адреса, которых еще нет
+  const existingAddresses = Array.from(addressSelect.options)
+    .map(opt => opt.value)
+    .filter(value => value && value !== '');
+  
+  // Собираем уникальные адреса из данных
+  const addressesFromData = [...new Set(filteredData.map(row => row.Адрес))]
     .filter(Boolean)
     .filter(address => {
       const addr = String(address).trim();
       return !addr.toLowerCase().includes('франшиза роялти');
     });
-
-  const objectsSelect = document.getElementById('objectSelect');
-  objectsSelect.innerHTML = '<option value="">Все объекты</option>';
-
-  const allRetailOption = document.createElement('option');
-  allRetailOption.value = 'all_retail';
-  allRetailOption.textContent = 'Вся розница';
-  objectsSelect.appendChild(allRetailOption);
-
-  const orderedObjects = [];
-  const retailOrder = [
-    "Козубенко Денис",
-    "Сенатов Кирилл",
-    "Большаков Максим",
-    "Мозговой Филипп",
-    "Данилов Алексей",
-    "Ичко Роман",
-    "Юрлов Денис"
-  ];
-
-  retailOrder.forEach(retailObj => {
-    if (objects.includes(retailObj)) {
-      orderedObjects.push(retailObj);
+  
+  // Добавляем только те адреса, которых еще нет в списке
+  addressesFromData.forEach(address => {
+    if (!existingAddresses.includes(address)) {
+      const option = document.createElement('option');
+      option.value = address;
+      option.textContent = address;
+      addressSelect.appendChild(option);
     }
-  });
-
-  const specialObjects = [
-    "Юр. Лица",
-    "Абонементы/сертификаты",
-    "Подписка на мойку",
-    "Франшиза отдел продаж",
-    "Развитие",
-    "Франшиза отдел сопровождения"
-  ];
-
-  specialObjects.forEach(specialObj => {
-    if (objects.includes(specialObj)) {
-      orderedObjects.push(specialObj);
-    }
-  });
-
-  const remainingObjects = objects.filter(obj =>
-    ![...retailOrder, ...specialObjects].includes(obj)
-  );
-
-  remainingObjects.sort((a, b) => a.localeCompare(b));
-  orderedObjects.push(...remainingObjects);
-
-  orderedObjects.forEach(object => {
-    const option = document.createElement('option');
-    option.value = object;
-    option.textContent = object;
-    objectsSelect.appendChild(option);
-  });
-
-  const addressSelect = document.getElementById('addressSelect');
-  addressSelect.innerHTML = '<option value="">Все адреса</option>';
-  addresses.forEach(address => {
-    const option = document.createElement('option');
-    option.value = address;
-    option.textContent = address;
-    addressSelect.appendChild(option);
   });
 
   document.getElementById('filters').style.display = 'flex';
@@ -132502,30 +132479,108 @@ function updateAddressFilter(selectedObject, data) {
   const addressSelect = document.getElementById('addressSelect');
   const currentSelected = Array.from(addressSelect.selectedOptions).map(opt => opt.value);
 
-  let filteredAddresses;
+  // Все доступные адреса из данных (для фильтрации по объекту)
+  const allAddressesFromData = [...new Set(data.map(row => row.Адрес))].filter(Boolean);
+  
+  // Специальный порядок для "Вся розница"
+  const retailAddressesOrder = [
+    "ДМИТРОВСКОЕ",
+    "ПЯТНИЦКОЕ",
+    "Пятницкое шоссе 20",
+    "ХИМКИ",
+    "ШЕРЕМЕТЬЕВСКАЯ",
+    "МИЧУРИНСКИЙ",
+    "ЛОБАЧЕВСКОГО 37",
+    "ЛОБАЧЕВСКОГО 92",
+    "РУБЛЕВКА91",
+    "РУБЛЕВСКОЕ вл.4",
+    "Минская",
+    "ПРАВОБЕРЕЖНАЯ",
+    "Носовихинское",
+    "Пр Мира 94 А",
+    "ТТК",
+    "МЫТИЩИ",
+    "ПЛЕЩЕЕВА",
+    "ВЕРНАДСКОГО",
+    "НОВОЯСЕНЕВСКИЙ",
+    "ПРОФСОЮЗНАЯ",
+    "Дзержинский, Угрешская",
+    "ЗАГОРОДНОЕ",
+    "ПРИВОЛЬНАЯ",
+    "ЛЮБЛИНСКАЯ 135",
+    "Каспийская",
+    "КАШИРСКОЕ 24",
+    "Коломенский пр-д",
+    "ВДНХ",
+    "Куликовская",
+    "Чертановская",
+    "СПб, Маршала Жукова",
+    "ПАПЕРНИКА вл.22",
+    "СЕРПУХОВ",
+    "ПРИШВИНА"
+  ];
+
+  let filteredAddresses = [];
+  let displayAddresses = [];
 
   if (selectedObject === 'all_retail') {
-    filteredAddresses = [...new Set(data
-      .filter(row => retailObjects.includes(row.Объект))
-      .map(row => row.Адрес))].filter(Boolean);
+    // Для "Вся розница" показываем адреса в специальном порядке
+    filteredAddresses = retailAddressesOrder;
+    displayAddresses = retailAddressesOrder;
   } else if (selectedObject) {
+    // Для конкретного объекта фильтруем адреса
     filteredAddresses = [...new Set(data
       .filter(row => row.Объект === selectedObject)
       .map(row => row.Адрес))].filter(Boolean);
+    
+    // Сохраняем порядок из HTML для других объектов
+    const htmlOptions = Array.from(addressSelect.options)
+      .map(opt => opt.value)
+      .filter(value => value && value !== '');
+    
+    displayAddresses = htmlOptions.filter(addr => filteredAddresses.includes(addr));
+    
+    // Добавляем адреса, которых нет в HTML
+    const missingAddresses = filteredAddresses.filter(addr => !displayAddresses.includes(addr));
+    displayAddresses = [...displayAddresses, ...missingAddresses];
   } else {
-    filteredAddresses = [...new Set(data.map(row => row.Адрес))].filter(Boolean);
+    // Для "Все объекты" показываем все адреса в порядке из HTML
+    const htmlOptions = Array.from(addressSelect.options)
+      .map(opt => opt.value)
+      .filter(value => value && value !== '');
+    
+    filteredAddresses = htmlOptions;
+    displayAddresses = htmlOptions;
   }
 
+  // Обновляем список адресов
   addressSelect.innerHTML = '<option value="">Все адреса</option>';
-  filteredAddresses.forEach(address => {
-    const option = document.createElement('option');
-    option.value = address;
-    option.textContent = address;
-    if (currentSelected.includes(address)) {
-      option.selected = true;
-    }
-    addressSelect.appendChild(option);
-  });
+  
+  if (selectedObject === 'all_retail') {
+    // Для "Вся розница" используем специальный порядок
+    displayAddresses.forEach(address => {
+      const option = document.createElement('option');
+      option.value = address;
+      option.textContent = address;
+      if (currentSelected.includes(address)) {
+        option.selected = true;
+      }
+      addressSelect.appendChild(option);
+    });
+  } else {
+    // Для других случаев сохраняем существующий порядок
+    displayAddresses.forEach(address => {
+      if (filteredAddresses.includes(address)) {
+        const option = document.createElement('option');
+        option.value = address;
+        option.textContent = address;
+        if (currentSelected.includes(address)) {
+          option.selected = true;
+        }
+        addressSelect.appendChild(option);
+      }
+    });
+  }
 
   updateSelectedInfo('addressSelected', addressSelect);
 }
