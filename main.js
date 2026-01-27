@@ -1,16 +1,247 @@
-// Версия: 2.0
+// Версия: 2.1
+// Добавлена защита паролем
 
-console.log('NDA Analytics Portal v2.0 загружен');
+console.log('NDA Analytics Portal v2.1 загружен');
 console.log('Время загрузки:', new Date().toLocaleString());
 
 // Глобальные переменные
 let chartDom, myChart;
 let animationCompleted = false;
-let isInitialLoad = true;
 
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// КОНФИГУРАЦИЯ ЗАЩИТЫ
+const PROTECTION_CONFIG = {
+    PASSWORD: "дваярда", 
+    SESSION_KEY: "nda_authenticated_v2",
+    MAX_ATTEMPTS: 5,
+    BLOCK_TIME: 30000 // 30 секунд
+};
+
+let passwordAttempts = 0;
+let isBlocked = false;
+
+// ==============================
+// ОСНОВНАЯ ИНИЦИАЛИЗАЦИЯ
+// ==============================
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM загружен, инициализация...');
+    
+    // Инициализация защиты паролем
+    initPasswordProtection();
+    
+    // Настройка обработчика для кнопки входа
+    const loginButton = document.getElementById('login-button');
+    const passwordInput = document.getElementById('password');
+    
+    if (loginButton) {
+        loginButton.addEventListener('click', checkPassword);
+    }
+    
+    if (passwordInput) {
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    }
+});
+
+// ==============================
+// СИСТЕМА ЗАЩИТЫ ПАРОЛЕМ
+// ==============================
+
+function initPasswordProtection() {
+    console.log('Инициализация защиты паролем...');
+    
+    // Проверяем блокировку
+    const blockUntil = localStorage.getItem('nda_blocked_until');
+    if (blockUntil && Date.now() < parseInt(blockUntil)) {
+        isBlocked = true;
+        const remainingTime = Math.ceil((parseInt(blockUntil) - Date.now()) / 1000);
+        showPasswordHint(`Доступ заблокирован на ${remainingTime} сек.`, 'error');
+        
+        setTimeout(() => {
+            isBlocked = false;
+            localStorage.removeItem('nda_blocked_until');
+            showPasswordHint('Введите пароль', '');
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) passwordInput.disabled = false;
+        }, parseInt(blockUntil) - Date.now());
+        
+        return;
+    }
+    
+    // Проверяем аутентификацию
+    const isAuthenticated = sessionStorage.getItem(PROTECTION_CONFIG.SESSION_KEY);
+    
+    if (isAuthenticated === 'true') {
+        console.log('Пользователь уже аутентифицирован');
+        hidePasswordProtection();
+        initMainInterface();
+        return;
+    }
+    
+    // Сбрасываем попытки если прошло больше 5 минут
+    const lastAttemptTime = localStorage.getItem('nda_last_attempt');
+    if (lastAttemptTime && Date.now() - parseInt(lastAttemptTime) > 300000) {
+        passwordAttempts = 0;
+    } else {
+        passwordAttempts = parseInt(localStorage.getItem('nda_attempts') || '0');
+    }
+    
+    showPasswordProtection();
+    setupPasswordAnimation();
+}
+
+function showPasswordProtection() {
+    const passwordProtect = document.getElementById('password-protect');
+    const mainContainer = document.querySelector('.container');
+    const analyticsContainer = document.getElementById('analytics-container');
+    
+    if (passwordProtect) {
+        passwordProtect.style.display = 'flex';
+        passwordProtect.style.opacity = '1';
+    }
+    
+    if (mainContainer) mainContainer.style.display = 'none';
+    if (analyticsContainer) analyticsContainer.style.display = 'none';
+    
+    // Устанавливаем фокус на поле ввода
+    setTimeout(() => {
+        const passwordInput = document.getElementById('password');
+        if (passwordInput) {
+            passwordInput.focus();
+            passwordInput.disabled = isBlocked;
+        }
+    }, 100);
+}
+
+function hidePasswordProtection() {
+    const passwordProtect = document.getElementById('password-protect');
+    
+    if (passwordProtect) {
+        passwordProtect.style.opacity = '0';
+        setTimeout(() => {
+            passwordProtect.style.display = 'none';
+        }, 300);
+    }
+}
+
+function setupPasswordAnimation() {
+    const passwordAnimation = document.getElementById('password-animation');
+    if (!passwordAnimation) return;
+    
+    // Создаем стилизованное лого NDA
+    passwordAnimation.innerHTML = '<div class="nda-text">NDA</div>';
+}
+
+function checkPassword() {
+    if (isBlocked) return;
+    
+    const passwordInput = document.getElementById('password');
+    const passwordHint = document.getElementById('password-hint');
+    const password = passwordInput ? passwordInput.value.trim() : '';
+    
+    console.log('Введён пароль:', password ? '***' : '(пусто)');
+    console.log('Ожидаемый пароль:', PROTECTION_CONFIG.PASSWORD);
+    
+    if (!password) {
+        showPasswordHint('Введите пароль', 'error');
+        return;
+    }
+    
+    // Сохраняем время попытки
+    localStorage.setItem('nda_last_attempt', Date.now().toString());
+    
+    if (password === PROTECTION_CONFIG.PASSWORD) {
+        // Успешный вход
+        passwordAttempts = 0;
+        localStorage.removeItem('nda_attempts');
+        localStorage.removeItem('nda_blocked_until');
+        
+        showPasswordHint('Доступ разрешен...', 'success');
+        
+        // Сохраняем статус аутентификации
+        sessionStorage.setItem(PROTECTION_CONFIG.SESSION_KEY, 'true');
+        
+        // Плавный переход к основному контенту
+        setTimeout(() => {
+            hidePasswordProtection();
+            initMainInterface();
+        }, 800);
+    } else {
+        // Неверный пароль
+        passwordAttempts++;
+        localStorage.setItem('nda_attempts', passwordAttempts.toString());
+        
+        const remainingAttempts = PROTECTION_CONFIG.MAX_ATTEMPTS - passwordAttempts;
+        
+        if (remainingAttempts > 0) {
+            showPasswordHint(`Неверный пароль. Осталось попыток: ${remainingAttempts}`, 'error');
+        } else {
+            // Блокировка после превышения попыток
+            isBlocked = true;
+            const blockUntil = Date.now() + PROTECTION_CONFIG.BLOCK_TIME;
+            localStorage.setItem('nda_blocked_until', blockUntil.toString());
+            
+            showPasswordHint(`Доступ заблокирован на ${PROTECTION_CONFIG.BLOCK_TIME/1000} сек.`, 'error');
+            if (passwordInput) passwordInput.disabled = true;
+            
+            setTimeout(() => {
+                isBlocked = false;
+                localStorage.removeItem('nda_blocked_until');
+                passwordAttempts = 0;
+                localStorage.removeItem('nda_attempts');
+                showPasswordHint('Введите пароль', '');
+                if (passwordInput) {
+                    passwordInput.disabled = false;
+                    passwordInput.focus();
+                }
+            }, PROTECTION_CONFIG.BLOCK_TIME);
+        }
+        
+        // Анимация ошибки
+        if (passwordInput) {
+            passwordInput.value = '';
+            passwordInput.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                passwordInput.style.animation = '';
+            }, 500);
+            passwordInput.focus();
+        }
+    }
+}
+
+function showPasswordHint(message, type) {
+    const passwordHint = document.getElementById('password-hint');
+    if (!passwordHint) return;
+    
+    passwordHint.textContent = message;
+    passwordHint.className = 'password-hint';
+    
+    if (type === 'success') {
+        passwordHint.classList.add('success');
+    } else if (type === 'error') {
+        passwordHint.classList.add('error');
+    }
+}
+
+// ==============================
+// ОСНОВНОЙ ИНТЕРФЕЙС
+// ==============================
+
+function initMainInterface() {
+    console.log('Инициализация основного интерфейса...');
+    
+    // Показываем основной контейнер
+    const mainContainer = document.querySelector('.container');
+    if (mainContainer) {
+        mainContainer.style.display = 'flex';
+        mainContainer.style.opacity = '0';
+        setTimeout(() => {
+            mainContainer.style.opacity = '1';
+        }, 50);
+    }
     
     // Инициализация ECharts
     chartDom = document.getElementById('main');
@@ -36,9 +267,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Запуск анимации
     setTimeout(startAnimation, 100);
-});
+}
 
-// НАСТРОЙКА АНИМАЦИИ NDA
+// ==============================
+// АНИМАЦИЯ NDA
+// ==============================
+
 function setupAnimation() {
     const isMobile = document.body.classList.contains('mobile-device');
     const fontSize = isMobile ? (window.innerWidth <= 480 ? 70 : 90) : 140;
@@ -96,7 +330,6 @@ function setupAnimation() {
     myChart.setOption(option);
 }
 
-// ЗАПУСК АНИМАЦИИ
 function startAnimation() {
     // Проверяем, была ли уже показана анимация
     const hasSeenAnimation = sessionStorage.getItem('ndaAnimationShown');
@@ -135,7 +368,10 @@ function startAnimation() {
     }, 3500);
 }
 
-// СКРЫТЬ NDA
+// ==============================
+// УПРАВЛЕНИЕ ИНТЕРФЕЙСОМ
+// ==============================
+
 function hideNDA() {
     if (chartDom) {
         chartDom.style.opacity = '0';
@@ -143,7 +379,6 @@ function hideNDA() {
     }
 }
 
-// ПОКАЗАТЬ КНОПКИ
 function showButtons() {
     const buttonsContainer = document.getElementById('buttons-container');
     const subtitle = document.getElementById('subtitle');
@@ -163,7 +398,6 @@ function showButtons() {
     console.log('Кнопки показаны');
 }
 
-// НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ
 function setupEventHandlers() {
     // Обработка изменения размера окна
     let resizeTimeout;
@@ -197,9 +431,20 @@ function setupEventHandlers() {
     }, { passive: false });
 }
 
-// ЗАГРУЗКА АНАЛИТИКИ
+// ==============================
+// АНАЛИТИКА И НАВИГАЦИЯ
+// ==============================
+
 function loadAnalytics(analyticsName) {
     console.log(`Загрузка аналитики: ${analyticsName}`);
+    
+    // Проверяем аутентификацию
+    const isAuthenticated = sessionStorage.getItem(PROTECTION_CONFIG.SESSION_KEY);
+    if (isAuthenticated !== 'true') {
+        showPasswordProtection();
+        showPasswordHint('Требуется повторная аутентификация', 'error');
+        return;
+    }
     
     // Скрываем главный экран
     const container = document.querySelector('.container');
@@ -223,9 +468,15 @@ function loadAnalytics(analyticsName) {
     sessionStorage.setItem('lastAnalytics', analyticsName);
 }
 
-// ВОЗВРАТ НА ГЛАВНЫЙ ЭКРАН
 function returnToMain() {
     console.log('Возврат на главный экран');
+    
+    // Проверяем аутентификацию
+    const isAuthenticated = sessionStorage.getItem(PROTECTION_CONFIG.SESSION_KEY);
+    if (isAuthenticated !== 'true') {
+        showPasswordProtection();
+        return;
+    }
     
     // Скрываем контейнер аналитики
     const analyticsContainer = document.getElementById('analytics-container');
@@ -249,7 +500,6 @@ function returnToMain() {
     resetAnimation();
 }
 
-// СБРОС АНИМАЦИИ
 function resetAnimation() {
     // Проверяем, была ли уже показана анимация
     const hasSeenAnimation = sessionStorage.getItem('ndaAnimationShown');
@@ -317,7 +567,10 @@ function resetAnimation() {
     }, 100);
 }
 
+// ==============================
 // ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
+// ==============================
+
 function refreshAnalytics() {
     const frame = document.getElementById('analytics-frame');
     if (frame && frame.src) {
@@ -329,11 +582,25 @@ function refreshAnalytics() {
 }
 
 function getCurrentVersion() {
-    return '2.0';
+    return '2.1';
 }
 
-// Экспорт функций для глобального доступа
+function logout() {
+    sessionStorage.removeItem(PROTECTION_CONFIG.SESSION_KEY);
+    sessionStorage.removeItem('ndaAnimationShown');
+    showPasswordProtection();
+    showPasswordHint('Вы вышли из системы', '');
+    const passwordInput = document.getElementById('password');
+    if (passwordInput) passwordInput.value = '';
+}
+
+// ==============================
+// ГЛОБАЛЬНЫЙ ЭКСПОРТ
+// ==============================
+
 window.loadAnalytics = loadAnalytics;
 window.returnToMain = returnToMain;
 window.refreshAnalytics = refreshAnalytics;
 window.getCurrentVersion = getCurrentVersion;
+window.checkPassword = checkPassword;
+window.logout = logout;
