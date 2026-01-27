@@ -37054,7 +37054,7 @@ const embeddedData = {
       "Операционная прибыль": 7302200
     },
 
-                                                          //СТАРЫЕ ДАННЫЕ!!!
+    //СТАРЫЕ ДАННЫЕ!!!
 
     {
       "Дата": "10.11.2025",
@@ -106125,8 +106125,8 @@ const embeddedData = {
       "Франшиза сопровождение бонус": 0,
       "Операционная прибыль": 1709465
     }
-    
-// ТУТ!
+
+    // ТУТ!
 
   ],
   "expensesData": [
@@ -121232,9 +121232,9 @@ const embeddedData = {
       "дата": "22.01.2026",
       "ответственный": ""
     },
-    
 
-// ТУТ!
+
+    // ТУТ!
     {
       "сумма": -0.18,
       "статья": "Резервный фонд №1",
@@ -137939,50 +137939,50 @@ const retailObjects = [
 ];
 
 const addressMapping = {
-    "Каспийская": "Каспийская",
-    "ТТК": "ТТК",
-    "ттк": "ТТК",
-    "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
-    "ВДНХ РН": "ВДНХ",
-    "Дмитровка РН": "ДМИТРОВСКОЕ",
-    "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
-    "профсоюзная РН": "ПРОФСОЮЗНАЯ",
-    "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
-    "Мытищи ЭКА": "МЫТИЩИ",
-    "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
-    "Химки": "ХИМКИ",
-    "химки": "ХИМКИ",
-    "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
-    "Загородное ВР": "ЗАГОРОДНОЕ",
-    "Пятницкое шоссе 20": "Пятницкое шоссе 20",
-    "Привольная ВР": "ПРИВОЛЬНАЯ",
-    "Мичуринский ВР": "МИЧУРИНСКИЙ",
-    "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
-    "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
-    "Вернадского РН": "ВЕРНАДСКОГО",
-    "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
-    "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
-    "Плещеева ВР": "ПЛЕЩЕЕВА",
-    "Паперника ВР": "ПАПЕРНИКА вл.22",
-    "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
-    "Проспект мира 94": "Пр Мира 94 А",
-    "Проспект Мира 94": "Пр Мира 94 А",
-    "Коломенский пр-д": "Коломенский пр-д",
-    "Правобережная": "ПРАВОБЕРЕЖНАЯ",
-    "Носовихинское": "Носовихинское",
-    "Куликовская": "Куликовская",
-    "Чертановская": "Чертановская",
-    "Минская": "Минская",
-    "СПБ Маршала Жукова": "СПб, Маршала Жукова",
-    "Франшиза отдел продаж": "Франшиза отдел продаж",
-    "франшиза отдел продаж": "Франшиза отдел продаж",
-    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-    "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-    "Угрешская 5": "Дзержинский, Угрешская",
-    "Каширское 24": "КАШИРСКОЕ 24",
-    "Развитие": "Развитие",
-    "Франшиза": "Франшиза отдел продаж",
-    "Общий расход": "Общий расход"
+  "Каспийская": "Каспийская",
+  "ТТК": "ТТК",
+  "ттк": "ТТК",
+  "Шереметьевская РН": "ШЕРЕМЕТЬЕВСКАЯ",
+  "ВДНХ РН": "ВДНХ",
+  "Дмитровка РН": "ДМИТРОВСКОЕ",
+  "Профсоюзная РН": "ПРОФСОЮЗНАЯ",
+  "профсоюзная РН": "ПРОФСОЮЗНАЯ",
+  "Новоясеневский ВР": "НОВОЯСЕНЕВСКИЙ",
+  "Мытищи ЭКА": "МЫТИЩИ",
+  "Лобачевского, 37 ВР": "ЛОБАЧЕВСКОГО 37",
+  "Химки": "ХИМКИ",
+  "химки": "ХИМКИ",
+  "ПЯТНИЦКОЕ Ш. 27": "ПЯТНИЦКОЕ",
+  "Загородное ВР": "ЗАГОРОДНОЕ",
+  "Пятницкое шоссе 20": "Пятницкое шоссе 20",
+  "Привольная ВР": "ПРИВОЛЬНАЯ",
+  "Мичуринский ВР": "МИЧУРИНСКИЙ",
+  "Рублевка, 4 ВР": "РУБЛЕВСКОЕ вл.4",
+  "Рублевка, 4 РН": "РУБЛЕВСКОЕ вл.4",
+  "Вернадского РН": "ВЕРНАДСКОГО",
+  "Рублевское ш., д. 91а ВР": "РУБЛЕВКА91",
+  "Лобачевского,92А ВР": "ЛОБАЧЕВСКОГО 92",
+  "Плещеева ВР": "ПЛЕЩЕЕВА",
+  "Паперника ВР": "ПАПЕРНИКА вл.22",
+  "Люблинская ВР": "ЛЮБЛИНСКАЯ 135",
+  "Проспект мира 94": "Пр Мира 94 А",
+  "Проспект Мира 94": "Пр Мира 94 А",
+  "Коломенский пр-д": "Коломенский пр-д",
+  "Правобережная": "ПРАВОБЕРЕЖНАЯ",
+  "Носовихинское": "Носовихинское",
+  "Куликовская": "Куликовская",
+  "Чертановская": "Чертановская",
+  "Минская": "Минская",
+  "СПБ Маршала Жукова": "СПб, Маршала Жукова",
+  "Франшиза отдел продаж": "Франшиза отдел продаж",
+  "франшиза отдел продаж": "Франшиза отдел продаж",
+  "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+  "франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+  "Угрешская 5": "Дзержинский, Угрешская",
+  "Каширское 24": "КАШИРСКОЕ 24",
+  "Развитие": "Развитие",
+  "Франшиза": "Франшиза отдел продаж",
+  "Общий расход": "Общий расход"
 };
 
 // Функция для стандартизации адреса (УЛУЧШЕННАЯ ВЕРСИЯ)
@@ -138017,47 +138017,47 @@ function standardizeAddress(address) {
 
 // Функция для определения объекта по адресу
 function getObjectByAddress(address) {
-    const objectMapping = {
-        "ДМИТРОВСКОЕ": "Козубенко Денис",
-        "ПЯТНИЦКОЕ": "Козубенко Денис",
-        "Пятницкое шоссе 20": "Козубенко Денис",
-        "ХИМКИ": "Козубенко Денис",
-        "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
-        "МИЧУРИНСКИЙ": "Сенатов Кирилл",
-        "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
-        "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
-        "РУБЛЕВКА91": "Сенатов Кирилл",
-        "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
-        "Минская": "Сенатов Кирилл",
-        "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
-        "Носовихинское": "Большаков Максим",
-        "Пр Мира 94 А": "Большаков Максим",
-        "ТТК": "Большаков Максим",
-        "МЫТИЩИ": "Большаков Максим",
-        "ПЛЕЩЕЕВА": "Ичко Роман",  // Исправлено: было "ВЕРНАДСКОГО"
-        "ВЕРНАДСКОГО": "Мозговой Филипп",
-        "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
-        "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
-        "Дзержинский, Угрешская": "Мозговой Филипп",
-        "ЗАГОРОДНОЕ": "Данилов Алексей",
-        "ПРИВОЛЬНАЯ": "Данилов Алексей",
-        "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
-        "Каспийская": "Данилов Алексей",
-        "КАШИРСКОЕ 24": "Данилов Алексей",
-        "Коломенский пр-д": "Данилов Алексей",
-        "ВДНХ": "Ичко Роман",
-        "Куликовская": "Юрлов Денис",
-        "Чертановская": "Юрлов Денис",
-        "СПб, Маршала Жукова": "Юрлов Денис",
-        "ПАПЕРНИКА вл.22": "Юрлов Денис",
-        "ПРИШВИНА": "Неизвестный управляющий",
-        "СЕРПУХОВ": "Неизвестный управляющий",
-        "Франшиза отдел продаж": "Франшиза отдел продаж",
-        "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
-        "Развитие": "Развитие"
-    };
+  const objectMapping = {
+    "ДМИТРОВСКОЕ": "Козубенко Денис",
+    "ПЯТНИЦКОЕ": "Козубенко Денис",
+    "Пятницкое шоссе 20": "Козубенко Денис",
+    "ХИМКИ": "Козубенко Денис",
+    "ШЕРЕМЕТЬЕВСКАЯ": "Козубенко Денис",
+    "МИЧУРИНСКИЙ": "Сенатов Кирилл",
+    "ЛОБАЧЕВСКОГО 37": "Сенатов Кирилл",
+    "ЛОБАЧЕВСКОГО 92": "Сенатов Кирилл",
+    "РУБЛЕВКА91": "Сенатов Кирилл",
+    "РУБЛЕВСКОЕ вл.4": "Сенатов Кирилл",
+    "Минская": "Сенатов Кирилл",
+    "ПРАВОБЕРЕЖНАЯ": "Большаков Максим",
+    "Носовихинское": "Большаков Максим",
+    "Пр Мира 94 А": "Большаков Максим",
+    "ТТК": "Большаков Максим",
+    "МЫТИЩИ": "Большаков Максим",
+    "ПЛЕЩЕЕВА": "Ичко Роман",  // Исправлено: было "ВЕРНАДСКОГО"
+    "ВЕРНАДСКОГО": "Мозговой Филипп",
+    "НОВОЯСЕНЕВСКИЙ": "Мозговой Филипп",
+    "ПРОФСОЮЗНАЯ": "Мозговой Филипп",
+    "Дзержинский, Угрешская": "Мозговой Филипп",
+    "ЗАГОРОДНОЕ": "Данилов Алексей",
+    "ПРИВОЛЬНАЯ": "Данилов Алексей",
+    "ЛЮБЛИНСКАЯ 135": "Данилов Алексей",
+    "Каспийская": "Данилов Алексей",
+    "КАШИРСКОЕ 24": "Данилов Алексей",
+    "Коломенский пр-д": "Данилов Алексей",
+    "ВДНХ": "Ичко Роман",
+    "Куликовская": "Юрлов Денис",
+    "Чертановская": "Юрлов Денис",
+    "СПб, Маршала Жукова": "Юрлов Денис",
+    "ПАПЕРНИКА вл.22": "Юрлов Денис",
+    "ПРИШВИНА": "Неизвестный управляющий",
+    "СЕРПУХОВ": "Неизвестный управляющий",
+    "Франшиза отдел продаж": "Франшиза отдел продаж",
+    "Франшиза отдел сопровождения": "Франшиза отдел сопровождения",
+    "Развитие": "Развитие"
+  };
 
-    return objectMapping[address] || "Общий расход";
+  return objectMapping[address] || "Общий расход";
 }
 
 // Функция для получения недели из даты (КАК В ПЕРВОМ КОДЕ)
@@ -138067,13 +138067,13 @@ function getWeekFromDate(dateStr) {
     // Находим понедельник недели, содержащей эту дату
     const dayOfWeek = date.getDay();
     const diff = date.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-    
+
     const weekStart = new Date(date);
     weekStart.setDate(diff);
-    
+
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
-    
+
     return `${weekStart.toLocaleDateString('ru-RU')} - ${weekEnd.toLocaleDateString('ru-RU')}`;
   } catch (e) {
     console.error('Ошибка обработки даты:', dateStr, e);
@@ -138084,14 +138084,14 @@ function getWeekFromDate(dateStr) {
 function debugDataStructure() {
   console.log('=== СТРУКТУРА ДАННЫХ ===');
   console.log('Всего записей:', allData.length);
-  
+
   if (allData.length > 0) {
     const sample = allData[0];
     console.log('Пример записи:');
     for (const key in sample) {
       console.log(`  ${key}: ${sample[key]} (тип: ${typeof sample[key]})`);
     }
-    
+
     // Проверяем распределение по датам
     const dates = {};
     allData.slice(0, 50).forEach((row, i) => {
@@ -138107,7 +138107,7 @@ function debugDataStructure() {
 document.addEventListener('DOMContentLoaded', function () {
   // Автоматически загружаем данные
   loadEmbeddedData();
-  
+
   // Вызываем отладку после загрузки
   setTimeout(debugDataStructure, 1000);
 });
@@ -138115,37 +138115,37 @@ document.addEventListener('DOMContentLoaded', function () {
 // НОВАЯ ФУНКЦИЯ: Преобразование недельных данных в дневные
 function convertWeeklyToDaily() {
   const dailyData = [];
-  
+
   allData.forEach(row => {
     // Проверяем, является ли запись недельной (есть поле "Неделя" и нет поля "Дата")
     const hasWeekField = row.hasOwnProperty('Неделя') || row.hasOwnProperty('﻿Неделя');
     const hasDateField = row.hasOwnProperty('Дата');
-    
+
     if (hasWeekField && !hasDateField) {
       const weekStr = row['Неделя'] || row['﻿Неделя'];
       if (!weekStr) return;
-      
+
       try {
         const [startStr, endStr] = weekStr.split(' - ');
         const startDate = new Date(startStr.trim().split('.').reverse().join('-'));
         const endDate = new Date(endStr.trim().split('.').reverse().join('-'));
-        
+
         // Рассчитываем количество дней в неделе
         const daysCount = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
         if (daysCount <= 0 || daysCount > 7) return;
-        
+
         // Создаем дневные записи для каждого дня недели
         const currentDate = new Date(startDate);
         while (currentDate <= endDate) {
           const dateStr = currentDate.toLocaleDateString('ru-RU');
-          
+
           const dailyRow = {
             Дата: dateStr,
             Неделя: weekStr,
             Объект: row.Объект || "",
             Адрес: row.Адрес || ""
           };
-          
+
           // Делим все числовые значения на количество дней
           for (const key in row) {
             if (key !== 'Неделя' && key !== '﻿Неделя' && key !== 'Объект' && key !== 'Адрес') {
@@ -138157,21 +138157,21 @@ function convertWeeklyToDaily() {
               }
             }
           }
-          
+
           dailyData.push(dailyRow);
           currentDate.setDate(currentDate.getDate() + 1);
         }
       } catch (e) {
         console.error('Ошибка обработки недели:', weekStr, e);
         // Если не удалось распарсить неделю, оставляем как есть
-        dailyData.push({...row, Дата: ''});
+        dailyData.push({ ...row, Дата: '' });
       }
     } else {
       // Если это уже дневная запись, оставляем как есть
       dailyData.push(row);
     }
   });
-  
+
   allData = dailyData;
 }
 
@@ -138204,7 +138204,7 @@ function loadEmbeddedData() {
     // Заполняем фильтры
     if (allData.length > 0) {
       populateFilters(allData);
-      // Устанавливаем период по умолчанию на весь доступный диапазон
+      // Устанавливаем период по умолчанию
       setDefaultDateRange();
       applyFilters();
     }
@@ -138606,16 +138606,16 @@ function getFilteredOtherExpenses() {
       if (!rowAddress) return false;
 
       const rowStandardizedAddress = standardizeAddress(rowAddress);
-      
+
       for (const selectedAddr of selectedAddresses) {
         const selectedStandardizedAddr = standardizeAddress(selectedAddr);
-        
+
         if (rowAddress === selectedAddr) return true;
         if (rowStandardizedAddress === selectedStandardizedAddr) return true;
         if (rowAddress.toLowerCase() === selectedAddr.toLowerCase()) return true;
         if (rowAddress.includes(selectedAddr) || selectedAddr.includes(rowAddress)) return true;
       }
-      
+
       return false;
     });
   }
@@ -138632,16 +138632,16 @@ function getFilteredOtherExpenses() {
   // ЕСЛИ ЕСТЬ СТАРЫЕ ДАННЫЕ - берем "Прочие" из них
   if (hasOldData && !hasNewData) {
     console.log('Используем старые данные для "Прочие"');
-    
+
     // Суммируем "Прочие" из старых данных
     const oldDataProchie = filteredData.reduce((sum, row) => {
       const prochieValue = row['Прочие'] || 0;
       console.log(`Старые данные: Объект=${row.Объект}, Адрес=${row.Адрес}, Прочие=${prochieValue}`);
       return sum + prochieValue;
     }, 0);
-    
+
     console.log('Итого "Прочие" из старых данных:', oldDataProchie);
-    
+
     // Возвращаем массив с одной записью для совместимости с интерфейсом
     return [{
       сумма: oldDataProchie,
@@ -138652,30 +138652,30 @@ function getFilteredOtherExpenses() {
       дата: dateFrom && dateTo ? `${dateFrom} - ${dateTo}` : 'Период'
     }];
   }
-  
+
   // ЕСЛИ ЕСТЬ ТОЛЬКО НОВЫЕ ДАННЫЕ - используем дриллдаун
   if (hasNewData && !hasOldData) {
     console.log('Используем новые данные (дриллдаун) для "Прочие"');
     return getOtherExpensesDrilldown(selectedObject, selectedAddresses, dateFrom, dateTo);
   }
-  
+
   // ЕСЛИ ЕСТЬ И ТЕ, И ДРУГИЕ - комбинируем
   if (hasOldData && hasNewData) {
     console.log('Комбинируем старые и новые данные');
-    
+
     // Старые данные
     const oldDataProchie = filteredData
       .filter(row => row.Неделя || row['﻿Неделя'])
       .reduce((sum, row) => sum + (row['Прочие'] || 0), 0);
-    
+
     // Новые данные через дриллдаун
     const newDataExpenses = getOtherExpensesDrilldown(selectedObject, selectedAddresses, dateFrom, dateTo);
     const newDataProchie = newDataExpenses.reduce((sum, item) => sum + item.сумма, 0);
-    
+
     console.log('Старые данные Прочие:', oldDataProchie);
     console.log('Новые данные Прочие:', newDataProchie);
     console.log('Всего Прочие:', oldDataProchie + newDataProchie);
-    
+
     // Возвращаем объединенный результат
     const combined = [
       {
@@ -138688,10 +138688,10 @@ function getFilteredOtherExpenses() {
       },
       ...newDataExpenses
     ];
-    
+
     return combined;
   }
-  
+
   // ЕСЛИ НЕТ ДАННЫХ - возвращаем пустой массив
   console.log('Нет данных для "Прочие"');
   return [];
@@ -138700,7 +138700,7 @@ function getFilteredOtherExpenses() {
 // НОВАЯ ФУНКЦИЯ: Дриллдаун для новых данных
 function getOtherExpensesDrilldown(selectedObject, selectedAddresses, dateFrom, dateTo) {
   console.log('=== ДРИЛЛДАУН ДЛЯ НОВЫХ ДАННЫХ ===');
-  
+
   return otherExpensesData.filter(expense => {
     // 1. Проверяем, относится ли это к "Неделимому расходу"
     const isIndivisible = expense.мойка === "Общий расход" &&
@@ -139500,8 +139500,8 @@ function updateExpensesTable(filteredExpenses) {
   }
 
   // Проверяем, есть ли старые данные (одна запись с особым форматом)
-  const hasOldData = sortedData.length === 1 && 
-                    sortedData[0].статья === 'Прочие (из недельных данных)';
+  const hasOldData = sortedData.length === 1 &&
+    sortedData[0].статья === 'Прочие (из недельных данных)';
 
   let tableHtml = `
         <table class="expenses-table">
@@ -139509,7 +139509,7 @@ function updateExpensesTable(filteredExpenses) {
                 <tr>
                     <th class="${currentSortField === 'сумма' ? (currentSortDirection === 'desc' ? 'sorted-desc' : 'sorted-asc') : ''}" onclick="changeSort('сумма')">Сумма</th>
   `;
-  
+
   if (hasOldData) {
     tableHtml += `
                     <th>Тип данных</th>
@@ -139525,7 +139525,7 @@ function updateExpensesTable(filteredExpenses) {
                     <th class="${currentSortField === 'дата' ? (currentSortDirection === 'desc' ? 'sorted-desc' : 'sorted-asc') : ''}" onclick="changeSort('дата')">Дата оплаты</th>
     `;
   }
-  
+
   tableHtml += `</tr></thead><tbody>`;
 
   if (hasOldData) {
@@ -139557,7 +139557,7 @@ function updateExpensesTable(filteredExpenses) {
 
   const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
   const dataType = hasOldData ? 'недельных отчетов' : 'дриллдауна';
-  
+
   tableHtml += `
             </tbody>
         </table>
@@ -139794,8 +139794,8 @@ function showExpensesDetails() {
 
   // Проверяем тип данных
   const filteredExpenses = getFilteredOtherExpenses();
-  const hasOldData = filteredExpenses.length === 1 && 
-                    filteredExpenses[0].статья === 'Прочие (из недельных данных)';
+  const hasOldData = filteredExpenses.length === 1 &&
+    filteredExpenses[0].статья === 'Прочие (из недельных данных)';
 
   let title = 'Детализация расходов "Прочие"';
   if (hasOldData) {
@@ -139803,7 +139803,7 @@ function showExpensesDetails() {
   } else {
     title += ' (дриллдаун)';
   }
-  
+
   if (dateFrom && dateTo) title += ` | Период: ${dateFrom} - ${dateTo}`;
   if (selectedObject) title += ` | ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}`;
   if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
@@ -139895,13 +139895,13 @@ function populateFilters(data) {
     .filter(obj => obj !== "Продажа объекта/агентские");
 
   const objectsSelect = document.getElementById('objectSelect');
-  
+
   // Если объекты уже заданы в HTML в правильном порядке, не перезаписываем их
   // Просто добавляем только те объекты из данных, которых еще нет в списке
   const existingObjects = Array.from(objectsSelect.options)
     .map(opt => opt.value)
     .filter(value => value && value !== '' && value !== 'all_retail');
-  
+
   // Добавляем только те объекты из данных, которых еще нет в списке
   objects.forEach(obj => {
     if (!existingObjects.includes(obj)) {
@@ -139913,13 +139913,13 @@ function populateFilters(data) {
   });
 
   const addressSelect = document.getElementById('addressSelect');
-  
+
   // Если адреса уже заданы в HTML (в нужном порядке), не перезаписываем их
   // Просто добавляем динамически найденные адреса, которых еще нет
   const existingAddresses = Array.from(addressSelect.options)
     .map(opt => opt.value)
     .filter(value => value && value !== '');
-  
+
   // Собираем уникальные адреса из данных
   const addressesFromData = [...new Set(filteredData.map(row => row.Адрес))]
     .filter(Boolean)
@@ -139927,7 +139927,7 @@ function populateFilters(data) {
       const addr = String(address).trim();
       return !addr.toLowerCase().includes('франшиза роялти');
     });
-  
+
   // Добавляем только те адреса, которых еще нет в списке
   addressesFromData.forEach(address => {
     if (!existingAddresses.includes(address)) {
@@ -139979,7 +139979,7 @@ function populateFilters(data) {
             const [startStr] = weekStr.split(' - ');
             const weekStartDate = new Date(startStr.trim().split('.').reverse().join('-'));
             if (!minDate || weekStartDate < minDate) minDate = weekStartDate;
-            
+
             // Добавляем 6 дней для конца недели
             const weekEndDate = new Date(weekStartDate);
             weekEndDate.setDate(weekEndDate.getDate() + 6);
@@ -140036,12 +140036,12 @@ function populateFilters(data) {
 
       dateFrom.value = formatDateForInput(minDate);
       dateTo.value = formatDateForInput(maxDate);
-      
-      console.log('Автоматически установлен период:', 
-        minDate.toLocaleDateString('ru-RU'), '-', 
+
+      console.log('Автоматически установлен период:',
+        minDate.toLocaleDateString('ru-RU'), '-',
         maxDate.toLocaleDateString('ru-RU'));
       console.log('В формате input:', dateFrom.value, '-', dateTo.value);
-      
+
       // Для удобства пользователя устанавливаем фокус на конечную дату
       dateTo.focus();
       dateTo.blur(); // Снимаем фокус
@@ -140050,19 +140050,19 @@ function populateFilters(data) {
       const today = new Date();
       const monthAgo = new Date();
       monthAgo.setMonth(monthAgo.getMonth() - 1);
-      
+
       const formatDateForInput = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
       };
-      
+
       dateFrom.value = formatDateForInput(monthAgo);
       dateTo.value = formatDateForInput(today);
-      
-      console.log('Установлен период по умолчанию (текущий месяц):', 
-        monthAgo.toLocaleDateString('ru-RU'), '-', 
+
+      console.log('Установлен период по умолчанию (текущий месяц):',
+        monthAgo.toLocaleDateString('ru-RU'), '-',
         today.toLocaleDateString('ru-RU'));
     }
   } else {
@@ -140070,24 +140070,24 @@ function populateFilters(data) {
     const today = new Date();
     const monthAgo = new Date();
     monthAgo.setMonth(monthAgo.getMonth() - 1);
-    
+
     const formatDateForInput = (date) => {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     };
-    
+
     dateFrom.value = formatDateForInput(monthAgo);
     dateTo.value = formatDateForInput(today);
-    
-    console.log('Нет данных. Установлен период по умолчанию (текущий месяц):', 
-      monthAgo.toLocaleDateString('ru-RU'), '-', 
+
+    console.log('Нет данных. Установлен период по умолчанию (текущий месяц):',
+      monthAgo.toLocaleDateString('ru-RU'), '-',
       today.toLocaleDateString('ru-RU'));
   }
 
   // Добавляем обработчики для полей дат
-  dateFrom.addEventListener('change', function() {
+  dateFrom.addEventListener('change', function () {
     // Проверяем, чтобы начальная дата не была позже конечной
     if (dateTo.value && this.value > dateTo.value) {
       dateTo.value = this.value;
@@ -140095,7 +140095,7 @@ function populateFilters(data) {
     applyFilters();
   });
 
-  dateTo.addEventListener('change', function() {
+  dateTo.addEventListener('change', function () {
     // Проверяем, чтобы конечная дата не была раньше начальной
     if (dateFrom.value && this.value < dateFrom.value) {
       dateFrom.value = this.value;
@@ -140126,7 +140126,7 @@ function updateAddressFilter(selectedObject, data) {
 
   // Все доступные адреса из данных (для фильтрации по объекту)
   const allAddressesFromData = [...new Set(data.map(row => row.Адрес))].filter(Boolean);
-  
+
   // Специальный порядок для "Вся розница"
   const retailAddressesOrder = [
     "ДМИТРОВСКОЕ",
@@ -140177,14 +140177,14 @@ function updateAddressFilter(selectedObject, data) {
     filteredAddresses = [...new Set(data
       .filter(row => row.Объект === selectedObject)
       .map(row => row.Адрес))].filter(Boolean);
-    
+
     // Сохраняем порядок из HTML для других объектов
     const htmlOptions = Array.from(addressSelect.options)
       .map(opt => opt.value)
       .filter(value => value && value !== '');
-    
+
     displayAddresses = htmlOptions.filter(addr => filteredAddresses.includes(addr));
-    
+
     // Добавляем адреса, которых нет в HTML
     const missingAddresses = filteredAddresses.filter(addr => !displayAddresses.includes(addr));
     displayAddresses = [...displayAddresses, ...missingAddresses];
@@ -140193,14 +140193,14 @@ function updateAddressFilter(selectedObject, data) {
     const htmlOptions = Array.from(addressSelect.options)
       .map(opt => opt.value)
       .filter(value => value && value !== '');
-    
+
     filteredAddresses = htmlOptions;
     displayAddresses = htmlOptions;
   }
 
   // Обновляем список адресов
   addressSelect.innerHTML = '<option value="">Все адреса</option>';
-  
+
   if (selectedObject === 'all_retail') {
     // Для "Вся розница" используем специальный порядок
     displayAddresses.forEach(address => {
@@ -140268,12 +140268,12 @@ function applyFilters() {
   if (dateFrom && dateTo) {
     const fromDate = new Date(dateFrom);
     const toDate = new Date(dateTo);
-    
+
     console.log('Даты для фильтрации (объекты):', fromDate.toLocaleDateString(), '-', toDate.toLocaleDateString());
 
     filteredData = filteredData.filter(row => {
       let rowDate = null;
-      
+
       // Пытаемся получить дату из поля Дата
       if (row.Дата) {
         try {
@@ -140282,7 +140282,7 @@ function applyFilters() {
           console.error('Ошибка обработки даты:', row.Дата, e);
         }
       }
-      
+
       // Если нет даты, пытаемся получить из недели
       if (!rowDate && (row.Неделя || row['﻿Неделя'])) {
         try {
@@ -140295,7 +140295,7 @@ function applyFilters() {
           console.error('Ошибка обработки недели:', row.Неделя || row['﻿Неделя'], e);
         }
       }
-      
+
       if (rowDate) {
         // Проверяем, попадает ли дата в диапазон
         const inRange = rowDate >= fromDate && rowDate <= toDate;
@@ -140304,7 +140304,7 @@ function applyFilters() {
         }
         return inRange;
       }
-      
+
       // Если не удалось определить дату, исключаем запись
       console.log('Запись без даты исключена:', row.Объект, row.Адрес);
       return false;
@@ -140329,16 +140329,16 @@ function applyFilters() {
         // Проверяем совпадения
         for (const selectedAddr of validAddresses) {
           const selectedStandardizedAddr = standardizeAddress(selectedAddr);
-          
+
           // Точное совпадение оригинальных адресов
           if (rowAddress === selectedAddr) return true;
-          
+
           // Совпадение стандартизированных адресов
           if (rowStandardizedAddress === selectedStandardizedAddr) return true;
-          
+
           // Сравнение без учета регистра
           if (rowAddress.toLowerCase() === selectedAddr.toLowerCase()) return true;
-          
+
           // Частичное совпадение
           if (rowAddress.includes(selectedAddr) || selectedAddr.includes(rowAddress)) return true;
         }
@@ -140366,7 +140366,7 @@ function applyFilters() {
     filteredData.slice(0, 5).forEach((row, i) => {
       console.log(`${i + 1}. Дата: ${row.Дата}, Объект: ${row.Объект}, Адрес: ${row.Адрес}, Выручка: ${row.Выручка || 0}`);
     });
-    
+
     // Подсчет агрегированных значений для проверки
     let totalRevenue = 0;
     filteredData.forEach(row => {
@@ -140429,7 +140429,7 @@ function buildChart(data, object, addresses) {
   currentChart = chart;
 
   const aggregated = aggregateCategories(data);
-  
+
   // Логируем агрегированные значения для отладки
   console.log('Агрегированные данные для графика:');
   console.log('- Выручка:', aggregated['Выручка'] || 0);
@@ -140596,47 +140596,75 @@ function buildChart(data, object, addresses) {
   renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, currentLevel);
 }
 
-// ДОБАВЛЯЕМ ФУНКЦИЮ для автоматической настройки периода
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ: Установка периода по умолчанию 
 function setDefaultDateRange() {
   const dateTo = document.getElementById('dateTo');
   const dateFrom = document.getElementById('dateFrom');
 
-  if (allData.length > 0) {
-    let minDate = null;
-    let maxDate = null;
-
-    // Ищем минимальную и максимальную даты в данных
-    allData.forEach(row => {
-      if (row.Дата) {
-        try {
-          const rowDate = new Date(row.Дата.split('.').reverse().join('-'));
-          if (!minDate || rowDate < minDate) minDate = rowDate;
-          if (!maxDate || rowDate > maxDate) maxDate = rowDate;
-        } catch (e) {
-          // Игнорируем ошибки
-        }
-      }
-    });
-
-    if (minDate && maxDate) {
-      // Устанавливаем полный диапазон дат
-      dateFrom.valueAsDate = minDate;
-      dateTo.valueAsDate = maxDate;
-      
-      console.log('Автоматически установлен период:', 
-        minDate.toLocaleDateString('ru-RU'), '-', 
-        maxDate.toLocaleDateString('ru-RU'));
-    }
+  // Получаем текущую дату (сегодня)
+  const today = new Date();
+  
+  // Определяем день недели (0 - воскресенье, 1 - понедельник...)
+  const dayOfWeek = today.getDay();
+  
+  let startDate, endDate;
+  
+  if (dayOfWeek === 1) { // Если сегодня понедельник
+    // Показываем прошлую неделю полностью
+    
+    // Находим понедельник прошлой недели
+    const lastWeekMonday = new Date(today);
+    lastWeekMonday.setDate(today.getDate() - 7);
+    
+    // Находим воскресенье прошлой недели (6 дней после понедельника)
+    const lastWeekSunday = new Date(lastWeekMonday);
+    lastWeekSunday.setDate(lastWeekMonday.getDate() + 6);
+    
+    startDate = lastWeekMonday;
+    endDate = lastWeekSunday;
+  } else {
+    // Если сегодня не понедельник
+    // Показываем текущую неделю с понедельника до вчерашнего дня
+    
+    // Находим понедельник текущей недели
+    const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const currentWeekMonday = new Date(today);
+    currentWeekMonday.setDate(today.getDate() + daysToMonday);
+    
+    // Находим вчерашний день
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    
+    startDate = currentWeekMonday;
+    endDate = yesterday;
   }
+  
+  // Форматируем даты для input type="date" (YYYY-MM-DD)
+  const formatDateForInput = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Устанавливаем значения
+  dateFrom.value = formatDateForInput(startDate);
+  dateTo.value = formatDateForInput(endDate);
+  
+  console.log('Автоматически установлен период:');
+  console.log('С:', startDate.toLocaleDateString('ru-RU'));
+  console.log('По:', endDate.toLocaleDateString('ru-RU'));
+  console.log('В формате input:', dateFrom.value, '-', dateTo.value);
+  console.log('Сегодня день недели:', dayOfWeek, dayOfWeek === 1 ? '(понедельник)' : '(не понедельник)');
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ: aggregateCategories() - правильная группировка за период
 function aggregateCategories(data) {
   const aggregated = {};
-  
+
   // Собираем все уникальные числовые поля
   const numericFields = new Set();
-  
+
   // Проходим по всем данным и собираем поля
   data.forEach(row => {
     for (const key in row) {
@@ -140647,12 +140675,12 @@ function aggregateCategories(data) {
       }
     }
   });
-  
+
   // Инициализируем все числовые поля нулями
   numericFields.forEach(field => {
     aggregated[field] = 0;
   });
-  
+
   // Агрегируем все данные без группировки по дням
   // ВСЕ данные уже агрегируются за весь выбранный период
   data.forEach(row => {
@@ -140664,7 +140692,7 @@ function aggregateCategories(data) {
       }
     }
   });
-  
+
   // Отладочная информация
   console.log('=== АГРЕГАЦИЯ ДАННЫХ ===');
   console.log('Количество записей для агрегации:', data.length);
@@ -140675,7 +140703,7 @@ function aggregateCategories(data) {
   console.log('- Автохимия Шампунь Москва:', aggregated['Автохимия Шампунь Москва'] || 0);
   console.log('- Зарплата:', aggregated['Зарплата'] || 0);
   console.log('- Операционная прибыль:', aggregated['Операционная прибыль'] || 0);
-  
+
   return aggregated;
 }
 
