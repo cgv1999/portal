@@ -10,7 +10,7 @@ let animationCompleted = false;
 
 // КОНФИГУРАЦИЯ ЗАЩИТЫ
 const PROTECTION_CONFIG = {
-    PASSWORD: "NDA2024", // ⚠️ ЗДЕСЬ МЕНЯЙТЕ ПАРОЛЬ
+    PASSWORD: "дваярда", 
     SESSION_KEY: "nda_authenticated_v2",
     MAX_ATTEMPTS: 5,
     BLOCK_TIME: 30000 // 30 секунд
