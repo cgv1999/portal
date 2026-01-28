@@ -1,387 +1,358 @@
-/* Версия: 2.0 */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+#chart {
+    width: 100%;
+    height: 700px;
+    margin-top: 20px;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: #ff5014;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow-x: hidden;
-    -webkit-tap-highlight-color: transparent;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
 }
 
-/* Главный экран */
 .container {
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: white;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* НЕТ max-width - будет занимать всю доступную ширину */
 }
 
-/* Анимация NDA - изначально видна */
-#main {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    opacity: 1;
-    transition: opacity 0.8s ease;
+/* Остальной CSS остается как в первом примере, только без max-width */
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-/* Кнопки на десктопе - изначально скрыты */
-.buttons-container {
-    position: relative;
-    z-index: 30;
+.filters {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.filter-group {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    width: 100%;
-    max-width: 1400px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    min-width: 200px;
 }
 
-.buttons-row {
+.filter-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+}
+
+.filter-group select[multiple] {
+    height: 120px;
+}
+
+.date-range-group {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.date-range-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.date-range-group .date-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.date-range-group input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+    flex: 1;
+}
+
+.filter-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.selected-items {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.info {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #666;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+.stats {
+    display: flex;
     justify-content: center;
-    width: 100%;
+    gap: 20px;
+    margin-top: 10px;
     flex-wrap: wrap;
 }
 
-.portal-button {
-    background: rgba(255, 255, 255, 0.95);
-    border: none;
-    padding: 18px 18px;
-    border-radius: 12px;
-    font-size: 18px;
+.stat-item {
+    background: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: bold;
-    color: #ff5014;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    min-width: 160px;
-    min-height: 60px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    letter-spacing: 0.5px;
-    user-select: none;
-    flex: 1;
-    max-width: 240px; /* Увеличен с 220px до 240px */
-    
-    /* Добавленные свойства для переноса текста */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: normal;
-    word-wrap: break-word;
-    word-break: break-word;
-    line-height: 1.3;
 }
 
-.portal-button:hover {
-    background: white;
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+.stat-item.positive {
+    background: #28a745;
 }
 
-.portal-button:active {
-    transform: translateY(-4px);
+.stat-item.negative {
+    background: #dc3545;
 }
 
-.subtitle {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
-    padding: 15px;
-    z-index: 10;
-    letter-spacing: 1px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+.stat-item.revenue {
+    background: #007bff;
 }
 
-/* Контейнер аналитики - изначально скрыт */
-#analytics-container {
+.stat-item.bonus {
+    background: #28a745;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background: white;
-    z-index: 100;
-    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.back-button {
-    position: fixed;
-    top: 30px;
-    left: 30px;
-    background: #ff5014;
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Таблицы */
+.expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.expenses-table th,
+.expenses-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.expenses-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+}
+
+.expenses-table th:hover {
+    background-color: #e9ecef;
+}
+
+.expenses-table th.sorted-asc::after {
+    content: " ▲";
+    font-size: 12px;
+    color: #007bff;
+}
+
+.expenses-table th.sorted-desc::after {
+    content: " ▼";
+    font-size: 12px;
+    color: #007bff;
+}
+
+.expenses-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.expenses-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.modal-title {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    color: #666;
+    font-size: 16px;
+}
+
+.sort-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sort-btn {
+    background: #007bff;
     color: white;
     border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    z-index: 101;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    min-height: 50px;
-    min-width: 160px;
-    user-select: none;
+    font-size: 12px;
+    margin-right: 5px;
 }
 
-.back-button:hover {
-    background: #e64510;
-    transform: translateY(-2px);
+.sort-btn:hover {
+    background: #0056b3;
 }
 
-#analytics-frame {
-    position: absolute;
-    top: 0;
-    left: 0;
+.data-view-table {
     width: 100%;
-    height: 100%;
-    border: none;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 12px;
 }
 
-/* ========== МОБИЛЬНЫЕ СТИЛИ ========== */
-
-/* Планшеты и маленькие ноутбуки */
-@media (max-width: 1200px) {
-    .buttons-container {
-        max-width: 1000px;
-    }
-    
-    .portal-button {
-        min-width: 150px;
-        max-width: 220px; /* Увеличен с 200px до 220px */
-        font-size: 17px;
-        padding: 16px 25px;
-    }
+.data-view-table th,
+.data-view-table td {
+    border: 1px solid #ddd;
+    padding: 4px 8px;
+    text-align: right;
 }
 
-/* Средние экраны */
-@media (max-width: 1024px) {
-    .buttons-container {
-        gap: 15px;
-    }
-    
-    .buttons-row {
-        gap: 15px;
-    }
-    
-    .portal-button {
-        padding: 16px 20px;
-        font-size: 16px;
-        min-width: 140px;
-        max-width: 200px; /* Увеличен с 180px до 200px */
-        
-        /* Обеспечиваем перенос текста и на средних экранах */
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 1.3;
-    }
+.data-view-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-/* Мобильные устройства */
+.data-view-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.data-view-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Заголовки таблиц в модальных окнах */
+.modal h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Адаптивность */
 @media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group,
+    .date-range-group {
+        min-width: 100%;
+    }
+    
+    #chart {
+        height: 500px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 15px;
+    }
+    
+    .stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
     body {
-        min-height: -webkit-fill-available;
+        margin: 10px;
     }
     
     .container {
         padding: 15px;
-        justify-content: flex-start;
-        padding-top: 60px;
     }
     
-    .buttons-container {
-        margin-top: 40px;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
+    #chart {
+        height: 400px;
     }
     
-    .buttons-row {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
+    .expenses-table {
+        font-size: 12px;
     }
     
-    .portal-button {
-        width: 100%;
-        max-width: 340px; /* Увеличен с 320px до 340px */
-        min-height: 70px;
-        padding: 22px 15px;
-        font-size: 18px;
-        margin: 0 auto;
-        
-        /* Убеждаемся, что перенос работает на мобильных */
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 1.3;
-    }
-    
-    /* Убираем hover эффекты для тач-устройств */
-    .portal-button:hover {
-        transform: none;
-        background: rgba(255, 255, 255, 0.95);
-    }
-    
-    .portal-button:active {
-        background: white;
-        transform: scale(0.98);
-    }
-    
-    .subtitle {
-        position: relative;
-        bottom: auto;
-        margin-top: 40px;
-        font-size: 16px;
-        padding: 10px;
-    }
-    
-    .back-button {
-        top: 15px;
-        left: 15px;
-        padding: 12px 20px;
-        font-size: 16px;
-        min-height: 44px;
-        min-width: 140px;
-    }
-    
-    .back-button:hover {
-        transform: none;
-    }
-    
-    .back-button:active {
-        transform: scale(0.95);
-    }
-    
-    #analytics-frame {
-        top: 70px;
-        height: calc(100% - 70px);
-    }
-}
-
-/* Маленькие мобильные */
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-        padding-top: 50px;
-    }
-    
-    .portal-button {
-        min-height: 65px;
-        padding: 20px 12px;
-        font-size: 17px;
-        max-width: 300px; /* Добавлено ограничение для очень маленьких экранов */
-    }
-    
-    .subtitle {
-        font-size: 15px;
-        margin-top: 30px;
-    }
-    
-    .back-button {
-        top: 10px;
-        left: 10px;
-        padding: 10px 16px;
-        font-size: 15px;
-        min-width: 130px;
-    }
-    
-    #analytics-frame {
-        top: 60px;
-        height: calc(100% - 60px);
-    }
-}
-
-/* Ландшафтная ориентация */
-@media (max-height: 500px) and (orientation: landscape) {
-    .container {
-        padding-top: 20px;
-        justify-content: center;
-    }
-    
-    .buttons-container {
-        margin-top: 20px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .buttons-row {
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: auto;
-    }
-    
-    .portal-button {
-        min-height: 50px;
-        padding: 12px 15px;
-        font-size: 16px;
-        min-width: 140px;
-        max-width: 50%; /* Увеличен с 45% до 50% */
-        flex: 1 1 auto;
-        
-        /* Ключевые свойства для переноса текста в ландшафтной ориентации */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 1.3;
-        text-align: center;
-    }
-    
-    .subtitle {
-        margin-top: 15px;
-        font-size: 14px;
-    }
-}
-
-/* Особые случаи для очень маленьких экранов */
-@media (max-width: 320px) {
-    .portal-button {
-        font-size: 16px;
-        padding: 18px 10px;
-        max-width: 280px; /* Добавлено ограничение */
-        
-        /* Обеспечиваем перенос на самых маленьких экранах */
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 1.3;
-    }
-    
-    .subtitle {
-        font-size: 14px;
+    .expenses-table th,
+    .expenses-table td {
+        padding: 6px 4px;
     }
 }
