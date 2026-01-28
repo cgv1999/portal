@@ -106498,23 +106498,23 @@ const embeddedData = {
       "Объект": "Большаков Максим",
       "Адрес": "ПЛЕЩЕЕВА",
       "Выручка": 11300,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 3190,
       "Автохимия Шампунь Москва": -2500,
       "Автохимия Шампунь СПБ": 0,
       "Автохимия Пена": -271.4,
       "Автохимия Юр. Лица": 0,
       "Автохимия Абонементы/сертификаты/подписки": 0,
-      "Коммунальные расходы": -791,
+      "Коммунальные расходы": -1014.3,
       "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
       "Аренда": -6016.764516,
       "Зарплата": -11053.20158,
-      "Комиссии": -259.9,
-      "Налоги": -452,
-      "НДС": -739.2523364,
+      "Комиссии": -333.27,
+      "Налоги": -579.6,
+      "НДС": -947.9439252,
       "Прочие": 0,
       "Неделимый расход": -24308.51406,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": -35092.0325
+      "Операционная прибыль": -32534.99409
     },
     {
       "Дата": "26.01.2026",
@@ -106659,23 +106659,23 @@ const embeddedData = {
       "Объект": "Данилов Алексей",
       "Адрес": "ЛЮБЛИНСКАЯ 135",
       "Выручка": 128308,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 1180,
       "Автохимия Шампунь Москва": -3306.548571,
       "Автохимия Шампунь СПБ": 0,
       "Автохимия Пена": 0,
       "Автохимия Юр. Лица": 0,
       "Автохимия Абонементы/сертификаты/подписки": 0,
-      "Коммунальные расходы": -8981.56,
+      "Коммунальные расходы": -9064.16,
       "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
       "Аренда": -5127.214194,
       "Зарплата": -11053.20158,
-      "Комиссии": -2951.084,
-      "Налоги": -7698.48,
-      "НДС": -6109.904762,
+      "Комиссии": -2978.224,
+      "Налоги": -7769.28,
+      "НДС": -6166.095238,
       "Прочие": 0,
       "Неделимый расход": -24308.51406,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": 58771.49283
+      "Операционная прибыль": 59714.76235
     },
     {
       "Дата": "26.01.2026",
@@ -106721,7 +106721,7 @@ const embeddedData = {
       "Прочие": -2750,
       "Неделимый расход": -24308.51406,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": -2028.126053
+      "Операционная прибыль": -2028.126052
     },
     {
       "Дата": "26.01.2026",
@@ -106774,23 +106774,23 @@ const embeddedData = {
       "Объект": "Юрлов Денис",
       "Адрес": "Куликовская",
       "Выручка": 139194,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 1470,
       "Автохимия Шампунь Москва": -3571.428571,
       "Автохимия Шампунь СПБ": 0,
       "Автохимия Пена": -885.5714286,
       "Автохимия Юр. Лица": 0,
       "Автохимия Абонементы/сертификаты/подписки": 0,
-      "Коммунальные расходы": -9743.58,
+      "Коммунальные расходы": -9846.48,
       "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
       "Аренда": -10322.58065,
       "Зарплата": -11632.19248,
-      "Комиссии": -3201.462,
-      "Налоги": -8351.64,
-      "НДС": -6628.285714,
+      "Комиссии": -3235.272,
+      "Налоги": -8439.84,
+      "НДС": -6698.285714,
       "Прочие": 0,
       "Неделимый расход": -24308.51406,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": 60548.74509
+      "Операционная прибыль": 61723.83509
     },
     {
       "Дата": "26.01.2026",
@@ -106820,23 +106820,23 @@ const embeddedData = {
       "Объект": "Юрлов Денис",
       "Адрес": "СПб, Маршала Жукова",
       "Выручка": 126749,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 1040,
       "Автохимия Шампунь Москва": 0,
       "Автохимия Шампунь СПБ": -4444.285714,
       "Автохимия Пена": 0,
       "Автохимия Юр. Лица": 0,
       "Автохимия Абонементы/сертификаты/подписки": 0,
-      "Коммунальные расходы": -8872.43,
+      "Коммунальные расходы": -8945.23,
       "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
       "Аренда": -4612.903226,
       "Зарплата": -11053.20158,
-      "Комиссии": -2915.227,
-      "Налоги": -7604.94,
-      "НДС": -6035.666667,
+      "Комиссии": -2939.147,
+      "Налоги": -7667.34,
+      "НДС": -6085.190476,
       "Прочие": 0,
       "Неделимый расход": -24308.51406,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": 56901.83175
+      "Операционная прибыль": 57733.18794
     },
     {
       "Дата": "26.01.2026",
@@ -106889,37 +106889,37 @@ const embeddedData = {
       "Объект": "Абонементы/сертификаты",
       "Адрес": "Абонементы/сертификаты",
       "Выручка": 0,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 72732.5,
       "Автохимия Шампунь Москва": 0,
       "Автохимия Шампунь СПБ": 0,
       "Автохимия Пена": 0,
       "Автохимия Юр. Лица": 0,
-      "Автохимия Абонементы/сертификаты/подписки": 0,
+      "Автохимия Абонементы/сертификаты/подписки": -6807.762,
       "Коммунальные расходы": 0,
-      "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
+      "Коммунальные расходы Абонементы/сертификаты/подписки": -10473.48,
       "Аренда": 0,
       "Зарплата": 0,
       "Комиссии": 0,
       "Налоги": 0,
-      "НДС": 0,
+      "НДС": -3463.452381,
       "Прочие": 0,
       "Неделимый расход": 0,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": 0
+      "Операционная прибыль": 51987.80562
     },
     {
       "Дата": "26.01.2026",
       "Объект": "Подписка на мойку",
       "Адрес": "Подписка на мойку",
       "Выручка": 0,
-      "Выручка Сайт": 0,
+      "Выручка Сайт": 20000,
       "Автохимия Шампунь Москва": 0,
       "Автохимия Шампунь СПБ": 0,
       "Автохимия Пена": 0,
       "Автохимия Юр. Лица": 0,
-      "Автохимия Абонементы/сертификаты/подписки": 0,
+      "Автохимия Абонементы/сертификаты/подписки": -1872,
       "Коммунальные расходы": 0,
-      "Коммунальные расходы Абонементы/сертификаты/подписки": 0,
+      "Коммунальные расходы Абонементы/сертификаты/подписки": -2880,
       "Аренда": 0,
       "Зарплата": 0,
       "Комиссии": 0,
@@ -106928,7 +106928,7 @@ const embeddedData = {
       "Прочие": 0,
       "Неделимый расход": 0,
       "Франшиза сопровождение бонус": 0,
-      "Операционная прибыль": 0
+      "Операционная прибыль": 15248
     },
     {
       "Дата": "26.01.2026",
@@ -140686,31 +140686,38 @@ function getFranchiseSupportRevenueForPeriod(dateFrom, dateTo) {
   }, 0);
 }
 
-// НОВАЯ ФУНКЦИЯ: Детализация выручки по адресам
+// НОВАЯ ФУНКЦИЯ: Проверка, находится ли пользователь в режиме управляющего объекта
+function isManagerMode(selectedObject) {
+  return retailObjects.includes(selectedObject);
+}
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: showRevenueDetailsByAddress() с поддержкой управляющих
 function showRevenueDetailsByAddress() {
   const selectedObject = getSelectedObject();
   const selectedAddresses = getSelectedAddresses();
   const dateFrom = document.getElementById('dateFrom').value;
   const dateTo = document.getElementById('dateTo').value;
 
-  // Проверяем, находится ли пользователь в режиме "Вся розница + Все адреса"
+  // Проверяем, находится ли пользователь в нужном режиме
   const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
     (!selectedAddresses || selectedAddresses.length === 0);
-
-  // Проверяем, находится ли пользователь в режиме "Франшиза отдел сопровождения"
   const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+  const isManagerModeActive = isManagerMode(selectedObject);
 
-  if (!isAllRetailAllAddresses && !isFranchiseSupport) {
-    alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"');
+  if (!isAllRetailAllAddresses && !isFranchiseSupport && !isManagerModeActive) {
+    alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
     return;
   }
 
   if (isAllRetailAllAddresses) {
-    // Детализация для розницы
+    // Детализация для всей розницы
     showRetailRevenueDetails(dateFrom, dateTo);
   } else if (isFranchiseSupport) {
     // Детализация для франшизы сопровождения
     showFranchiseSupportRevenueDetails(dateFrom, dateTo);
+  } else if (isManagerModeActive) {
+    // Детализация для конкретного управляющего
+    showManagerRevenueDetails(selectedObject, dateFrom, dateTo);
   }
 }
 
@@ -142205,7 +142212,315 @@ function updateSelectionInfo(dateFrom, dateTo, object, addresses, count) {
   document.getElementById('fileInfo').textContent = info;
 }
 
-// НОВАЯ ФУНКЦИЯ: Форматирование даты для отображения
+// НОВАЯ ФУНКЦИЯ: Автоматическое определение адресов по управляющему для выбранного периода
+function getAddressesByManagerForPeriod(managerName, dateFrom, dateTo) {
+  let filteredData = allData.filter(row => {
+    const object = String(row.Объект || '').trim();
+    const address = String(row.Адрес || '').trim();
+    
+    // Фильтруем по управляющему и исключаем франшизу роялти
+    return object === managerName && 
+           !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  // Получаем уникальные адреса из отфильтрованных данных
+  const uniqueAddresses = [...new Set(filteredData
+    .map(row => row.Адрес)
+    .filter(address => address && address.trim() !== '')
+  )];
+
+  return uniqueAddresses;
+}
+
+// НОВАЯ ФУНКЦИЯ: Детализация выручки для управляющего с автоматическим определением адресов
+function showManagerRevenueDetails(managerName, dateFrom, dateTo) {
+  // Получаем все адреса, относящиеся к этому управляющему ЗА ВЫБРАННЫЙ ПЕРИОД
+  const managerAddresses = getAddressesByManagerForPeriod(managerName, dateFrom, dateTo);
+  
+  if (managerAddresses.length === 0) {
+    alert(`Нет адресов для управляющего "${managerName}" за выбранный период ${dateFrom || ''} - ${dateTo || ''}`);
+    return;
+  }
+
+  // Получаем отфильтрованные данные (уже в дневном формате)
+  let filteredData = allData.filter(row => {
+    const address = String(row.Адрес || '').trim();
+    const object = String(row.Объект || '').trim();
+    
+    // Фильтруем по управляющему и исключаем франшизу роялти
+    return object === managerName && 
+           !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  if (filteredData.length === 0) {
+    alert(`Нет данных о выручке для управляющего "${managerName}" за выбранный период ${dateFrom || ''} - ${dateTo || ''}`);
+    return;
+  }
+
+  console.log(`=== Данные для управляющего: ${managerName} ===`);
+  console.log(`Период: ${dateFrom} - ${dateTo}`);
+  console.log(`Найдено записей: ${filteredData.length}`);
+  console.log(`Уникальные адреса: ${managerAddresses.join(', ')}`);
+
+  // Группируем по адресам
+  const revenueByAddress = {};
+  filteredData.forEach(row => {
+    const address = row.Адрес;
+    const revenue = row.Выручка || 0;
+
+    if (address) {
+      if (!revenueByAddress[address]) {
+        revenueByAddress[address] = 0;
+      }
+      revenueByAddress[address] += revenue;
+    }
+  });
+
+  // Преобразуем в массив и сортируем по убыванию
+  const sortedRevenue = Object.entries(revenueByAddress)
+    .map(([address, revenue]) => ({ 
+      address, 
+      revenue,
+      // Добавляем стандартизированный адрес для корректной сортировки
+      standardizedAddress: standardizeAddress(address)
+    }))
+    .sort((a, b) => {
+      // Сначала сортируем по выручке (по убыванию)
+      if (b.revenue !== a.revenue) {
+        return b.revenue - a.revenue;
+      }
+      // Если выручка равна, сортируем по названию адреса
+      return a.standardizedAddress.localeCompare(b.standardizedAddress);
+    });
+
+  console.log(`Выручка по адресам:`);
+  sortedRevenue.forEach(item => {
+    console.log(`  ${item.address}: ${formatCurrency(item.revenue)}`);
+  });
+
+  // Создаем график
+  createManagerRevenueChart(managerName, sortedRevenue, dateFrom, dateTo);
+}
+
+// НОВАЯ ФУНКЦИЯ: Создание графика выручки для управляющего
+function createManagerRevenueChart(managerName, revenueData, dateFrom, dateTo) {
+  if (currentChart) {
+    currentChart.dispose();
+    currentChart = null;
+  }
+
+  const chart = echarts.init(document.getElementById('chart'));
+  currentChart = chart;
+
+  // Подготавливаем данные для графика
+  const addresses = revenueData.map(item => item.address);
+  const revenues = revenueData.map(item => item.revenue);
+
+  const option = {
+    title: {
+      text: `Выручка по адресам - ${managerName}`,
+      subtext: dateFrom && dateTo ? `Период: ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}` : '',
+      left: 'center',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        const data = params[0];
+        const value = data.value;
+        const address = data.name;
+        const totalRevenue = revenues.reduce((sum, val) => sum + val, 0);
+        const percentage = totalRevenue > 0 ? ((value / totalRevenue) * 100).toFixed(1) : 0;
+        
+        return `
+          <div style="text-align: left; padding: 5px;">
+            <strong>${address}</strong><br/>
+            Управляющий: ${managerName}<br/>
+            Выручка: ${formatCurrency(value)}<br/>
+            Доля от общей: ${percentage}%
+          </div>
+        `;
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: addresses,
+      axisLabel: {
+        interval: 0,
+        rotate: 45,
+        fontSize: 11,
+        margin: 10,
+        formatter: function (value) {
+          // Ограничиваем длину названия адреса
+          return value.length > 20 ? value.substring(0, 20) + '...' : value;
+        }
+      },
+      axisTick: {
+        alignWithLabel: true
+      }
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      axisLabel: {
+        formatter: formatCurrency
+      }
+    },
+    series: [
+      {
+        name: 'Выручка',
+        type: 'bar',
+        barWidth: '60%',
+        data: revenues.map((value, index) => ({
+          value: value,
+          itemStyle: {
+            // Разные цвета для разных управляющих
+            color: getManagerColor(managerName),
+            // Градиент для визуального эффекта
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.3)'
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function (params) {
+            return formatCurrency(params.value);
+          },
+          fontSize: 10,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 20,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ],
+    dataZoom: [
+      {
+        type: 'inside',
+        xAxisIndex: 0,
+        start: 0,
+        end: 100
+      },
+      {
+        show: true,
+        xAxisIndex: 0,
+        type: 'slider',
+        bottom: 10,
+        start: 0,
+        end: 100,
+        height: 20
+      }
+    ]
+  };
+
+  chart.setOption(option);
+
+  // Обновляем статистику
+  const totalRevenue = revenues.reduce((sum, value) => sum + value, 0);
+  const avgRevenue = revenues.length > 0 ? totalRevenue / revenues.length : 0;
+  const maxRevenue = Math.max(...revenues);
+  const minRevenue = Math.min(...revenues);
+  const maxAddress = revenueData.find(item => item.revenue === maxRevenue)?.address || 'Н/Д';
+  const minAddress = revenueData.find(item => item.revenue === minRevenue)?.address || 'Н/Д';
+
+  document.getElementById('statsInfo').innerHTML = `
+    <div class="stat-item" style="background-color: ${getManagerColor(managerName)}30; border-left: 4px solid ${getManagerColor(managerName)};">
+      <strong>${managerName}</strong>
+    </div>
+    <div class="stat-item">Период: ${dateFrom ? formatDateForDisplay(dateFrom) : 'н/д'} - ${dateTo ? formatDateForDisplay(dateTo) : 'н/д'}</div>
+    <div class="stat-item">Адресов: ${revenues.length}</div>
+    <div class="stat-item">Записей: ${allData.filter(row => row.Объект === managerName && 
+      (!dateFrom || !dateTo || (row.Дата && isDateInRange(row.Дата, dateFrom, dateTo)))).length}</div>
+    <div class="stat-item">Общая выручка: ${formatCurrency(totalRevenue)}</div>
+    <div class="stat-item">Средняя выручка: ${formatCurrency(avgRevenue)}</div>
+    <div class="stat-item">Максимальная: ${formatCurrency(maxRevenue)} (${maxAddress})</div>
+    <div class="stat-item">Минимальная: ${formatCurrency(minRevenue)} (${minAddress})</div>
+  `;
+
+  window.addEventListener('resize', function () {
+    chart.resize();
+  });
+}
+
+// НОВАЯ ФУНКЦИЯ: Проверка, находится ли дата в диапазоне
+function isDateInRange(dateStr, dateFrom, dateTo) {
+  if (!dateStr || !dateFrom || !dateTo) return true;
+  try {
+    const date = new Date(dateStr.split('.').reverse().join('-'));
+    const fromDate = new Date(dateFrom);
+    const toDate = new Date(dateTo);
+    return date >= fromDate && date <= toDate;
+  } catch (e) {
+    return false;
+  }
+}
+
+// НОВАЯ ФУНКЦИЯ: Получение цвета для управляющего
+function getManagerColor(managerName) {
+  const colorMap = {
+    "Козубенко Денис": "#4CAF50",      // Зеленый
+    "Сенатов Кирилл": "#2196F3",       // Синий
+    "Большаков Максим": "#FF9800",     // Оранжевый
+    "Мозговой Филипп": "#9C27B0",      // Фиолетовый
+    "Данилов Алексей": "#F44336",      // Красный
+    "Ичко Роман": "#00BCD4",           // Голубой
+    "Юрлов Денис": "#FF5722",          // Глубокий оранжевый
+    "Неизвестный управляющий": "#607D8B" // Серо-синий
+  };
+  return colorMap[managerName] || "#4CAF50";
+}
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: Форматирование даты для отображения
 function formatDateForDisplay(dateStr) {
   if (!dateStr) return '';
   try {
@@ -142542,7 +142857,7 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
   const dateFrom = document.getElementById('dateFrom').value;
   const dateTo = document.getElementById('dateTo').value;
   if (dateFrom && dateTo) {
-    subtitle += ` | Период: ${dateFrom} - ${dateTo}`;
+    subtitle += ` | Период: ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}`;
   }
   if (object) {
     subtitle += ` | ${object === 'all_retail' ? 'Вся розница' : object}`;
@@ -142573,10 +142888,11 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
     const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
       (!selectedAddresses || selectedAddresses.length === 0);
     const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+    const isManagerModeActive = isManagerMode(selectedObject);
 
     if (category === "Выручка") {
       // Добавляем обработчик клика для столбца "Выручка"
-      if (isAllRetailAllAddresses || isFranchiseSupport) {
+      if (isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
         itemStyle.cursor = 'pointer';
       } else {
         itemStyle.cursor = 'default';
@@ -142632,14 +142948,17 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
           (!selectedAddresses || selectedAddresses.length === 0);
         const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+        const isManagerModeActive = isManagerMode(selectedObject);
 
         if (category === "Выручка") {
           if (isAllRetailAllAddresses) {
-            tooltip += `<br/><em>Кликните для детализации выручки по адресам</em>`;
+            tooltip += `<br/><em>Кликните для детализации выручки по всем адресам розницы</em>`;
           } else if (isFranchiseSupport) {
             tooltip += `<br/><em>Кликните для детализации оплат от франчайзи</em>`;
+          } else if (isManagerModeActive) {
+            tooltip += `<br/><em>Кликните для детализации выручки по адресам управляющего</em>`;
           } else {
-            tooltip += `<br/><em>Детализация доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"</em>`;
+            tooltip += `<br/><em>Детализация доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего</em>`;
           }
         } else if (category === "Прочие") {
           const filteredExpenses = getFilteredOtherExpenses();
@@ -142737,12 +143056,13 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
       const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
         (!selectedAddresses || selectedAddresses.length === 0);
       const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
+      const isManagerModeActive = isManagerMode(selectedObject);
 
       if (category === "Выручка") {
-        if (isAllRetailAllAddresses || isFranchiseSupport) {
+        if (isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
           showRevenueDetailsByAddress();
         } else {
-          alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса" или "Франшиза отдел сопровождения"');
+          alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
         }
       } else if (category === "Прочие") {
         showExpensesDetails();
@@ -142767,7 +143087,11 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
   });
 }
 
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: updateStats() - добавление информации о режиме управляющего
 function updateStats(revenue, franchBonus, profit, profitability, showFranchBonus) {
+  const selectedObject = getSelectedObject();
+  const isManagerModeActive = isManagerMode(selectedObject);
+  
   let statsHtml = `
         <div class="stat-item">Выручка: ${formatCurrency(revenue)}</div>
     `;
@@ -142790,6 +143114,15 @@ function updateStats(revenue, franchBonus, profit, profitability, showFranchBonu
         <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">Прибыль: ${formatCurrency(profit)}</div>
         <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность: ${profitability.toFixed(1)}%</div>
     `;
+    
+  // Добавляем информацию о режиме, если выбран управляющий
+  if (isManagerModeActive) {
+    statsHtml += `
+      <div class="stat-item" style="background-color: ${getManagerColor(selectedObject)}30; border-left: 4px solid ${getManagerColor(selectedObject)};">
+        <strong>Режим управляющего:</strong> ${selectedObject}
+      </div>
+    `;
+  }
 
   document.getElementById('statsInfo').innerHTML = statsHtml;
 }
