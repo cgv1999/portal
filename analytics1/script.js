@@ -140691,7 +140691,13 @@ function isManagerMode(selectedObject) {
   return retailObjects.includes(selectedObject);
 }
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ: showRevenueDetailsByAddress() с поддержкой управляющих
+// НОВАЯ ФУНКЦИЯ: Проверка, находится ли пользователь в режиме "Все объекты + Все адреса"
+function isAllObjectsAllAddressesMode(selectedObject, selectedAddresses) {
+  return (!selectedObject || selectedObject === '') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
+}
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: showRevenueDetailsByAddress() с поддержкой всех режимов
 function showRevenueDetailsByAddress() {
   const selectedObject = getSelectedObject();
   const selectedAddresses = getSelectedAddresses();
@@ -140699,17 +140705,21 @@ function showRevenueDetailsByAddress() {
   const dateTo = document.getElementById('dateTo').value;
 
   // Проверяем, находится ли пользователь в нужном режиме
+  const isAllObjectsAllAddresses = isAllObjectsAllAddressesMode(selectedObject, selectedAddresses);
   const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
     (!selectedAddresses || selectedAddresses.length === 0);
   const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
   const isManagerModeActive = isManagerMode(selectedObject);
 
-  if (!isAllRetailAllAddresses && !isFranchiseSupport && !isManagerModeActive) {
-    alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
+  if (!isAllObjectsAllAddresses && !isAllRetailAllAddresses && !isFranchiseSupport && !isManagerModeActive) {
+    alert('Детализация выручки доступна только в режиме "Все объекты + Все адреса", "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
     return;
   }
 
-  if (isAllRetailAllAddresses) {
+  if (isAllObjectsAllAddresses) {
+    // Детализация для всех объектов (4 столбца)
+    showAllObjectsRevenueDetails(dateFrom, dateTo);
+  } else if (isAllRetailAllAddresses) {
     // Детализация для всей розницы
     showRetailRevenueDetails(dateFrom, dateTo);
   } else if (isFranchiseSupport) {
@@ -142840,6 +142850,360 @@ function formatCurrency(value) {
   return Math.round(value).toLocaleString('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
+// НОВАЯ ФУНКЦИЯ: Детализация выручки по всем объектам (4 столбца)
+function showAllObjectsRevenueDetails(dateFrom, dateTo) {
+  // 1. Вся розница (сумма всех retailObjects)
+  const retailRevenue = calculateRetailRevenue(dateFrom, dateTo);
+  
+  // 2. Франшиза отдел продаж
+  const franchiseSalesRevenue = calculateFranchiseSalesRevenue(dateFrom, dateTo);
+  
+  // 3. Развитие
+  const developmentRevenue = calculateDevelopmentRevenue(dateFrom, dateTo);
+  
+  // 4. Франшиза отдел сопровождения
+  const franchiseSupportRevenue = calculateFranchiseSupportRevenue(dateFrom, dateTo);
+  
+  // Подготавливаем данные для графика
+  const revenueData = [
+    { category: "Вся розница", revenue: retailRevenue, color: "#4CAF50" },
+    { category: "Франшиза отдел продаж", revenue: franchiseSalesRevenue, color: "#2196F3" },
+    { category: "Развитие", revenue: developmentRevenue, color: "#FF9800" },
+    { category: "Франшиза отдел сопровождения", revenue: franchiseSupportRevenue, color: "#9C27B0" }
+  ];
+  
+  // Создаем график
+  createAllObjectsRevenueChart(revenueData, dateFrom, dateTo);
+}
+
+// НОВАЯ ФУНКЦИЯ: Расчет выручки для всей розницы
+function calculateRetailRevenue(dateFrom, dateTo) {
+  let filteredData = allData.filter(row => {
+    const object = String(row.Объект || '').trim();
+    const address = String(row.Адрес || '').trim();
+    
+    // Фильтруем по retailObjects и исключаем франшизу роялти
+    return retailObjects.includes(object) && 
+           !address.toLowerCase().includes('франшиза роялти');
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  // Суммируем выручку
+  const totalRevenue = filteredData.reduce((sum, row) => {
+    return sum + (row.Выручка || 0) + (row['Выручка Сайт'] || 0);
+  }, 0);
+
+  console.log(`Выручка всей розницы: ${formatCurrency(totalRevenue)} (${filteredData.length} записей)`);
+  return totalRevenue;
+}
+
+// НОВАЯ ФУНКЦИЯ: Расчет выручки франшизы отдела продаж
+function calculateFranchiseSalesRevenue(dateFrom, dateTo) {
+  let filteredData = allData.filter(row => {
+    const object = String(row.Объект || '').trim();
+    const address = String(row.Адрес || '').trim();
+    
+    // Ищем франшизу отдела продаж
+    return (object === 'Франшиза отдел продаж' || 
+            address.toLowerCase().includes('франшиза отдел продаж') ||
+            address.toLowerCase().includes('франшиза отдел продаж'));
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  // Суммируем выручку
+  const totalRevenue = filteredData.reduce((sum, row) => {
+    return sum + (row.Выручка || 0) + (row['Выручка Сайт'] || 0);
+  }, 0);
+
+  console.log(`Выручка франшизы отдела продаж: ${formatCurrency(totalRevenue)} (${filteredData.length} записей)`);
+  return totalRevenue;
+}
+
+// НОВАЯ ФУНКЦИЯ: Расчет выручки Развития
+function calculateDevelopmentRevenue(dateFrom, dateTo) {
+  let filteredData = allData.filter(row => {
+    const object = String(row.Объект || '').trim();
+    const address = String(row.Адрес || '').trim();
+    
+    // Ищем Развитие
+    return object === 'Развитие' || 
+           address.toLowerCase().includes('развитие');
+  });
+
+  // Фильтруем по дате
+  if (dateFrom && dateTo) {
+    filteredData = filteredData.filter(row => {
+      const rowDateStr = row.Дата;
+      if (!rowDateStr) return true;
+      try {
+        const rowDate = new Date(rowDateStr.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+        return rowDate >= fromDate && rowDate <= toDate;
+      } catch (e) {
+        return true;
+      }
+    });
+  }
+
+  // Суммируем выручку
+  const totalRevenue = filteredData.reduce((sum, row) => {
+    return sum + (row.Выручка || 0) + (row['Выручка Сайт'] || 0);
+  }, 0);
+
+  console.log(`Выручка Развития: ${formatCurrency(totalRevenue)} (${filteredData.length} записей)`);
+  return totalRevenue;
+}
+
+// НОВАЯ ФУНКЦИЯ: Расчет выручки франшизы сопровождения
+function calculateFranchiseSupportRevenue(dateFrom, dateTo) {
+  if (!dateFrom || !dateTo) return 0;
+
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+
+  const filteredSupportData = supportData.filter(item => {
+    if (!item.Дата) return false;
+    try {
+      const itemDate = new Date(item.Дата.split('.').reverse().join('-'));
+      return itemDate >= fromDate && itemDate <= toDate;
+    } catch (e) {
+      return false;
+    }
+  });
+
+  // Суммируем все оплаты от франчайзи
+  const totalRevenue = filteredSupportData.reduce((total, item) => {
+    return total +
+      (item["Оплаты от франчайзи за а/х"] || 0) +
+      (item["Оплаты от франчайзи за ворота"] || 0) +
+      (item["Оплаты от франчайзи за прочее"] || 0);
+  }, 0);
+
+  console.log(`Выручка франшизы сопровождения: ${formatCurrency(totalRevenue)} (${filteredSupportData.length} записей)`);
+  return totalRevenue;
+}
+
+// НОВАЯ ФУНКЦИЯ: Создание графика выручки по всем объектам
+function createAllObjectsRevenueChart(revenueData, dateFrom, dateTo) {
+  if (currentChart) {
+    currentChart.dispose();
+    currentChart = null;
+  }
+
+  const chart = echarts.init(document.getElementById('chart'));
+  currentChart = chart;
+
+  // Подготавливаем данные для графика
+  const categories = revenueData.map(item => item.category);
+  const revenues = revenueData.map(item => item.revenue);
+  const colors = revenueData.map(item => item.color);
+
+  const option = {
+    title: {
+      text: 'Выручка по направлениям бизнеса',
+      subtext: dateFrom && dateTo ? `Период: ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}` : '',
+      left: 'center',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params) {
+        const data = params[0];
+        const value = data.value;
+        const category = data.name;
+        const totalRevenue = revenues.reduce((sum, val) => sum + val, 0);
+        const percentage = totalRevenue > 0 ? ((value / totalRevenue) * 100).toFixed(1) : 0;
+        
+        let description = '';
+        if (category === "Вся розница") {
+          description = "Включает 8 управляющих: Козубенко Денис, Сенатов Кирилл и др.";
+        } else if (category === "Франшиза отдел продаж") {
+          description = "Выручка от продажи франшиз";
+        } else if (category === "Развитие") {
+          description = "Доходы от проектов развития";
+        } else if (category === "Франшиза отдел сопровождения") {
+          description = "Оплаты от франчайзи за сопровождение";
+        }
+        
+        return `
+          <div style="text-align: left; padding: 5px;">
+            <strong>${category}</strong><br/>
+            ${description}<br/>
+            Выручка: ${formatCurrency(value)}<br/>
+            Доля от общей: ${percentage}%
+          </div>
+        `;
+      }
+    },
+    grid: {
+      left: '10%',
+      right: '10%',
+      bottom: '15%',
+      top: '15%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: categories,
+      axisLabel: {
+        interval: 0,
+        rotate: 0,
+        fontSize: 12,
+        margin: 10,
+        fontWeight: 'bold'
+      },
+      axisTick: {
+        alignWithLabel: true
+      }
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      axisLabel: {
+        formatter: formatCurrency
+      },
+      splitLine: {
+        lineStyle: {
+          type: 'dashed'
+        }
+      }
+    },
+    series: [
+      {
+        name: 'Выручка',
+        type: 'bar',
+        barWidth: '50%',
+        data: revenues.map((value, index) => ({
+          value: value,
+          itemStyle: {
+            color: colors[index],
+            shadowBlur: 10,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: [5, 5, 0, 0]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function (params) {
+            return formatCurrency(params.value);
+          },
+          fontSize: 11,
+          fontWeight: 'bold',
+          color: '#333'
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 20,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
+
+  chart.setOption(option);
+
+  // Обновляем статистику
+  const totalRevenue = revenues.reduce((sum, value) => sum + value, 0);
+  const maxRevenue = Math.max(...revenues);
+  const minRevenue = Math.min(...revenues);
+  const maxCategory = revenueData.find(item => item.revenue === maxRevenue)?.category || 'Н/Д';
+  const minCategory = revenueData.find(item => item.revenue === minRevenue)?.category || 'Н/Д';
+
+  document.getElementById('statsInfo').innerHTML = `
+    <div class="stat-item" style="background-color: #f8f9fa; border-left: 4px solid #007bff;">
+      <strong>Общая выручка по всем направлениям</strong>
+    </div>
+    <div class="stat-item">Период: ${dateFrom ? formatDateForDisplay(dateFrom) : 'н/д'} - ${dateTo ? formatDateForDisplay(dateTo) : 'н/д'}</div>
+    <div class="stat-item" style="background-color: #4CAF5030;">Вся розница: ${formatCurrency(revenueData[0].revenue)}</div>
+    <div class="stat-item" style="background-color: #2196F330;">Франшиза продаж: ${formatCurrency(revenueData[1].revenue)}</div>
+    <div class="stat-item" style="background-color: #FF980030;">Развитие: ${formatCurrency(revenueData[2].revenue)}</div>
+    <div class="stat-item" style="background-color: #9C27B030;">Франшиза сопровождение: ${formatCurrency(revenueData[3].revenue)}</div>
+    <div class="stat-item">Общая выручка: ${formatCurrency(totalRevenue)}</div>
+    <div class="stat-item">Максимум: ${formatCurrency(maxRevenue)} (${maxCategory})</div>
+    <div class="stat-item">Минимум: ${formatCurrency(minRevenue)} (${minCategory})</div>
+  `;
+
+  // Добавляем клик по столбцам для детализации
+  chart.on('click', function (params) {
+    if (params.componentType === 'series' && params.seriesType === 'bar') {
+      const category = params.name;
+      
+      if (category === "Вся розница") {
+        // Переходим в режим детализации розницы
+        document.getElementById('objectSelect').value = 'all_retail';
+        document.getElementById('addressSelect').value = '';
+        applyFilters();
+        
+        // Показываем сообщение
+        setTimeout(() => {
+          alert('Переключено в режим "Вся розница". Кликните на столбец "Выручка" для детализации по адресам.');
+        }, 100);
+      }
+      else if (category === "Франшиза отдел продаж") {
+        alert('Для франшизы отдела продаж детализация будет доступна в будущих обновлениях.');
+      }
+      else if (category === "Развитие") {
+        alert('Для направления "Развитие" детализация будет доступна в будущих обновлениях.');
+      }
+      else if (category === "Франшиза отдел сопровождения") {
+        // Переходим в режим франшизы сопровождения
+        document.getElementById('objectSelect').value = 'Франшиза отдел сопровождения';
+        document.getElementById('addressSelect').value = '';
+        applyFilters();
+        
+        // Показываем сообщение
+        setTimeout(() => {
+          alert('Переключено в режим "Франшиза отдел сопровождения". Кликните на столбец "Выручка" для детализации оплат.');
+        }, 100);
+      }
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    chart.resize();
+  });
+}
+
+// ОБНОВЛЕННАЯ ФУНКЦИЯ: renderChart() - добавление подсказки для режима "Все объекты"
 function renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, finalProfit) {
   const revenueIndex = categories.indexOf("Выручка");
   const franchBonusIndex = showFranchBonus ? categories.indexOf("Франшиза сопровождение бонус") : -1;
@@ -142883,8 +143247,7 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
     const itemStyle = { color: color };
     const selectedObject = getSelectedObject();
     const selectedAddresses = getSelectedAddresses();
-    const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-      (!selectedAddresses || selectedAddresses.length === 0);
+    const isAllObjectsAllAddresses = isAllObjectsAllAddressesMode(selectedObject, selectedAddresses);
     const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
       (!selectedAddresses || selectedAddresses.length === 0);
     const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
@@ -142892,7 +143255,7 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
 
     if (category === "Выручка") {
       // Добавляем обработчик клика для столбца "Выручка"
-      if (isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
+      if (isAllObjectsAllAddresses || isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
         itemStyle.cursor = 'pointer';
       } else {
         itemStyle.cursor = 'default';
@@ -142900,6 +143263,8 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
     } else if (category === "Прочие" || category === "Общий расход" || category === "З/п офис") {
       itemStyle.cursor = 'pointer';
     } else if (category === "Неделимый расход") {
+      const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+        (!selectedAddresses || selectedAddresses.length === 0);
       if (isDrilldownMode) {
         itemStyle.cursor = 'pointer';
       } else {
@@ -142943,27 +143308,30 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
 
         const selectedObject = getSelectedObject();
         const selectedAddresses = getSelectedAddresses();
-        const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-          (!selectedAddresses || selectedAddresses.length === 0);
+        const isAllObjectsAllAddresses = isAllObjectsAllAddressesMode(selectedObject, selectedAddresses);
         const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
           (!selectedAddresses || selectedAddresses.length === 0);
         const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
         const isManagerModeActive = isManagerMode(selectedObject);
 
         if (category === "Выручка") {
-          if (isAllRetailAllAddresses) {
+          if (isAllObjectsAllAddresses) {
+            tooltip += `<br/><em>Кликните для просмотра выручки по 4 направлениям бизнеса</em>`;
+          } else if (isAllRetailAllAddresses) {
             tooltip += `<br/><em>Кликните для детализации выручки по всем адресам розницы</em>`;
           } else if (isFranchiseSupport) {
             tooltip += `<br/><em>Кликните для детализации оплат от франчайзи</em>`;
           } else if (isManagerModeActive) {
             tooltip += `<br/><em>Кликните для детализации выручки по адресам управляющего</em>`;
           } else {
-            tooltip += `<br/><em>Детализация доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего</em>`;
+            tooltip += `<br/><em>Детализация доступна только в определенных режимах</em>`;
           }
         } else if (category === "Прочие") {
           const filteredExpenses = getFilteredOtherExpenses();
           tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
         } else if (category === "Неделимый расход") {
+          const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+            (!selectedAddresses || selectedAddresses.length === 0);
           if (isDrilldownMode) {
             const filteredExpenses = getFilteredIndivisibleExpenses();
             tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
@@ -143051,22 +143419,23 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
       const category = params.data.category || categories[params.dataIndex];
       const selectedObject = getSelectedObject();
       const selectedAddresses = getSelectedAddresses();
-      const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
-        (!selectedAddresses || selectedAddresses.length === 0);
+      const isAllObjectsAllAddresses = isAllObjectsAllAddressesMode(selectedObject, selectedAddresses);
       const isAllRetailAllAddresses = (selectedObject === 'all_retail' || selectedObject === '') &&
         (!selectedAddresses || selectedAddresses.length === 0);
       const isFranchiseSupport = selectedObject === 'Франшиза отдел сопровождения';
       const isManagerModeActive = isManagerMode(selectedObject);
 
       if (category === "Выручка") {
-        if (isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
+        if (isAllObjectsAllAddresses || isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
           showRevenueDetailsByAddress();
         } else {
-          alert('Детализация выручки доступна только в режиме "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
+          alert('Детализация выручки доступна только в режиме "Все объекты + Все адреса", "Вся розница + Все адреса", "Франшиза отдел сопровождения" или для отдельного управляющего');
         }
       } else if (category === "Прочие") {
         showExpensesDetails();
       } else if (category === "Неделимый расход") {
+        const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
+          (!selectedAddresses || selectedAddresses.length === 0);
         if (isDrilldownMode) {
           showIndivisibleDetails();
         } else {
