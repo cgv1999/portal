@@ -208,53 +208,94 @@ body {
 }
 
 /* Мобильные устройства - компактная версия */
+/* Мобильные устройства - без скролла */
 @media (max-width: 768px) {
     body {
-        min-height: 100vh;
-        overflow-y: auto;
+        height: 100vh;
+        min-height: -webkit-fill-available;
+        overflow: hidden; /* Запрещаем скролл на body */
     }
     
     .container {
-        padding: 10px 15px 5px 15px; /* Верх:10px, Снизу:5px */
-        justify-content: space-between; /* Распределяем пространство */
+        padding: 5px 10px; /* Минимальные отступы */
+        justify-content: space-between;
         height: 100vh;
         min-height: -webkit-fill-available;
+        overflow: hidden; /* Запрещаем скролл контейнера */
+        display: flex;
+        flex-direction: column;
     }
     
     .buttons-container {
-        margin-top: 5px;
-        gap: 8px;
+        margin-top: 0; /* Убираем отступ сверху */
+        gap: 6px;
         width: 100%;
         flex: 1;
+        overflow-y: auto; /* Разрешаем скролл только внутри контейнера кнопок */
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
     }
     
     .buttons-row {
-        gap: 8px;
+        gap: 6px;
         width: 100%;
+        margin-bottom: 5px;
     }
     
     .portal-button {
-        max-width: 320px; /* Немного уменьшаем ширину */
-        min-height: 60px; /* Уменьшаем высоту */
-        padding: 15px 12px; /* Уменьшаем отступы */
-        font-size: 16px; /* Уменьшаем шрифт */
+        max-width: 300px;
+        min-height: 55px; /* Еще меньше высота */
+        padding: 12px 10px; /* Минимальные отступы */
+        font-size: 15px;
+        line-height: 1.2; /* Уменьшаем межстрочный интервал */
     }
     
     .subtitle {
-        margin-top: 10px;
+        margin-top: 5px;
         margin-bottom: 5px;
-        font-size: 14px; /* Уменьшаем шрифт подписи */
+        font-size: 13px;
         padding: 5px;
         line-height: 1.2;
+        flex-shrink: 0; /* Не даем сжиматься */
+        text-align: center;
     }
     
     .back-button {
-        top: 10px;
-        left: 10px;
-        padding: 10px 16px;
-        font-size: 15px;
-        min-height: 40px;
-        min-width: 120px;
+        top: 5px;
+        left: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        min-height: 35px;
+        min-width: 100px;
+    }
+    
+    #analytics-frame {
+        top: 50px;
+        height: calc(100% - 50px);
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 768px) and (max-height: 600px) {
+    .portal-button {
+        min-height: 45px;
+        padding: 8px 6px;
+        font-size: 14px;
+        max-width: 280px;
+    }
+    
+    .buttons-container {
+        gap: 4px;
+    }
+    
+    .buttons-row {
+        gap: 4px;
+    }
+    
+    .subtitle {
+        font-size: 12px;
+        margin-top: 3px;
+        margin-bottom: 3px;
     }
 }
 
