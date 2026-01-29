@@ -207,92 +207,54 @@ body {
     }
 }
 
-/* Мобильные устройства */
+/* Мобильные устройства - компактная версия */
 @media (max-width: 768px) {
     body {
-        min-height: -webkit-fill-available;
-        overflow-y: auto; /* Добавляем скролл только при необходимости */
+        min-height: 100vh;
+        overflow-y: auto;
     }
     
     .container {
-        padding: 15px;
-        justify-content: flex-start;
-        padding-top: 10px; /* Уменьшаем отступ сверху */
-        min-height: 100vh; /* Занимаем всю высоту */
-        height: auto; /* Высота по содержимому */
+        padding: 10px 15px 5px 15px; /* Верх:10px, Снизу:5px */
+        justify-content: space-between; /* Распределяем пространство */
+        height: 100vh;
+        min-height: -webkit-fill-available;
     }
     
     .buttons-container {
-        margin-top: 10px; /* Уменьшаем отступ сверху */
-        flex-direction: column;
-        gap: 10px;
+        margin-top: 5px;
+        gap: 8px;
         width: 100%;
-        flex: 1; /* Занимаем доступное пространство */
+        flex: 1;
     }
     
     .buttons-row {
-        flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         width: 100%;
-        flex: 1; /* Растягиваемся по высоте */
     }
     
     .portal-button {
-        width: 100%;
-        max-width: 340px;
-        min-height: 70px;
-        padding: 18px 15px; /* Уменьшаем вертикальные отступы */
-        font-size: 18px;
-        margin: 0 auto;
-        
-        /* Убеждаемся, что перенос работает на мобильных */
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 1.3;
-    }
-    
-    /* Убираем hover эффекты для тач-устройств */
-    .portal-button:hover {
-        transform: none;
-        background: rgba(255, 255, 255, 0.95);
-    }
-    
-    .portal-button:active {
-        background: white;
-        transform: scale(0.98);
+        max-width: 320px; /* Немного уменьшаем ширину */
+        min-height: 60px; /* Уменьшаем высоту */
+        padding: 15px 12px; /* Уменьшаем отступы */
+        font-size: 16px; /* Уменьшаем шрифт */
     }
     
     .subtitle {
-        position: relative;
-        bottom: auto;
-        margin-top: 15px; /* Уменьшаем отступ сверху */
-        margin-bottom: 10px; /* Добавляем отступ снизу */
-        font-size: 16px;
-        padding: 10px;
-        flex-shrink: 0; /* Не сжимаемся */
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: 14px; /* Уменьшаем шрифт подписи */
+        padding: 5px;
+        line-height: 1.2;
     }
     
     .back-button {
-        top: 15px;
-        left: 15px;
-        padding: 12px 20px;
-        font-size: 16px;
-        min-height: 44px;
-        min-width: 140px;
-    }
-    
-    .back-button:hover {
-        transform: none;
-    }
-    
-    .back-button:active {
-        transform: scale(0.95);
-    }
-    
-    #analytics-frame {
-        top: 70px;
-        height: calc(100% - 70px);
+        top: 10px;
+        left: 10px;
+        padding: 10px 16px;
+        font-size: 15px;
+        min-height: 40px;
+        min-width: 120px;
     }
 }
 
