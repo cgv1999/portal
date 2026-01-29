@@ -211,31 +211,37 @@ body {
 @media (max-width: 768px) {
     body {
         min-height: -webkit-fill-available;
+        overflow-y: auto; /* Добавляем скролл только при необходимости */
     }
     
     .container {
         padding: 15px;
         justify-content: flex-start;
+        padding-top: 10px; /* Уменьшаем отступ сверху */
+        min-height: 100vh; /* Занимаем всю высоту */
+        height: auto; /* Высота по содержимому */
     }
     
     .buttons-container {
-        margin-top: 40px;
+        margin-top: 10px; /* Уменьшаем отступ сверху */
         flex-direction: column;
         gap: 10px;
         width: 100%;
+        flex: 1; /* Занимаем доступное пространство */
     }
     
     .buttons-row {
         flex-direction: column;
         gap: 10px;
         width: 100%;
+        flex: 1; /* Растягиваемся по высоте */
     }
     
     .portal-button {
         width: 100%;
-        max-width: 340px; /* Увеличен с 320px до 340px */
+        max-width: 340px;
         min-height: 70px;
-        padding: 22px 15px;
+        padding: 18px 15px; /* Уменьшаем вертикальные отступы */
         font-size: 18px;
         margin: 0 auto;
         
@@ -260,9 +266,11 @@ body {
     .subtitle {
         position: relative;
         bottom: auto;
-        margin-top: 40px;
+        margin-top: 15px; /* Уменьшаем отступ сверху */
+        margin-bottom: 10px; /* Добавляем отступ снизу */
         font-size: 16px;
         padding: 10px;
+        flex-shrink: 0; /* Не сжимаемся */
     }
     
     .back-button {
