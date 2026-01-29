@@ -144765,79 +144765,38 @@ function updateSalaryOfficeSortButtons() {
 
 // ==================== ЭКСПОРТ В CSV (открывается в Excel) ====================
 
-// Функция для добавления кнопки экспорта
-function addExportToExcelButton() {
-  // Проверяем, не добавлена ли уже кнопка
-  if (document.getElementById('exportExcelBtn')) {
-    return;
-  }
-  
-  const exportButton = document.createElement('button');
-  exportButton.id = 'exportExcelBtn';
-  exportButton.innerHTML = '📊 Экспорт в Excel (CSV)';
-  exportButton.style.cssText = `
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    margin-left: 10px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  `;
-  
-  exportButton.onmouseover = function() {
-    this.style.transform = 'translateY(-2px) scale(1.05)';
-    this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.2)';
-  };
-  
-  exportButton.onmouseout = function() {
-    this.style.transform = 'translateY(0) scale(1)';
-    this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-  };
+// Функция для инициализации кнопки экспорта (теперь кнопка уже есть в HTML)
+function initExportButton() {
+  const exportButton = document.getElementById('exportExcelBtn');
+  if (!exportButton) return;
   
   exportButton.onclick = function() {
     exportToCSV();
   };
-  
-  // Ищем кнопку "Применить фильтры" или контейнер фильтров
-  const applyButton = document.querySelector('button[onclick="applyFilters()"]');
-  const filtersContainer = document.getElementById('filters');
-  
-  if (applyButton && applyButton.parentNode) {
-    applyButton.parentNode.insertBefore(exportButton, applyButton.nextSibling);
-  } else if (filtersContainer) {
-    filtersContainer.appendChild(exportButton);
-  } else {
-    // Если не нашли, добавляем в начало body
-    document.body.insertBefore(exportButton, document.body.firstChild);
-  }
 }
 
 // Основная функция экспорта в CSV
 function exportToCSV() {
+  // Временно меняем текст кнопки
+  const exportBtn = document.getElementById('exportExcelBtn');
+  const originalText = exportBtn.innerHTML;
+  exportBtn.innerHTML = '📊 Формируем файл...';
+  exportBtn.disabled = true;
+  
   const selectedObject = getSelectedObject();
   const selectedAddresses = getSelectedAddresses();
   const dateFrom = document.getElementById('dateFrom').value;
   const dateTo = document.getElementById('dateTo').value;
   
-  // Показываем прогресс
-  showExportProgress('Подготавливаем данные для экспорта...');
-  updateExportProgress('Фильтруем данные...', 20);
-  
   // Получаем отфильтрованные данные
   let filteredData = getFilteredDataForExport(dateFrom, dateTo, selectedObject, selectedAddresses);
   
   if (filteredData.length === 0) {
-    hideExportProgress();
-    alert('Нет данных для экспорта за выбранный период');
+    showNotification('Нет данных для экспорта за выбранный период', 'warning');
+    exportBtn.innerHTML = originalText;
+    exportBtn.disabled = false;
     return;
   }
-  
-  updateExportProgress('Формируем таблицу...', 40);
   
   // Заголовки колонок
   const headers = [
@@ -144849,8 +144808,6 @@ function exportToCSV() {
     'Прочие', 'Неделимый расход', 'Франшиза сопровождение бонус', 'Операционная прибыль'
   ];
   
-  updateExportProgress('Создаем CSV файл...', 60);
-  
   // Создаем CSV содержимое
   let csv = '\uFEFF'; // BOM для правильной кодировки UTF-8
   
@@ -144858,7 +144815,7 @@ function exportToCSV() {
   csv += headers.join(';') + '\n';
   
   // Добавляем данные
-  filteredData.forEach((row, index) => {
+  filteredData.forEach(row => {
     const rowData = [
       row.Дата || '',
       row.Объект || '',
@@ -144899,17 +144856,9 @@ function exportToCSV() {
     });
     
     csv += formattedRow.join(';') + '\n';
-    
-    // Обновляем прогресс каждые 100 записей
-    if (index % 100 === 0) {
-      updateExportProgress(`Обработано ${index} из ${filteredData.length} записей...`, 60 + (index / filteredData.length * 20));
-    }
   });
   
   // Добавляем итоговую строку
-  updateExportProgress('Рассчитываем итоги...', 85);
-  
-  // Вычисляем итоги
   const totals = {};
   headers.forEach((header, index) => {
     if (index >= 3) { // Начинаем с колонки "Выручка"
@@ -144932,8 +144881,6 @@ function exportToCSV() {
   csv += formattedTotalRow.join(';') + '\n';
   
   // Добавляем строку со статистикой
-  updateExportProgress('Добавляем метаданные...', 90);
-  
   const statsRow = [
     'СТАТИСТИКА:',
     `Записей: ${filteredData.length}`,
@@ -144945,8 +144892,6 @@ function exportToCSV() {
   csv += statsRow.join(';') + '\n';
   
   // Создаем и скачиваем файл
-  updateExportProgress('Скачиваем файл...', 95);
-  
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
@@ -144978,16 +144923,15 @@ function exportToCSV() {
   // Освобождаем память
   setTimeout(() => URL.revokeObjectURL(url), 100);
   
-  updateExportProgress('Экспорт завершен!', 100);
-  
-  // Показываем уведомление
+  // Восстанавливаем кнопку и показываем уведомление
   setTimeout(() => {
-    hideExportProgress();
-    showExportStats(filteredData.length, dateFrom, dateTo, selectedObject);
-  }, 500);
+    exportBtn.innerHTML = originalText;
+    exportBtn.disabled = false;
+    showExportNotification(filteredData.length, dateFrom, dateTo, selectedObject);
+  }, 300);
 }
 
-// Функция для получения отфильтрованных данных для экспорта
+// Функция для получения отфильтрованных данных для экспорта (остается без изменений)
 function getFilteredDataForExport(dateFrom, dateTo, selectedObject, selectedAddresses) {
   // Отфильтровываем строки с "Франшиза роялти" в адресе
   let filteredData = allData.filter(row => {
@@ -145077,208 +145021,115 @@ function getFilteredDataForExport(dateFrom, dateTo, selectedObject, selectedAddr
   return filteredData;
 }
 
-// Функции для индикатора прогресса
-function showExportProgress(message) {
-  let progress = document.getElementById('exportProgress');
-  if (!progress) {
-    progress = document.createElement('div');
-    progress.id = 'exportProgress';
-    progress.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-      z-index: 9999;
-      text-align: center;
-      min-width: 300px;
-    `;
-    
-    const progressBar = document.createElement('div');
-    progressBar.id = 'exportProgressBar';
-    progressBar.style.cssText = `
-      width: 100%;
-      height: 20px;
-      background: #f0f0f0;
-      border-radius: 10px;
-      margin: 20px 0;
-      overflow: hidden;
-    `;
-    
-    const progressFill = document.createElement('div');
-    progressFill.id = 'exportProgressFill';
-    progressFill.style.cssText = `
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #28a745, #20c997);
-      border-radius: 10px;
-      transition: width 0.3s ease;
-    `;
-    
-    const progressText = document.createElement('div');
-    progressText.id = 'exportProgressText';
-    progressText.style.cssText = `
-      font-size: 14px;
-      color: #666;
-      margin-top: 10px;
-    `;
-    
-    progressBar.appendChild(progressFill);
-    progress.appendChild(progressBar);
-    progress.appendChild(progressText);
-    
-    document.body.appendChild(progress);
-  }
-  
-  const progressText = document.getElementById('exportProgressText');
-  if (progressText) {
-    progressText.textContent = message;
-  }
-}
-
-function updateExportProgress(message, percent) {
-  const progressFill = document.getElementById('exportProgressFill');
-  const progressText = document.getElementById('exportProgressText');
-  
-  if (progressFill) {
-    progressFill.style.width = `${Math.min(percent, 100)}%`;
-  }
-  
-  if (progressText) {
-    progressText.textContent = message;
-  }
-}
-
-function hideExportProgress() {
-  const progress = document.getElementById('exportProgress');
-  if (progress) {
-    progress.style.opacity = '0';
-    progress.style.transform = 'translate(-50%, -50%) scale(0.9)';
-    setTimeout(() => {
-      if (progress.parentNode) {
-        progress.parentNode.removeChild(progress);
-      }
-    }, 300);
-  }
-}
-
-// Функция для показа статистики экспорта
-function showExportStats(count, dateFrom, dateTo, selectedObject) {
-  const stats = document.createElement('div');
-  stats.id = 'exportStats';
-  stats.style.cssText = `
+// Функция для показа уведомления об экспорте
+function showExportNotification(count, dateFrom, dateTo, selectedObject) {
+  const notification = document.createElement('div');
+  notification.id = 'exportNotification';
+  notification.style.cssText = `
     position: fixed;
     top: 20px;
     right: 20px;
-    background: #28a745;
+    background: #2e7d32;
     color: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     z-index: 1000;
-    animation: slideInRight 0.5s ease;
-    max-width: 300px;
-    font-family: Arial, sans-serif;
+    animation: slideInRight 0.3s ease;
+    max-width: 320px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    border-left: 4px solid #1b5e20;
   `;
   
-  let info = `<strong>✅ Экспорт завершен</strong><br><br>`;
-  info += `<strong>Записей:</strong> ${count}<br>`;
+  let info = `
+    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+      <span style="font-size: 18px; margin-right: 8px;">✅</span>
+      <strong style="font-size: 14px;">Экспорт завершен</strong>
+    </div>
+  `;
+  
+  info += `<div style="color: rgba(255,255,255,0.9);">`;
+  info += `<div><strong>Записей:</strong> ${count}</div>`;
   
   if (dateFrom && dateTo) {
-    info += `<strong>Период:</strong> ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}<br>`;
+    info += `<div><strong>Период:</strong> ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}</div>`;
   }
   
   if (selectedObject) {
-    info += `<strong>Объект:</strong> ${selectedObject === 'all_retail' ? 'Вся розница' : selectedObject}<br>`;
+    const objName = selectedObject === 'all_retail' ? 'Вся розница' : selectedObject;
+    info += `<div><strong>Объект:</strong> ${objName}</div>`;
   }
   
-  info += `<br><small>Файл CSV скачан. Открывается в Excel!</small>`;
+  info += `<div style="margin-top: 6px; font-size: 12px; color: rgba(255,255,255,0.8);">
+    Файл CSV скачан. Открывается в Excel!
+  </div>`;
+  info += `</div>`;
   
-  stats.innerHTML = info;
+  notification.innerHTML = info;
   
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
+  document.body.appendChild(notification);
   
-  document.body.appendChild(stats);
-  
-  // Кнопка закрытия
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '✕';
-  closeBtn.style.cssText = `
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `;
-  
-  closeBtn.onclick = function() {
-    if (stats.parentNode) {
-      stats.parentNode.removeChild(stats);
-    }
-  };
-  
-  stats.appendChild(closeBtn);
-  
-  // Автоматическое скрытие
+  // Автоматическое скрытие через 4 секунды
   setTimeout(() => {
-    stats.style.animation = 'fadeOut 0.5s ease';
+    notification.style.animation = 'fadeOut 0.5s ease';
     setTimeout(() => {
-      if (stats.parentNode) {
-        stats.parentNode.removeChild(stats);
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
       }
     }, 500);
-  }, 5000);
+  }, 4000);
+  
+  // Закрытие по клику
+  notification.onclick = function() {
+    notification.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  };
 }
 
-// Добавляем стили
-const exportStyles = document.createElement('style');
-exportStyles.textContent = `
-  #exportExcelBtn {
-    position: relative;
-    overflow: hidden;
-  }
+// Вспомогательная функция для показа уведомлений
+function showNotification(message, type = 'info') {
+  const colors = {
+    'info': '#2196f3',
+    'success': '#2e7d32',
+    'warning': '#ff9800',
+    'error': '#f44336'
+  };
   
-  #exportExcelBtn:hover {
-    background: linear-gradient(135deg, #218838 0%, #1ba87e 100%) !important;
-  }
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${colors[type] || colors.info};
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+    max-width: 300px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+  `;
   
-  #exportExcelBtn:active {
-    transform: scale(0.98) !important;
-  }
+  notification.textContent = message;
+  document.body.appendChild(notification);
   
-  #exportExcelBtn.export-loading {
-    opacity: 0.7;
-    cursor: wait !important;
-  }
-  
-  #exportExcelBtn.export-loading::after {
-    content: ' ⏳';
-  }
-`;
-document.head.appendChild(exportStyles);
+  setTimeout(() => {
+    notification.style.animation = 'fadeOut 0.5s ease';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 500);
+  }, 3000);
+}
 
 // ==================== КОНЕЦ КОДА ЭКСПОРТА ====================
 
@@ -145289,9 +145140,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Автоматически загружаем данные
   loadEmbeddedData();
 
-   // Добавляем кнопку экспорта
+  // Инициализируем кнопку экспорта (вместо addExportToExcelButton)
   setTimeout(() => {
-    addExportToExcelButton();
+    initExportButton();  // ЗДЕСЬ ИЗМЕНЕНИЕ!
   }, 1000);
 
   // Настраиваем модальные окна
