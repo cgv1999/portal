@@ -148639,10 +148639,22 @@ function calculateSalaryForPeriod() {
   const dateTo = document.getElementById('dateTo').value;
   if (!dateFrom || !dateTo) return 0;
 
-  const fromDate = new Date(dateFrom);
-  const toDate = new Date(dateTo);
-  const diffTime = Math.abs(toDate - fromDate);
-  const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  // Парсим даты из формата YYYY-MM-DD
+  const fromDate = parseDateFromInput(dateFrom);
+  const toDate = parseDateFromInput(dateTo);
+  
+  if (!fromDate || !toDate) return 0;
+  
+  // Определяем вчерашний день (начало дня)
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+  
+  // Ограничиваем конечную дату началом вчерашнего дня
+  const maxAllowedDate = toDate > yesterday ? yesterday : toDate;
+  
+  // Проверяем, что начальная дата не позже конечной
+  if (fromDate > maxAllowedDate) return 0;
 
   let totalSalaryExpense = 0;
   let processedWeeks = new Set();
@@ -148666,18 +148678,23 @@ function calculateSalaryForPeriod() {
       const weekParts = weekStr.split(' - ');
       if (weekParts.length !== 2) continue;
 
-      const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
-      const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
+      // Парсим даты недели (формат DD.MM.YY)
+      const weekStart = parseWeekDate(weekParts[0].trim());
+      const weekEnd = parseWeekDate(weekParts[1].trim());
+      
+      if (!weekStart || !weekEnd) continue;
 
-      const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
-        (weekEnd >= fromDate && weekEnd <= toDate) ||
-        (weekStart <= fromDate && weekEnd >= toDate);
+      const weekInPeriod = (weekStart >= fromDate && weekStart <= maxAllowedDate) ||
+        (weekEnd >= fromDate && weekEnd <= maxAllowedDate) ||
+        (weekStart <= fromDate && weekEnd >= fromDate);
 
       if (weekInPeriod) {
         processedWeeks.add(weekStr);
         const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
-        const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
+        const weekEndInPeriod = weekEnd > maxAllowedDate ? maxAllowedDate : weekEnd;
         const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
+        
+        if (weekDaysInPeriod <= 0) continue;
 
         weekData.сотрудники.forEach(item => {
           const totalAmount = item.исходные_данные?.итого || 0;
@@ -148695,6 +148712,47 @@ function calculateSalaryForPeriod() {
   }
 
   return totalSalaryExpense;
+}
+
+// Вспомогательные функции для парсинга дат
+function parseDateFromInput(dateStr) {
+  if (!dateStr) return null;
+  try {
+    // Формат YYYY-MM-DD
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // Месяцы 0-11 в JS
+      const day = parseInt(parts[2], 10);
+      return new Date(year, month, day, 0, 0, 0, 0);
+    }
+  } catch (e) {
+    console.error('Ошибка парсинга даты из input:', dateStr, e);
+  }
+  return null;
+}
+
+function parseWeekDate(dateStr) {
+  if (!dateStr) return null;
+  try {
+    // Формат DD.MM.YY или DD.MM.YYYY
+    const parts = dateStr.split('.');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      let year = parseInt(parts[2], 10);
+      
+      // Преобразуем двухзначный год в четырехзначный
+      if (year < 100) {
+        year = year + 2000; // Предполагаем 21 век
+      }
+      
+      return new Date(year, month, day, 0, 0, 0, 0);
+    }
+  } catch (e) {
+    console.error('Ошибка парсинга даты недели:', dateStr, e);
+  }
+  return null;
 }
 
 function getGeneralExpenseForDateRange() {
@@ -149109,10 +149167,23 @@ function getFilteredSalaryOfficeExpenses() {
   const dateTo = document.getElementById('dateTo').value;
   if (!dateFrom || !dateTo) return [];
 
-  const fromDate = new Date(dateFrom);
-  const toDate = new Date(dateTo);
-  const diffTime = Math.abs(toDate - fromDate);
-  const daysInPeriod = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  // Парсим даты из формата YYYY-MM-DD
+  const fromDate = parseDateFromInput(dateFrom);
+  const toDate = parseDateFromInput(dateTo);
+  
+  if (!fromDate || !toDate) return [];
+  
+  // Определяем вчерашний день (начало дня)
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+  
+  // Ограничиваем конечную дату началом вчерашнего дня
+  // (чтобы сегодняшний день не учитывался)
+  const maxAllowedDate = toDate > yesterday ? yesterday : toDate;
+  
+  // Проверяем, что начальная дата не позже конечной
+  if (fromDate > maxAllowedDate) return [];
 
   const result = [];
   let processedWeeks = new Set();
@@ -149136,18 +149207,29 @@ function getFilteredSalaryOfficeExpenses() {
       const weekParts = weekStr.split(' - ');
       if (weekParts.length !== 2) continue;
 
-      const weekStart = new Date(weekParts[0].trim().split('.').reverse().join('-'));
-      const weekEnd = new Date(weekParts[1].trim().split('.').reverse().join('-'));
+      // Парсим даты недели (формат DD.MM.YY)
+      const weekStart = parseWeekDate(weekParts[0].trim());
+      const weekEnd = parseWeekDate(weekParts[1].trim());
+      
+      if (!weekStart || !weekEnd) continue;
 
-      const weekInPeriod = (weekStart >= fromDate && weekStart <= toDate) ||
-        (weekEnd >= fromDate && weekEnd <= toDate) ||
-        (weekStart <= fromDate && weekEnd >= toDate);
+      // Проверяем, пересекается ли неделя с допустимым диапазоном дат
+      const weekInPeriod = (weekStart >= fromDate && weekStart <= maxAllowedDate) ||
+        (weekEnd >= fromDate && weekEnd <= maxAllowedDate) ||
+        (weekStart <= fromDate && weekEnd >= fromDate);
 
       if (weekInPeriod) {
         processedWeeks.add(weekStr);
+        
+        // Определяем фактическое пересечение недели с периодом
         const weekStartInPeriod = weekStart < fromDate ? fromDate : weekStart;
-        const weekEndInPeriod = weekEnd > toDate ? toDate : weekEnd;
+        const weekEndInPeriod = weekEnd > maxAllowedDate ? maxAllowedDate : weekEnd;
+        
+        // Рассчитываем количество дней в неделе, которые попадают в период
         const weekDaysInPeriod = Math.ceil((weekEndInPeriod - weekStartInPeriod) / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Исключаем недели, которые полностью в будущем
+        if (weekDaysInPeriod <= 0) continue;
 
         weekData.сотрудники.forEach(item => {
           const totalAmount = item.исходные_данные?.итого || 0;
