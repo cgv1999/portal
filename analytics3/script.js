@@ -143173,7 +143173,7 @@ function buildChart(data, selectedObjects, selectedAddresses) {
 
         const bonus = franchiseBonusData[index];
         if (bonus !== 0) {
-          result += `<span style="color: #28a745;">Франшиза сопровождение бонус: ${formatCurrency(bonus)}</span><br/>`;
+          result += `<span style="color: #28a745;">Франшиза роялти: ${formatCurrency(bonus)}</span><br/>`;
         }
 
         const profitability = profitabilityData[index];
@@ -143311,7 +143311,7 @@ function buildChart(data, selectedObjects, selectedAddresses) {
     result += `<strong>Рентабельность:</strong> ${profitability.toFixed(1)}%<br/>`;
     
     if (item.franchiseBonus && item.franchiseBonus !== 0) {
-      result += `<strong>Франшиза сопровождение бонус:</strong> ${formatCurrency(item.franchiseBonus)}<br/>`;
+      result += `<strong>Франшиза роялти:</strong> ${formatCurrency(item.franchiseBonus)}<br/>`;
     }
     
     if (item.dayCount) {

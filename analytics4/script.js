@@ -140714,7 +140714,7 @@ function buildChart(aggregatedData, selectedWeeks, selectedAddresses) {
 
                 const bonus = franchiseBonusData[unitIndex];
                 if (bonus !== 0) {
-                    result += `<span style="color: #28a745;">Франшиза сопровождение бонус: ${formatCurrency(bonus)}</span><br/>`;
+                    result += `<span style="color: #28a745;">Франшиза роялти: ${formatCurrency(bonus)}</span><br/>`;
                 }
 
                 const profitability = profitabilityData[unitIndex];
@@ -141152,7 +141152,7 @@ function updateStats(revenue, profit, profitability, franchiseBonus = 0, showFra
     `;
 
     if (showFranchiseBonus && franchiseBonus !== 0) {
-        statsHtml += `<div class="stat-item bonus">Франшиза сопровождение бонус: ${formatCurrency(franchiseBonus)}</div>`;
+        statsHtml += `<div class="stat-item bonus">Франшиза роялти: ${formatCurrency(franchiseBonus)}</div>`;
     }
 
     statsHtml += `

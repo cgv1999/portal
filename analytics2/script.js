@@ -143135,7 +143135,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
 
         const bonus = franchiseBonusData[dayIndex];
         if (bonus !== 0) {
-          result += `<span style="color: #28a745;">Франшиза сопровождение бонус: ${formatCurrency(bonus)}</span><br/>`;
+          result += `<span style="color: #28a745;">Франшиза роялти: ${formatCurrency(bonus)}</span><br/>`;
         }
 
         const profitability = profitabilityData[dayIndex];
@@ -143387,7 +143387,7 @@ function buildChart(dailyData, dateRange, selectedObjects, selectedAddresses) {
                             Количество записей: ${totalRows}<br>
                             Выручка: ${formatCurrency(totalRevenue)}<br>
                             Выручка Сайт: ${formatCurrency(totalRevenueSite)}<br>
-                            Франшиза сопровождение бонус: ${formatCurrency(totalFranchiseBonus)}<br>
+                            Франшиза роялти: ${formatCurrency(totalFranchiseBonus)}<br>
                             <strong>Общая выручка: ${formatCurrency(totalGrossRevenue)}</strong><br>
                             Операционная прибыль: ${formatCurrency(totalProfit)}<br>
                         `;
