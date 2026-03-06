@@ -140832,7 +140832,7 @@ const embeddedData = {
       "Франшиза сопровождение бонус": 0,
       "Операционная прибыль": 1074848
     }
-    
+
   ],
   "expensesData": [
     {
@@ -187827,7 +187827,7 @@ function formatDateForDisplay(dateStr) {
   }
 }
 
-// ИСПРАВЛЕННАЯ ФУНКЦИЯ buildChart() (ОДНА ВЕРСИЯ!)
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ buildChart() - с визуальным разделением выручки и бонуса
 function buildChart(data, object, addresses) {
   // Удаляем второй график если он есть
   const secondChart = document.getElementById('secondChart');
@@ -187845,14 +187845,16 @@ function buildChart(data, object, addresses) {
 
   const aggregated = aggregateCategories(data);
 
-  // Логируем агрегированные значения для отладки
+  // Получаем значения выручки и бонуса
+  const regularRevenue = (aggregated['Выручка'] || 0) + (aggregated['Выручка Сайт'] || 0);
+  const franchBonus = aggregated['Франшиза сопровождение бонус'] || 0;
+  const totalRevenue = regularRevenue + franchBonus;
+
   console.log('Агрегированные данные для графика:');
-  console.log('- Выручка:', aggregated['Выручка'] || 0);
-  console.log('- Выручка Сайт:', aggregated['Выручка Сайт'] || 0);
-  console.log('- Общая выручка:', (aggregated['Выручка'] || 0) + (aggregated['Выручка Сайт'] || 0));
-  console.log('- Автохимия Шампунь Москва:', aggregated['Автохимия Шампунь Москва'] || 0);
-  console.log('- Зарплата:', aggregated['Зарплата'] || 0);
-  console.log('- Количество записей для агрегации:', data.length);
+  console.log('- Обычная выручка:', regularRevenue);
+  console.log('- Франшиза сопровождение бонус:', franchBonus);
+  console.log('- Общая выручка:', totalRevenue);
+  console.log('- Доля бонуса:', franchBonus > 0 ? ((franchBonus / totalRevenue) * 100).toFixed(1) + '%' : '0%');
 
   let categories = [
     "Выручка",
@@ -187871,29 +187873,16 @@ function buildChart(data, object, addresses) {
   const selectedObject = getSelectedObject();
   const selectedAddresses = getSelectedAddresses();
 
-  let showFranchBonus = false;
   const isAllObjectsAllAddresses = (!selectedObject || selectedObject === '') &&
     (!selectedAddresses || selectedAddresses.length === 0);
   const isFranchObject = selectedObject === 'Франшиза отдел сопровождения';
-  showFranchBonus = isAllObjectsAllAddresses || isFranchObject;
-
-  if (showFranchBonus) {
-    const profitIndex = categories.indexOf("Операционная прибыль");
-    categories.splice(profitIndex, 0, "Франшиза сопровождение бонус");
-  }
 
   const isAllObjects = !object || object === '';
   const isAllAddresses = !addresses || addresses.length === 0;
   const showCompanyExpenses = isAllObjects && isAllAddresses;
 
   if (showCompanyExpenses) {
-    let insertIndex;
-    if (showFranchBonus) {
-      insertIndex = categories.indexOf("Франшиза сопровождение бонус");
-    } else {
-      insertIndex = categories.indexOf("Операционная прибыль");
-    }
-    categories.splice(insertIndex, 0, "Общий расход", "З/п офис");
+    categories.splice(categories.indexOf("Операционная прибыль"), 0, "Общий расход", "З/п офис");
   }
 
   // ВАЖНОЕ ИСПРАВЛЕНИЕ: ПРАВИЛЬНЫЙ РАСЧЕТ всех статей
@@ -187901,81 +187890,51 @@ function buildChart(data, object, addresses) {
     switch (cat) {
       case "Выручка":
         if (selectedObject === 'Франшиза отдел сопровождения') {
-          // Для франшизы сопровождения используем данные из supportData
           const dateFrom = document.getElementById('dateFrom').value;
           const dateTo = document.getElementById('dateTo').value;
-          return getFranchiseSupportRevenueForPeriod(dateFrom, dateTo);
+          const supportRevenue = getFranchiseSupportRevenueForPeriod(dateFrom, dateTo);
+          return supportRevenue + franchBonus;
         } else {
-          const revenue = (aggregated['Выручка'] || 0) + (aggregated['Выручка Сайт'] || 0);
-          console.log(`Выручка для графика: ${revenue} (Выручка: ${aggregated['Выручка'] || 0}, Сайт: ${aggregated['Выручка Сайт'] || 0})`);
-          return revenue;
+          return totalRevenue;
         }
       case "Автохимия":
-        const autoChem = -Math.abs(
+        return -Math.abs(
           (aggregated['Автохимия Шампунь Москва'] || 0) +
           (aggregated['Автохимия Шампунь СПБ'] || 0) +
           (aggregated['Автохимия Пена'] || 0) +
           (aggregated['Автохимия Юр. Лица'] || 0) +
           (aggregated['Автохимия Абонементы/сертификаты/подписки'] || 0)
         );
-        console.log(`Автохимия для графика: ${autoChem}`);
-        return autoChem;
       case "Коммунальные расходы":
-        const communal = -Math.abs(
+        return -Math.abs(
           (aggregated['Коммунальные расходы'] || 0) +
           (aggregated['Коммунальные расходы Абонементы/сертификаты/подписки'] || 0)
         );
-        console.log(`Коммунальные расходы для графика: ${communal}`);
-        return communal;
       case "Аренда":
-        const rent = -Math.abs(aggregated['Аренда'] || 0);
-        console.log(`Аренда для графика: ${rent}`);
-        return rent;
+        return -Math.abs(aggregated['Аренда'] || 0);
       case "Зарплата":
-        const salary = -Math.abs(aggregated['Зарплата'] || 0);
-        console.log(`Зарплата для графика: ${salary}`);
-        return salary;
+        return -Math.abs(aggregated['Зарплата'] || 0);
       case "Комиссии":
-        const commission = -Math.abs(aggregated['Комиссии'] || 0);
-        console.log(`Комиссии для графика: ${commission}`);
-        return commission;
+        return -Math.abs(aggregated['Комиссии'] || 0);
       case "Налоги":
-        const taxes = -Math.abs(aggregated['Налоги'] || 0);
-        console.log(`Налоги для графика: ${taxes}`);
-        return taxes;
+        return -Math.abs(aggregated['Налоги'] || 0);
       case "НДС":
-        const vat = -Math.abs(aggregated['НДС'] || 0);
-        console.log(`НДС для графика: ${vat}`);
-        return vat;
+        return -Math.abs(aggregated['НДС'] || 0);
       case "Прочие":
-        // Используем новую логику
         const filteredExpenses = getFilteredOtherExpenses();
-        const totalProchie = filteredExpenses.reduce((sum, item) => sum + item.сумма, 0);
-        console.log(`Прочие для графика: ${totalProchie} (записей: ${filteredExpenses.length})`);
-        return totalProchie;
+        return filteredExpenses.reduce((sum, item) => sum + item.сумма, 0);
       case "Неделимый расход":
-        const indivisible = getIndivisibleExpenseForDateRange(object, addresses);
-        console.log(`Неделимый расход для графика: ${indivisible}`);
-        return indivisible;
+        return getIndivisibleExpenseForDateRange(object, addresses);
       case "Общий расход":
         if (showCompanyExpenses) {
-          const general = getGeneralExpenseForDateRange();
-          console.log(`Общий расход для графика: ${general}`);
-          return general;
+          return getGeneralExpenseForDateRange();
         }
         return 0;
       case "З/п офис":
         if (showCompanyExpenses) {
-          const officeSalary = calculateSalaryForPeriod();
-          console.log(`З/п офис для графика: ${officeSalary}`);
-          return officeSalary;
+          return calculateSalaryForPeriod();
         }
         return 0;
-      case "Франшиза сопровождение бонус":
-        const franchBonus = aggregated['Франшиза сопровождение бонус'] ||
-          aggregated['Франшиза роялти:'] || 0;
-        console.log(`Франшиза бонус для графика: ${franchBonus}`);
-        return Math.abs(franchBonus);
       case "Операционная прибыль":
         return 0;
       default:
@@ -187990,14 +187949,17 @@ function buildChart(data, object, addresses) {
     const category = categories[index];
 
     if (category === "Выручка") {
-      waterfallData.push({ value: value, start: 0, end: value });
+      waterfallData.push({
+        value: value,
+        start: 0,
+        end: value,
+        regularRevenue: regularRevenue,
+        bonusRevenue: franchBonus,
+        showBonus: (isAllObjectsAllAddresses || isFranchObject) && franchBonus > 0
+      });
       currentLevel = value;
     } else if (category === "Операционная прибыль") {
       waterfallData.push({ value: currentLevel, start: 0, end: currentLevel });
-    } else if (category === "Франшиза сопровождение бонус") {
-      const start = currentLevel;
-      currentLevel += value;
-      waterfallData.push({ value: value, start: start, end: currentLevel });
     } else {
       const start = currentLevel;
       currentLevel += value;
@@ -188008,7 +187970,7 @@ function buildChart(data, object, addresses) {
   console.log('Водопадные данные:', waterfallData);
   console.log('Итоговая прибыль:', currentLevel);
 
-  renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, currentLevel);
+  renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, totalRevenue, regularRevenue, franchBonus);
 }
 
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Установка периода по умолчанию 
@@ -188342,7 +188304,7 @@ function createAllObjectsRevenueChart(revenueData, dateFrom, dateTo) {
         } else if (category === "Развитие") {
           description = "Доходы от проектов развития";
         } else if (category === "Франшиза отдел сопровождения") {
-          description = "Оплаты от франчайзи за сопровождение";
+          description = "Оплаты а/х, ворота, прочее, роялти";
         }
 
         return `
@@ -188486,17 +188448,15 @@ function createAllObjectsRevenueChart(revenueData, dateFrom, dateTo) {
   });
 }
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ: renderChart() - добавление подсказки для режима "Все объекты"
-function renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, showFranchBonus, finalProfit) {
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ: renderChart() - с визуальным разделением выручки
+function renderChart(chart, categories, waterfallData, object, addresses, showCompanyExpenses, totalRevenue, regularRevenue, bonusRevenue) {
   const revenueIndex = categories.indexOf("Выручка");
-  const franchBonusIndex = showFranchBonus ? categories.indexOf("Франшиза сопровождение бонус") : -1;
   const profitIndex = categories.indexOf("Операционная прибыль");
 
-  const revenue = waterfallData[revenueIndex].value;
-  const franchBonus = franchBonusIndex !== -1 ? waterfallData[franchBonusIndex].value : 0;
-  const profit = finalProfit;
-  const totalRevenue = revenue + franchBonus;
-  const profitability = totalRevenue !== 0 ? (profit / totalRevenue) * 100 : -100;
+  const revenue = totalRevenue;
+  const profit = waterfallData[waterfallData.length - 1].end;
+  const profitability = revenue !== 0 ? (profit / revenue) * 100 : -100;
+  const bonusPercentage = revenue > 0 && bonusRevenue > 0 ? ((bonusRevenue / revenue) * 100).toFixed(1) : 0;
 
   let titleText = 'Каскадная диаграмма - Финансовый анализ';
   let subtitle = `Рентабельность: ${profitability.toFixed(1)}%`;
@@ -188512,22 +188472,16 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
   if (addresses) {
     subtitle += ` | Адресов: ${addresses.length}`;
   }
+  if (bonusRevenue > 0) {
+    subtitle += ` | Бонус: ${formatCurrency(bonusRevenue)} (${bonusPercentage}% от выручки)`;
+  }
 
   const seriesData = waterfallData.map((item, index) => {
     const category = categories[index];
     const isPositive = item.value >= 0;
     const isProfit = category === "Операционная прибыль";
 
-    let color;
-    if (isProfit) {
-      color = item.value >= 0 ? '#28a745' : '#dc3545';
-    } else if (category === "Франшиза сопровождение бонус") {
-      color = '#4CAF50';
-    } else {
-      color = isPositive ? '#4CAF50' : '#F44336';
-    }
-
-    const itemStyle = { color: color };
+    let itemStyle = {};
     const selectedObject = getSelectedObject();
     const selectedAddresses = getSelectedAddresses();
     const isAllObjectsAllAddresses = isAllObjectsAllAddressesMode(selectedObject, selectedAddresses);
@@ -188537,30 +188491,72 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
     const isManagerModeActive = isManagerMode(selectedObject);
 
     if (category === "Выручка") {
-      // Добавляем обработчик клика для столбца "Выручка"
-      if (isAllObjectsAllAddresses || isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) {
-        itemStyle.cursor = 'pointer';
+      // Создаем специальный стиль для столбца с разделением
+      if (item.showBonus && bonusRevenue > 0) {
+        // Используем градиент для разделения
+        const bonusRatio = bonusRevenue / item.value;
+        const regularRatio = 1 - bonusRatio;
+
+        itemStyle = {
+          color: {
+            type: 'linear',
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: '#4CAF50' }, // Обычная выручка (сверху)
+              { offset: regularRatio, color: '#4CAF50' },
+              { offset: regularRatio, color: '#FFC107' }, // Бонус (снизу)
+              { offset: 1, color: '#FFC107' }
+            ]
+          },
+          borderColor: '#fff',
+          borderWidth: 2,
+          cursor: (isAllObjectsAllAddresses || isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) ? 'pointer' : 'default'
+        };
       } else {
-        itemStyle.cursor = 'default';
+        itemStyle = {
+          color: '#4CAF50',
+          borderColor: '#fff',
+          borderWidth: 2,
+          cursor: (isAllObjectsAllAddresses || isAllRetailAllAddresses || isFranchiseSupport || isManagerModeActive) ? 'pointer' : 'default'
+        };
       }
+    } else if (isProfit) {
+      itemStyle = {
+        color: item.value >= 0 ? '#28a745' : '#dc3545',
+        borderColor: '#fff',
+        borderWidth: 2
+      };
     } else if (category === "Прочие" || category === "Общий расход" || category === "З/п офис") {
-      itemStyle.cursor = 'pointer';
+      itemStyle = {
+        color: isPositive ? '#4CAF50' : '#F44336',
+        borderColor: '#fff',
+        borderWidth: 2,
+        cursor: 'pointer'
+      };
     } else if (category === "Неделимый расход") {
       const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
         (!selectedAddresses || selectedAddresses.length === 0);
-      if (isDrilldownMode) {
-        itemStyle.cursor = 'pointer';
-      } else {
-        itemStyle.cursor = 'default';
-      }
-    } else if (category === "Франшиза сопровождение бонус") {
-      itemStyle.cursor = 'default';
+      itemStyle = {
+        color: isPositive ? '#4CAF50' : '#F44336',
+        borderColor: '#fff',
+        borderWidth: 2,
+        cursor: isDrilldownMode ? 'pointer' : 'default'
+      };
+    } else {
+      itemStyle = {
+        color: isPositive ? '#4CAF50' : '#F44336',
+        borderColor: '#fff',
+        borderWidth: 2
+      };
     }
 
     return {
       value: item.value,
       itemStyle: itemStyle,
-      category: category
+      category: category,
+      regularRevenue: item.regularRevenue,
+      bonusRevenue: item.bonusRevenue,
+      showBonus: item.showBonus
     };
   });
 
@@ -188583,11 +188579,40 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         const tar = params[0];
         const value = tar.value;
         const category = tar.data.category || categories[tar.dataIndex];
+
         let tooltip = `
-                    <div style="text-align: left">
-                        <strong>${category}</strong><br/>
-                        Значение: ${formatCurrency(value)}
-                `;
+          <div style="text-align: left; min-width: 250px;">
+            <strong style="font-size: 14px;">${category}</strong><br/>
+        `;
+
+        if (category === "Выручка" && tar.data.showBonus) {
+          const regular = tar.data.regularRevenue || 0;
+          const bonus = tar.data.bonusRevenue || 0;
+          const bonusPct = value > 0 ? ((bonus / value) * 100).toFixed(1) : 0;
+
+          tooltip += `
+            <div style="margin-top: 8px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>Основная выручка:</span>
+                <strong style="color: #4CAF50;">${formatCurrency(regular)}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>Франшиза роялти:</span>
+                <strong style="color: #FFC107;">${formatCurrency(bonus)}</strong>
+              </div>
+              <div style="border-top: 1px dashed #ccc; margin: 8px 0; padding-top: 4px; display: flex; justify-content: space-between;">
+                <span>Общая выручка:</span>
+                <strong>${formatCurrency(value)}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; color: #666;">
+                <span>Доля бонуса:</span>
+                <span>${bonusPct}%</span>
+              </div>
+            </div>
+          `;
+        } else {
+          tooltip += `<div style="margin-top: 8px;"><strong>${formatCurrency(value)}</strong></div>`;
+        }
 
         const selectedObject = getSelectedObject();
         const selectedAddresses = getSelectedAddresses();
@@ -188599,36 +188624,30 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
 
         if (category === "Выручка") {
           if (isAllObjectsAllAddresses) {
-            tooltip += `<br/><em>Кликните для просмотра выручки по 4 направлениям бизнеса</em>`;
+            tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для просмотра выручки по 4 направлениям бизнеса</em>`;
           } else if (isAllRetailAllAddresses) {
-            tooltip += `<br/><em>Кликните для детализации выручки по всем адресам розницы</em>`;
+            tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации выручки по всем адресам розницы</em>`;
           } else if (isFranchiseSupport) {
-            tooltip += `<br/><em>Кликните для детализации оплат от франчайзи</em>`;
+            tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации оплат от франчайзи</em>`;
           } else if (isManagerModeActive) {
-            tooltip += `<br/><em>Кликните для детализации выручки по адресам управляющего</em>`;
-          } else {
-            tooltip += `<br/><em>Детализация доступна только в определенных режимах</em>`;
+            tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации выручки по адресам управляющего</em>`;
           }
         } else if (category === "Прочие") {
           const filteredExpenses = getFilteredOtherExpenses();
-          tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+          tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (${filteredExpenses.length} записей)</em>`;
         } else if (category === "Неделимый расход") {
           const isDrilldownMode = (!selectedObject || selectedObject === 'all_retail') &&
             (!selectedAddresses || selectedAddresses.length === 0);
           if (isDrilldownMode) {
             const filteredExpenses = getFilteredIndivisibleExpenses();
-            tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
-          } else {
-            tooltip += `<br/><em>Данные из P&L (детализация доступна в режиме дриллдауна)</em>`;
+            tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (${filteredExpenses.length} записей)</em>`;
           }
         } else if (category === "Общий расход") {
           const filteredExpenses = getFilteredGeneralExpenseExpenses();
-          tooltip += `<br/><em>Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+          tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (${filteredExpenses.length} записей)</em>`;
         } else if (category === "З/п офис") {
           const filteredExpenses = getFilteredSalaryOfficeExpenses();
-          tooltip += `<br/><em>Кликните для детализации сотрудников (${filteredExpenses.length} записей)</em>`;
-        } else if (category === "Франшиза сопровождение бонус") {
-          tooltip += `<br/><em>Выручка от франшизы сопровождения (добавляется после расходов)</em>`;
+          tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (${filteredExpenses.length} записей)</em>`;
         }
 
         tooltip += `</div>`;
@@ -188670,10 +188689,6 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         name: 'Финансовый поток',
         type: 'bar',
         barWidth: '60%',
-        itemStyle: {
-          borderColor: '#fff',
-          borderWidth: 2
-        },
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -188696,6 +188711,39 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
   };
 
   chart.setOption(option);
+
+  // Добавляем легенду для пояснения цветов
+  if (bonusRevenue > 0) {
+    const legendDiv = document.createElement('div');
+    legendDiv.style.cssText = `
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 15px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 13px;
+    `;
+    legendDiv.innerHTML = `
+      <div style="display: flex; align-items: center;">
+        <div style="width: 20px; height: 20px; background: #4CAF50; margin-right: 8px; border-radius: 4px;"></div>
+        <span>Основная выручка (${formatCurrency(regularRevenue)})</span>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <div style="width: 20px; height: 20px; background: #FFC107; margin-right: 8px; border-radius: 4px;"></div>
+        <span>Франшиза роялти (${formatCurrency(bonusRevenue)} - ${bonusPercentage}%)</span>
+      </div>
+    `;
+
+    const chartContainer = document.getElementById('chart');
+    const existingLegend = document.getElementById('bonusLegend');
+    if (existingLegend) {
+      existingLegend.remove();
+    }
+    legendDiv.id = 'bonusLegend';
+    chartContainer.parentNode.insertBefore(legendDiv, chartContainer.nextSibling);
+  }
 
   chart.on('click', function (params) {
     if (params.componentType === 'series' && params.seriesType === 'bar') {
@@ -188732,42 +188780,48 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
     }
   });
 
-  updateStats(revenue, franchBonus, profit, profitability, showFranchBonus);
+  updateStats(totalRevenue, bonusRevenue, profit, profitability);
 
   window.addEventListener('resize', function () {
     chart.resize();
   });
 }
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ: updateStats() - добавление информации о режиме управляющего
-function updateStats(revenue, franchBonus, profit, profitability, showFranchBonus) {
+// ИСПРАВЛЕННАЯ ФУНКЦИЯ: updateStats() - с отображением бонуса в статистике
+function updateStats(totalRevenue, bonusRevenue, profit, profitability) {
   const selectedObject = getSelectedObject();
   const isManagerModeActive = isManagerMode(selectedObject);
+  const regularRevenue = totalRevenue - bonusRevenue;
+  const bonusPercentage = totalRevenue > 0 ? ((bonusRevenue / totalRevenue) * 100).toFixed(1) : 0;
 
   let statsHtml = `
-        <div class="stat-item">Выручка: ${formatCurrency(revenue)}</div>
+    <div class="stat-item" style="background-color: #4CAF50; color: white;">
+      <strong>Общая выручка: ${formatCurrency(totalRevenue)}</strong>
+    </div>
+  `;
+
+  if (bonusRevenue > 0) {
+    statsHtml += `
+      <div class="stat-item" style="display: flex; justify-content: space-between; background-color: #f8f9fa;">
+        <span>Основная выручка:</span>
+        <span style="color: #4CAF50; font-weight: bold;">${formatCurrency(regularRevenue)}</span>
+      </div>
+      <div class="stat-item" style="display: flex; justify-content: space-between; background-color: #f8f9fa;">
+        <span>Франшиза роялти:</span>
+        <span style="color: #FFC107; font-weight: bold;">${formatCurrency(bonusRevenue)} (${bonusPercentage}%)</span>
+      </div>
     `;
-
-  if (showFranchBonus) {
-    statsHtml += `
-            <div class="stat-item" style="background-color: #4CAF50;">Франшиза бонус: ${formatCurrency(franchBonus)}</div>
-        `;
-  }
-
-  const totalRevenue = revenue + franchBonus;
-
-  if (showFranchBonus) {
-    statsHtml += `
-            <div class="stat-item" style="background-color: #ffc107;">Общая выручка: ${formatCurrency(totalRevenue)}</div>
-        `;
   }
 
   statsHtml += `
-        <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">Прибыль: ${formatCurrency(profit)}</div>
-        <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность: ${profitability.toFixed(1)}%</div>
-    `;
+    <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">
+      <strong>Прибыль: ${formatCurrency(profit)}</strong>
+    </div>
+    <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">
+      <strong>Рентабельность: ${profitability.toFixed(1)}%</strong>
+    </div>
+  `;
 
-  // Добавляем информацию о режиме, если выбран управляющий
   if (isManagerModeActive) {
     statsHtml += `
       <div class="stat-item" style="background-color: ${getManagerColor(selectedObject)}30; border-left: 4px solid ${getManagerColor(selectedObject)};">
