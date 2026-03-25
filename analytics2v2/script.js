@@ -161553,11 +161553,56 @@ function getWeekEnd(startDate) {
 // ==================== ФУНКЦИИ ДЛЯ РАБОТЫ С НЕДЕЛЯМИ ====================
 
 // Функция для извлечения всех уникальных недель из данных
+// Новая функция для группировки недель по годам
+function groupWeeksByYear(weeks) {
+    const weeksByYear = new Map();
+    
+    weeks.forEach(week => {
+        const year = week.startObj.getFullYear();
+        if (!weeksByYear.has(year)) {
+            weeksByYear.set(year, []);
+        }
+        weeksByYear.get(year).push(week);
+    });
+    
+    return weeksByYear;
+}
+
+// Функция для нумерации недель внутри года
+function numberWeeksWithinYear(weeksArray, startYear) {
+    // Сортируем недели по дате
+    const sortedWeeks = [...weeksArray].sort((a, b) => a.start - b.start);
+    
+    // Находим первую неделю года
+    const firstWeekStart = sortedWeeks[0].start;
+    const firstWeekOfYear = getWeekNumberInYear(firstWeekStart);
+    
+    // Нумеруем недели относительно первой недели года
+    return sortedWeeks.map((week, index) => {
+        const weekNumber = index + 1; // Простая нумерация 1, 2, 3...
+        return {
+            ...week,
+            number: weekNumber,
+            weekInYear: weekNumber
+        };
+    });
+}
+
+// Функция для получения номера недели в году (ISO стандарт)
+function getWeekNumberInYear(date) {
+    const d = new Date(date);
+    // Устанавливаем на понедельник
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+    const week1 = new Date(d.getFullYear(), 0, 4);
+    return 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+// Модифицированная функция extractAllWeeksFromData с отладкой для недель в начале года
 function extractAllWeeksFromData() {
     console.log('=== Извлечение всех недель из данных ===');
     
     const weeksMap = new Map();
-    const allWeeksArray = [];
     
     // 1. Обрабатываем pnlData (исключая франшизу роялти)
     if (pnlData && Array.isArray(pnlData)) {
@@ -161580,35 +161625,28 @@ function extractAllWeeksFromData() {
                 return;
             }
             
+            let date = null;
+            
             // Для записей, которые уже имеют поле "Неделя"
             if (entry["Неделя"]) {
                 const [startStr] = entry["Неделя"].split(" - ");
-                const startDate = parseDate(startStr);
-                const weekStart = getWeekStart(startDate);
-                if (!weekStart) return;
-                
-                const weekKey = weekStart.toISOString().split('T')[0];
-                
-                if (!weeksMap.has(weekKey)) {
-                    const weekEnd = getWeekEnd(weekStart);
-                    if (!weekEnd) return;
-                    
-                    weeksMap.set(weekKey, {
-                        start: weekStart,
-                        startStr: formatDate(weekStart),
-                        endStr: formatDate(weekEnd),
-                        range: `${formatDate(weekStart)} - ${formatDate(weekEnd)}`,
-                        key: weekKey
-                    });
-                }
+                date = parseDate(startStr);
+                console.log(`Найдена недельная запись: Неделя=${entry["Неделя"]}, startStr=${startStr}, date=${date}`);
             }
             // Для записей с полем "Дата" (дневные данные)
             else if (entry["Дата"]) {
-                const date = parseDate(entry["Дата"]);
+                date = parseDate(entry["Дата"]);
+                console.log(`Найдена дневная запись: Дата=${entry["Дата"]}, date=${date}, объект=${object}`);
+            }
+            
+            if (date) {
                 const weekStart = getWeekStart(date);
                 if (!weekStart) return;
                 
                 const weekKey = weekStart.toISOString().split('T')[0];
+                const year = weekStart.getFullYear();
+                
+                console.log(`  -> weekStart=${formatDate(weekStart)}, weekKey=${weekKey}, year=${year}`);
                 
                 if (!weeksMap.has(weekKey)) {
                     const weekEnd = getWeekEnd(weekStart);
@@ -161619,8 +161657,10 @@ function extractAllWeeksFromData() {
                         startStr: formatDate(weekStart),
                         endStr: formatDate(weekEnd),
                         range: `${formatDate(weekStart)} - ${formatDate(weekEnd)}`,
-                        key: weekKey
+                        key: weekKey,
+                        year: year
                     });
+                    console.log(`  Добавлена новая неделя: ${formatDate(weekStart)} - ${formatDate(weekEnd)}, year=${year}`);
                 }
             }
         });
@@ -161637,6 +161677,7 @@ function extractAllWeeksFromData() {
                 if (!weekStart) return;
                 
                 const weekKey = weekStart.toISOString().split('T')[0];
+                const year = weekStart.getFullYear();
                 
                 // Добавляем только если недели еще нет в карте
                 if (!weeksMap.has(weekKey)) {
@@ -161648,8 +161689,10 @@ function extractAllWeeksFromData() {
                         startStr: formatDate(weekStart),
                         endStr: formatDate(weekEnd),
                         range: `${formatDate(weekStart)} - ${formatDate(weekEnd)}`,
-                        key: weekKey
+                        key: weekKey,
+                        year: year
                     });
+                    console.log(`Добавлена неделя из expensesData: ${formatDate(weekStart)} - ${formatDate(weekEnd)}, year=${year}`);
                 }
             }
         });
@@ -161659,28 +161702,54 @@ function extractAllWeeksFromData() {
     const sortedWeeks = Array.from(weeksMap.values())
         .sort((a, b) => a.start - b.start);
     
-    // Нумеруем недели начиная с 2
-    sortedWeeks.forEach((week, index) => {
-        allWeeksArray.push({
-            number: index + 2, // Начинаем с номера 2
-            range: week.range,
-            startDate: week.startStr,
-            endDate: week.endStr,
-            startDateISO: week.key,
-            startObj: week.start
+    console.log('Все уникальные недели (до группировки по годам):', sortedWeeks.map(w => ({range: w.range, year: w.year})));
+    
+    // Группируем недели по годам
+    const weeksByYear = new Map();
+    sortedWeeks.forEach(week => {
+        if (!weeksByYear.has(week.year)) {
+            weeksByYear.set(week.year, []);
+        }
+        weeksByYear.get(week.year).push(week);
+    });
+    
+    // Нумеруем недели внутри каждого года, начиная с 1
+    const allWeeksArray = [];
+    
+    weeksByYear.forEach((yearWeeks, year) => {
+        // Сортируем недели в году по дате
+        yearWeeks.sort((a, b) => a.start - b.start);
+        
+        console.log(`Год ${year}: найдено недель: ${yearWeeks.length}`);
+        yearWeeks.forEach((week, idx) => {
+            console.log(`  ${idx + 1}: ${week.range}`);
+        });
+        
+        // Нумеруем недели в году последовательно
+        yearWeeks.forEach((week, index) => {
+            allWeeksArray.push({
+                number: index + 1, // Начинаем с 1 в каждом году
+                range: week.range,
+                startDate: week.startStr,
+                endDate: week.endStr,
+                startDateISO: week.key,
+                startObj: week.start,
+                year: week.year,
+                weekInYear: index + 1
+            });
         });
     });
     
-    console.log('Найдено недель (без франшизы роялти):', allWeeksArray.length);
-    if (allWeeksArray.length > 0) {
-        console.log('Первые 5 недель:', allWeeksArray.slice(0, 5));
-        console.log('Последние 5 недель:', allWeeksArray.slice(-5));
-    }
+    console.log('Всего найдено недель (без франшизы роялти):', allWeeksArray.length);
+    console.log('Финальный список allWeeks:');
+    allWeeksArray.forEach(week => {
+        console.log(`  ${week.year} год, неделя ${week.number}: ${week.range}`);
+    });
     
     return allWeeksArray;
 }
 
-// Функция для получения номера недели по дате
+// Модифицированная функция для получения номера недели по дате (с учетом года)
 function getWeekNumberForDate(dateStr) {
     if (!dateStr) return null;
     
@@ -161691,22 +161760,63 @@ function getWeekNumberForDate(dateStr) {
     if (!targetWeekStart) return null;
     
     const targetWeekKey = targetWeekStart.toISOString().split('T')[0];
+    const targetYear = targetWeekStart.getFullYear();
     
-    // Ищем неделю в списке
+    console.log(`getWeekNumberForDate: date=${dateStr}, weekStart=${formatDate(targetWeekStart)}, year=${targetYear}, weekKey=${targetWeekKey}`);
+    
+    // Ищем неделю в списке с учетом года
     const existingWeek = allWeeks.find(week => 
-        week.startDateISO === targetWeekKey
+        week.startDateISO === targetWeekKey && week.year === targetYear
     );
+    
+    if (!existingWeek) {
+        console.warn(`Не найдена неделя для даты: ${dateStr}, weekKey=${targetWeekKey}, year=${targetYear}`);
+        console.log('Доступные недели в allWeeks:', allWeeks.map(w => ({year: w.year, number: w.number, startDateISO: w.startDateISO, range: w.range})));
+    }
     
     return existingWeek ? existingWeek.number : null;
 }
 
-// Функция для получения диапазона недели по номеру
-function getWeekRangeByNumber(weekNumber) {
-    const week = allWeeks.find(w => w.number === weekNumber);
-    return week ? week.range : null;
+// Функция для отображения статистики с учетом годов
+function updateStatsWithYears(revenue, profit, profitability, franchiseBonus = 0, showFranchiseBonus = false, yearInfo = null) {
+    const statsInfo = document.getElementById('statsInfo');
+    if (!statsInfo) return;
+    
+    let yearText = yearInfo ? ` (${yearInfo.year}, недели ${yearInfo.weekRange})` : '';
+    
+    let statsHtml = `
+        <div class="stat-item revenue">Выручка${yearText}: ${formatCurrency(revenue)}</div>
+    `;
+
+    if (showFranchiseBonus && franchiseBonus !== 0) {
+        statsHtml += `<div class="stat-item bonus">Франшиза роялти${yearText}: ${formatCurrency(franchiseBonus)}</div>`;
+    }
+
+    statsHtml += `
+        <div class="stat-item ${profit >= 0 ? 'positive' : 'negative'}">Прибыль${yearText}: ${formatCurrency(profit)}</div>
+        <div class="stat-item ${profitability >= 0 ? 'positive' : 'negative'}">Рентабельность${yearText}: ${profitability.toFixed(1)}%</div>
+    `;
+
+    statsInfo.innerHTML = statsHtml;
 }
 
-// Функция для заполнения селектора недель
+// Функция для получения диапазона недели по номеру
+// Модифицированная функция getWeekRangeByNumber с учетом года
+function getWeekRangeByNumber(weekNumber) {
+    // Нам нужно вернуть диапазон для конкретной недели, но без года это неоднозначно
+    // Вместо этого будем искать по номеру, но в контексте текущей обработки
+    // В функции groupDailyDataByWeek мы вызываем эту функцию, и она может вернуть неправильный диапазон
+    // Поэтому давайте модифицируем groupDailyDataByWeek, чтобы не использовать эту функцию
+    
+    const week = allWeeks.find(w => w.number === weekNumber);
+    if (!week) {
+        console.warn(`Не найден диапазон для недели ${weekNumber}`);
+        return null;
+    }
+    return week.range;
+}
+
+// Модифицированная функция для заполнения селектора недель
 function populateWeekFilter(weeks) {
     const weekSelect = document.getElementById('weekSelect');
     if (!weekSelect) {
@@ -161722,12 +161832,15 @@ function populateWeekFilter(weeks) {
     allOption.textContent = 'Все недели';
     weekSelect.appendChild(allOption);
     
-    // Добавляем опции для каждой недели
+    // Добавляем опции для каждой недели с уникальным идентификатором (год_номер)
     weeks.forEach(week => {
         const option = document.createElement('option');
-        option.value = week.number;
+        // Используем составной ключ: год_номер
+        option.value = `${week.year}_${week.number}`;
         option.textContent = `${week.number}н (${week.range})`;
         option.dataset.range = week.range;
+        option.dataset.year = week.year;
+        option.dataset.weekNumber = week.number;
         weekSelect.appendChild(option);
     });
     
@@ -161742,7 +161855,7 @@ function populateWeekFilter(weeks) {
 
 // ==================== ОБРАБОТКА ДАННЫХ ДЛЯ НЕДЕЛЬ ====================
 
-// Функция для обработки данных компании (группировка дневных данных по неделям)
+// Модифицированная функция для обработки данных компании
 function processCompanyDataForWeeks(data) {
     console.log('=== Обработка данных для работы с неделями ===');
     
@@ -161772,7 +161885,6 @@ function processCompanyDataForWeeks(data) {
             return;
         }
         
-        // Также проверяем адрес на наличие франшизы роялти
         if (address && 
             (address.toString().toLowerCase().includes('франшиза роялти') || 
              address.toString().toLowerCase().includes('франшизароялти'))) {
@@ -161782,14 +161894,19 @@ function processCompanyDataForWeeks(data) {
         
         const processedRow = {};
         
-        // Определяем номер недели
+        // Определяем номер недели и год
         if (row['Неделя']) {
             const [startStr] = row['Неделя'].split(" - ");
             const weekNumber = getWeekNumberForDate(startStr);
             
             if (weekNumber) {
+                // Извлекаем год из строки недели
+                const year = startStr.split('.')[2];
+                
                 processedRow['Неделя'] = row['Неделя'];
                 processedRow['Номер недели'] = weekNumber;
+                processedRow['Год'] = parseInt(year);
+                processedRow['Ключ недели'] = `${year}_${weekNumber}`;
             }
         }
         
@@ -161825,10 +161942,20 @@ function processCompanyDataForWeeks(data) {
     
     console.log('Всего обработано записей:', allProcessedData.length);
     
+    // Выводим распределение по годам для проверки
+    const yearsData = {};
+    allProcessedData.forEach(row => {
+        const year = row['Год'];
+        if (year) {
+            yearsData[year] = (yearsData[year] || 0) + 1;
+        }
+    });
+    console.log('Распределение записей по годам:', yearsData);
+    
     return allProcessedData;
 }
 
-// Функция для группировки дневных данных по неделям
+// Модифицированная функция для группировки дневных данных по неделям с добавлением года
 function groupDailyDataByWeek(dailyEntries) {
     console.log('=== Группировка дневных данных по неделям ===');
     
@@ -161848,27 +161975,49 @@ function groupDailyDataByWeek(dailyEntries) {
             return;
         }
         
-        // Также проверяем адрес на наличие франшизы роялти
         if (address && 
             (address.toString().toLowerCase().includes('франшиза роялти') || 
              address.toString().toLowerCase().includes('франшизароялти'))) {
             return;
         }
         
+        // Получаем номер недели и год
+        const targetDate = parseDate(dateStr);
+        if (!targetDate) return;
+        
+        const weekStart = getWeekStart(targetDate);
+        if (!weekStart) return;
+        
+        const year = weekStart.getFullYear();
         const weekNumber = getWeekNumberForDate(dateStr);
-        if (!weekNumber) return;
         
-        const weekRange = getWeekRangeByNumber(weekNumber);
-        if (!weekRange) return;
+        if (!weekNumber) {
+            console.log(`Не удалось определить номер недели для даты: ${dateStr}`);
+            return;
+        }
         
-        // Создаем уникальный ключ для группировки
-        const key = `${weekNumber}_${object}_${address}`;
+        // Находим диапазон недели
+        const weekInfo = allWeeks.find(w => w.year === year && w.number === weekNumber);
+        if (!weekInfo) {
+            console.log(`Не найдена информация о неделе ${weekNumber} для года ${year}, дата: ${dateStr}`);
+            return;
+        }
+        
+        const weekRange = weekInfo.range;
+        const weekKey = `${year}_${weekNumber}`;
+        
+        console.log(`Группировка: дата=${dateStr}, weekKey=${weekKey}, weekRange=${weekRange}, объект=${object}`);
+        
+        // Создаем уникальный ключ для группировки с учетом года
+        const key = `${weekKey}_${object}_${address}`;
         
         if (!weeklyMap.has(key)) {
             // Создаем новую недельную запись
             weeklyMap.set(key, {
                 'Неделя': weekRange,
                 'Номер недели': weekNumber,
+                'Год': year,
+                'Ключ недели': weekKey,
                 'Объект': object,
                 'Адрес': address
             });
@@ -161897,6 +162046,16 @@ function groupDailyDataByWeek(dailyEntries) {
     const groupedData = Array.from(weeklyMap.values());
     
     console.log('Сгруппировано недельных записей:', groupedData.length);
+    // Выводим распределение по годам
+    const yearsData = {};
+    groupedData.forEach(item => {
+        const year = item['Год'];
+        yearsData[year] = (yearsData[year] || 0) + 1;
+    });
+    console.log('Распределение сгруппированных записей по годам:', yearsData);
+    groupedData.forEach(item => {
+        console.log(`  - ${item['Ключ недели']}: ${item['Неделя']}, объект: ${item['Объект']}`);
+    });
     
     return groupedData;
 }
@@ -161951,6 +162110,7 @@ function loadCompanyExpensesData(data) {
 
 // ==================== АГРЕГАЦИЯ ДАННЫХ ПО НЕДЕЛЯМ ====================
 
+// Модифицированная функция агрегации данных с использованием ключа недели
 function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null, selectedAddresses = null) {
     console.log('=== Агрегация данных по неделям ===');
     
@@ -161960,7 +162120,6 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
     const isAllAddresses = !selectedAddresses || selectedAddresses.length === 0;
     const shouldIncludeCompanyExpenses = isAllObjects && isAllAddresses && companyExpensesFileLoaded;
     
-    // Проверяем, выбран ли объект "Франшиза отдел сопровождения"
     const isFranchiseSupportSelected = selectedObjects && 
         selectedObjects.some(obj => 
             obj && 
@@ -161968,33 +162127,41 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
              obj.toString().toLowerCase().includes('франшиза сопровождение'))
         );
     
-    // Включаем франшизу бонус если выбраны все объекты и все адреса, ИЛИ выбран объект франшизы
     const shouldIncludeFranchiseBonus = (isAllObjects && isAllAddresses) || isFranchiseSupportSelected;
 
+    let processedCount = 0;
+    let skippedCount = 0;
+    const yearsProcessed = {};
+
     data.forEach(row => {
-        const weekNumber = row['Номер недели'];
-        const weekRange = row['Неделя'];
+        // Используем ключ недели, если он есть, иначе формируем из года и номера
+        let weekKey = row['Ключ недели'];
+        let weekNumber = row['Номер недели'];
+        let year = row['Год'];
+        let weekRange = row['Неделя'];
+        
+        // Если нет ключа, но есть номер и диапазон, пытаемся извлечь год
+        if (!weekKey && weekNumber && weekRange) {
+            year = weekRange.split(' - ')[0].split('.')[2];
+            weekKey = `${year}_${weekNumber}`;
+        }
+        
         const object = row['Объект'];
         const address = row['Адрес'];
 
-        if (!weekNumber || !weekRange) return;
-        
-        // ИГНОРИРУЕМ ФРАНШИЗУ РОЯЛТИ (дополнительная проверка)
-        if (object && 
-            (object.toString().toLowerCase().includes('франшиза роялти') || 
-             object.toString().toLowerCase().includes('франшизароялти'))) {
+        if (!weekKey || !weekNumber || !year || !weekRange) {
             return;
         }
         
-        if (address && 
-            (address.toString().toLowerCase().includes('франшиза роялти') || 
-             address.toString().toLowerCase().includes('франшизароялти'))) {
-            return;
-        }
-
-        // Проверяем, выбрана ли неделя
+        // Проверяем, выбрана ли неделя (с учетом года)
         if (selectedWeeks && selectedWeeks.length > 0) {
-            if (!selectedWeeks.includes(weekNumber)) return;
+            const isSelected = selectedWeeks.some(selected => 
+                selected.year === parseInt(year) && selected.weekNumber === weekNumber
+            );
+            if (!isSelected) {
+                skippedCount++;
+                return;
+            }
         }
 
         // Фильтрация по объектам
@@ -162007,20 +162174,31 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
                 objectMatch = selectedObjects.includes(object);
             }
             
-            if (!objectMatch) return;
+            if (!objectMatch) {
+                skippedCount++;
+                return;
+            }
         }
 
         // Фильтрация по адресам
         if (selectedAddresses && selectedAddresses.length > 0) {
-            if (!selectedAddresses.includes(address)) return;
+            if (!selectedAddresses.includes(address)) {
+                skippedCount++;
+                return;
+            }
         }
 
-        if (!weeklyAggregated[weekNumber]) {
-            weeklyAggregated[weekNumber] = {
+        processedCount++;
+        yearsProcessed[year] = (yearsProcessed[year] || 0) + 1;
+
+        if (!weeklyAggregated[weekKey]) {
+            weeklyAggregated[weekKey] = {
                 weekNumber: weekNumber,
                 weekRange: weekRange,
+                year: parseInt(year),
+                weekKey: weekKey,
                 revenue: 0,
-                operatingProfit: 0,
+                operatingProfit: 0,  // Это будет сумма операционной прибыли
                 autoChemistry: 0,
                 utilities: 0,
                 rent: 0,
@@ -162033,25 +162211,26 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
                 franchiseBonus: 0,
                 generalExpense: 0,
                 salaryOfficeExpense: 0,
-                adjustedOperatingProfit: 0,
+                adjustedOperatingProfit: 0,  // Это будет скорректированная прибыль (с учетом расходов компании)
                 rawData: {}
             };
         }
 
-        const weekData = weeklyAggregated[weekNumber];
+        const weekData = weeklyAggregated[weekKey];
 
         // Суммируем данные
         weekData.revenue += (row['Выручка'] || 0) + (row['Выручка Сайт'] || 0);
+        
+        // Суммируем операционную прибыль (это уже готовая цифра из данных)
+        weekData.operatingProfit += (row['Операционная прибыль'] || 0);
 
-        // Включаем франшиза бонус только если нужно
         if (shouldIncludeFranchiseBonus) {
             const franchiseBonus = row['Франшиза сопровождение бонус'] || 0;
             weekData.revenue += franchiseBonus;
             weekData.franchiseBonus += franchiseBonus;
         }
 
-        weekData.operatingProfit += row['Операционная прибыль'] || 0;
-
+        // Суммируем остальные показатели для детализации
         weekData.autoChemistry +=
             (row['Автохимия Шампунь Москва'] || 0) +
             (row['Автохимия Шампунь СПБ'] || 0) +
@@ -162074,7 +162253,7 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
         // Сохраняем сырые данные
         for (const key in row) {
             if (key !== 'Неделя' && key !== 'Номер недели' && 
-                key !== 'Объект' && key !== 'Адрес' &&
+                key !== 'Объект' && key !== 'Адрес' && key !== 'Год' && key !== 'Ключ недели' &&
                 typeof row[key] === 'number') {
                 if (!weekData.rawData[key]) weekData.rawData[key] = 0;
                 weekData.rawData[key] += row[key];
@@ -162082,54 +162261,80 @@ function aggregateWeeklyData(data, selectedWeeks = null, selectedObjects = null,
         }
     });
 
+    console.log(`Обработано записей: ${processedCount}, пропущено: ${skippedCount}`);
+    console.log('Распределение обработанных записей по годам:', yearsProcessed);
+    console.log('Уникальных ключей недель:', Object.keys(weeklyAggregated).length);
+
     // Добавляем расходы компании для каждой недели
     if (shouldIncludeCompanyExpenses) {
-        // Группируем расходы по неделям
         const weeklyExpenses = {};
         
         companyExpensesData.forEach(expense => {
-            const weekNumber = getWeekNumberForDate(expense.дата);
+            const dateStr = expense.дата;
+            if (!dateStr) return;
+            
+            // Определяем неделю для даты расхода
+            const targetDate = parseDate(dateStr);
+            if (!targetDate) return;
+            
+            const weekStart = getWeekStart(targetDate);
+            if (!weekStart) return;
+            
+            const year = weekStart.getFullYear();
+            const weekNumber = getWeekNumberForDate(dateStr);
+            
             if (!weekNumber) return;
             
-            if (!weeklyExpenses[weekNumber]) {
-                weeklyExpenses[weekNumber] = {
+            const uniqueKey = `${year}_${weekNumber}`;
+            
+            if (!weeklyExpenses[uniqueKey]) {
+                weeklyExpenses[uniqueKey] = {
                     generalExpense: 0,
                     salaryExpense: 0
                 };
             }
             
-            weeklyExpenses[weekNumber].generalExpense += expense.общий_расход || 0;
-            weeklyExpenses[weekNumber].salaryExpense += expense.зп_офис || 0;
+            weeklyExpenses[uniqueKey].generalExpense += expense.общий_расход || 0;
+            weeklyExpenses[uniqueKey].salaryExpense += expense.зп_офис || 0;
         });
 
         // Применяем расходы к соответствующим неделям
-        Object.keys(weeklyAggregated).forEach(weekNum => {
-            const weekNumber = parseInt(weekNum);
-            if (weeklyExpenses[weekNumber]) {
-                weeklyAggregated[weekNumber].generalExpense = weeklyExpenses[weekNumber].generalExpense;
-                weeklyAggregated[weekNumber].salaryOfficeExpense = weeklyExpenses[weekNumber].salaryExpense;
+        Object.keys(weeklyAggregated).forEach(weekKey => {
+            if (weeklyExpenses[weekKey]) {
+                weeklyAggregated[weekKey].generalExpense = weeklyExpenses[weekKey].generalExpense;
+                weeklyAggregated[weekKey].salaryOfficeExpense = weeklyExpenses[weekKey].salaryExpense;
                 
-                weeklyAggregated[weekNumber].adjustedOperatingProfit =
-                    weeklyAggregated[weekNumber].operatingProfit +
-                    weeklyAggregated[weekNumber].generalExpense +
-                    weeklyAggregated[weekNumber].salaryOfficeExpense;
+                // Скорректированная прибыль = операционная прибыль + общий расход + зп офис
+                weeklyAggregated[weekKey].adjustedOperatingProfit = 
+                    weeklyAggregated[weekKey].operatingProfit +
+                    weeklyAggregated[weekKey].generalExpense +
+                    weeklyAggregated[weekKey].salaryOfficeExpense;
             } else {
-                weeklyAggregated[weekNumber].adjustedOperatingProfit = weeklyAggregated[weekNumber].operatingProfit;
+                weeklyAggregated[weekKey].adjustedOperatingProfit = weeklyAggregated[weekKey].operatingProfit;
             }
         });
     } else {
-        Object.keys(weeklyAggregated).forEach(weekNumber => {
-            weeklyAggregated[weekNumber].adjustedOperatingProfit = weeklyAggregated[weekNumber].operatingProfit;
+        // Если расходы компании не учитываем, то скорректированная прибыль = операционная прибыль
+        Object.keys(weeklyAggregated).forEach(weekKey => {
+            weeklyAggregated[weekKey].adjustedOperatingProfit = weeklyAggregated[weekKey].operatingProfit;
         });
     }
 
-    // Преобразуем объект в массив и сортируем по номеру недели
+    // Преобразуем объект в массив и сортируем
     const result = Object.values(weeklyAggregated);
-    result.sort((a, b) => a.weekNumber - b.weekNumber);
+    result.sort((a, b) => {
+        if (a.year === b.year) {
+            return a.weekNumber - b.weekNumber;
+        }
+        return a.year - b.year;
+    });
 
-    console.log('Агрегировано недель (без франшизы роялти):', result.length);
-    console.log('shouldIncludeFranchiseBonus:', shouldIncludeFranchiseBonus, 
-                'isFranchiseSupportSelected:', isFranchiseSupportSelected);
+    console.log('Агрегировано недель:', result.length);
+    console.log('Недели в результате:');
+    result.forEach(item => {
+        console.log(`  ${item.year} год, неделя ${item.weekNumber}: ${item.weekRange}, revenue: ${formatCurrency(item.revenue)}, operatingProfit: ${formatCurrency(item.operatingProfit)}, adjustedProfit: ${formatCurrency(item.adjustedOperatingProfit)}`);
+    });
+    
     return result;
 }
 
@@ -162433,6 +162638,7 @@ function updateAddressFilter(selectedObject, data) {
     updateSelectedInfo('addressSelected', addressSelect);
 }
 
+// Обновляем функцию updateSelectedInfo для корректного отображения выбранных недель
 function updateSelectedInfo(containerId, selectElement) {
     const container = document.getElementById(containerId);
     if (!container || !selectElement) return;
@@ -162445,9 +162651,9 @@ function updateSelectedInfo(containerId, selectElement) {
         if (selectedOptions.length === 0 || selectedOptions.includes('all')) {
             container.textContent = 'Все недели';
         } else if (selectedOptions.length === 1) {
-            const weekNumber = selectedOptions[0];
-            const weekOption = selectElement.querySelector(`option[value="${weekNumber}"]`);
-            container.textContent = weekOption ? weekOption.textContent : `Неделя ${weekNumber}`;
+            const weekValue = selectedOptions[0];
+            const weekOption = selectElement.querySelector(`option[value="${weekValue}"]`);
+            container.textContent = weekOption ? weekOption.textContent : `Неделя ${weekValue}`;
         } else {
             container.textContent = `Выбрано недель: ${selectedOptions.length}`;
         }
@@ -162475,16 +162681,24 @@ function updateSelectedInfo(containerId, selectElement) {
     }
 }
 
+// Модифицированная функция для получения выбранных недель (возвращает массив объектов с year и number)
 function getSelectedWeeks() {
     const weekSelect = document.getElementById('weekSelect');
     if (!weekSelect) return null;
     
-    const selectedWeeks = Array.from(weekSelect.selectedOptions)
-        .map(option => option.value)
-        .filter(value => value && value !== 'all')
-        .map(value => parseInt(value));
-
-    return selectedWeeks.length > 0 ? selectedWeeks : null;
+    const selectedOptions = Array.from(weekSelect.selectedOptions)
+        .filter(option => option.value && option.value !== 'all');
+    
+    if (selectedOptions.length === 0) return null;
+    
+    // Возвращаем массив объектов с year и weekNumber
+    return selectedOptions.map(option => {
+        const [year, weekNumber] = option.value.split('_');
+        return {
+            year: parseInt(year),
+            weekNumber: parseInt(weekNumber)
+        };
+    });
 }
 
 function getSelectedObjects() {
@@ -162509,6 +162723,7 @@ function getSelectedAddresses() {
     return selectedAddresses.length > 0 ? selectedAddresses : null;
 }
 
+// Обновляем applyFiltersForWeeks для корректной работы с новым форматом selectedWeeks
 function applyFiltersForWeeks() {
     console.log('=== Применение фильтров для недель ===');
     
@@ -162538,7 +162753,6 @@ function applyFiltersForWeeks() {
         infoText += ' | Учтены: Общий расход, З/п офис';
     }
 
-    // Обновляем эту часть:
     const shouldShowFranchiseBonus = (isAllObjectsFlag && isAllAddressesFlag) || isFranchiseSupportSelected;
     if (shouldShowFranchiseBonus) {
         infoText += ' | Учтен: Франшиза сопровождение бонус';
@@ -162588,7 +162802,13 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
     const chart = echarts.init(chartContainer);
     currentCompanyChart = chart;
 
-    const labels = data.map(item => `${item.weekNumber}н`);
+    // Создаем метки для каждой недели (без разделителей между годами)
+    const labels = [];
+    
+    data.forEach((item, index) => {
+        labels.push(`${item.weekNumber}н`);
+    });
+    
     const revenueData = [];
     const positiveProfitData = [];
     const negativeProfitData = [];
@@ -162628,8 +162848,17 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
     const avgProfitability = totalRevenue !== 0 ? (totalProfit / totalRevenue) * 100 : -100;
     const totalFranchiseBonus = data.reduce((sum, item) => sum + (item.franchiseBonus || 0), 0);
 
+    // Определяем диапазон годов для отображения
+    const years = [...new Set(data.map(item => item.year))].sort();
+    
     let titleText = 'Финансовые показатели по всей компании (по неделям)';
     let subtitle = `Рентабельность: ${avgProfitability.toFixed(1)}%`;
+    
+    if (years.length === 1) {
+        subtitle += ` | ${years[0]} год`;
+    } else {
+        subtitle += ` | ${years.length} года: ${years.join(', ')}`;
+    }
 
     if (selectedObjects) {
         if (selectedObjects.includes('all_retail')) {
@@ -162645,7 +162874,6 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
     const isAllObjectsFlag = !selectedObjects || selectedObjects.length === 0;
     const isAllAddressesFlag = !selectedAddresses || selectedAddresses.length === 0;
     
-    // Определяем, нужно ли показывать франшиза бонус
     const isFranchiseSupportSelected = selectedObjects && 
         selectedObjects.some(obj => 
             obj && 
@@ -162661,6 +162889,35 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
 
     if (shouldShowFranchiseBonus) {
         subtitle += ' | Учтен: Франшиза сопровождение бонус';
+    }
+
+    // Создаем массив для меток с указанием годов на оси X
+    const xAxisLabels = labels;
+    const yearMarkers = [];
+    let currentYear = null;
+    let yearStartIndex = 0;
+    
+    data.forEach((item, index) => {
+        if (currentYear !== item.year) {
+            if (currentYear !== null) {
+                yearMarkers.push({
+                    name: currentYear,
+                    xAxis: yearStartIndex + (index - yearStartIndex - 1) / 2,
+                    value: currentYear
+                });
+            }
+            currentYear = item.year;
+            yearStartIndex = index;
+        }
+    });
+    
+    // Добавляем последний год
+    if (currentYear !== null && yearStartIndex < data.length) {
+        yearMarkers.push({
+            name: currentYear,
+            xAxis: yearStartIndex + (data.length - yearStartIndex - 1) / 2,
+            value: currentYear
+        });
     }
 
     const option = {
@@ -162806,13 +163063,19 @@ function buildChartForWeeks(data, selectedObjects, selectedAddresses) {
         },
         xAxis: {
             type: 'category',
-            data: labels,
+            data: xAxisLabels,
+            boundaryGap: true,
             axisLine: { onZero: true },
             splitLine: { show: false },
             splitArea: { show: false },
             axisLabel: {
                 interval: 0,
-                rotate: 0
+                rotate: 45,
+                fontSize: 10,
+                margin: 10
+            },
+            axisTick: {
+                alignWithLabel: true
             }
         },
         yAxis: {
