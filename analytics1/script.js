@@ -241063,6 +241063,61 @@ function getFilteredGeneralExpenseExpenses() {
   });
 }
 
+// Функция для получения расходов на строительство
+function getFilteredConstructionExpenses() {
+  const selectedObject = getSelectedObject();
+  const selectedAddresses = getSelectedAddresses();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+
+  // Проверяем, что находимся в режиме "Все объекты + Все адреса"
+  const isAllObjectsAllAddresses = (!selectedObject || selectedObject === '') &&
+    (!selectedAddresses || selectedAddresses.length === 0);
+
+  if (!isAllObjectsAllAddresses) return [];
+
+  // Дата начала учета строительства
+  const constructionStartDate = new Date('2026-04-02');
+
+  return otherExpensesData.filter(expense => {
+    // Фильтруем по статье "Строительство нового объекта"
+    if (expense.статья !== "Строительство нового объекта") return false;
+
+    // Фильтруем по дате (если выбран период)
+    if (dateFrom && dateTo) {
+      try {
+        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+        const fromDate = new Date(dateFrom);
+        const toDate = new Date(dateTo);
+
+        // Проверяем, что дата в периоде и не раньше 02.04.2026
+        if (expenseDate < fromDate || expenseDate > toDate || expenseDate < constructionStartDate) {
+          return false;
+        }
+      } catch (e) {
+        console.error('Ошибка обработки даты строительства:', expense.дата, e);
+        return false;
+      }
+    } else {
+      // Если период не выбран, проверяем только дату начала
+      try {
+        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+        if (expenseDate < constructionStartDate) return false;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+}
+
+// Функция для получения суммы расходов на строительство за период
+function getConstructionExpenseForDateRange() {
+  const expenses = getFilteredConstructionExpenses();
+  return expenses.reduce((sum, expense) => sum + expense.сумма, 0);
+}
+
 // ИСПРАВЛЕННАЯ ФУНКЦИЯ: getFilteredOtherExpenses() - отдельная обработка старых и новых данных
 function getFilteredOtherExpenses() {
   const selectedObject = getSelectedObject();
@@ -241218,6 +241273,9 @@ function getFilteredOtherExpenses() {
 function getOtherExpensesDrilldown(selectedObject, selectedAddresses, dateFrom, dateTo) {
   console.log('=== ДРИЛЛДАУН ДЛЯ НОВЫХ ДАННЫХ ===');
 
+  // Дата начала учета строительства как отдельной категории
+  const constructionStartDate = new Date('2026-04-02');
+
   return otherExpensesData.filter(expense => {
     // 1. Проверяем, относится ли это к "Неделимому расходу"
     const isIndivisible = expense.мойка === "Общий расход" &&
@@ -241228,8 +241286,22 @@ function getOtherExpensesDrilldown(selectedObject, selectedAddresses, dateFrom, 
     const isGeneralExpense = expense.мойка === "Общий расход" &&
       (!expense.команда || expense.команда.trim() === '');
 
-    // Если это "Неделимый" или "Общий расход" - исключаем из "Прочих"
-    if (isIndivisible || isGeneralExpense) {
+    // 3. Проверяем, является ли это расходами на строительство (с 02.04.2026)
+    let isConstruction = false;
+
+    if (expense.статья === "Строительство нового объекта") {
+      try {
+        const expenseDate = new Date(expense.дата.split('.').reverse().join('-'));
+        if (expenseDate >= constructionStartDate) {
+          isConstruction = true;
+        }
+      } catch (e) {
+        console.error('Ошибка обработки даты строительства в дриллдауне:', expense.дата, e);
+      }
+    }
+
+    // Если это "Неделимый", "Общий расход" или "Строительство" (с 02.04.2026) - исключаем из "Прочих"
+    if (isIndivisible || isGeneralExpense || isConstruction) {
       return false;
     }
 
@@ -242409,6 +242481,18 @@ function showGeneralExpenseDetails() {
   if (selectedAddresses) title += ` | Адресов: ${selectedAddresses.length}`;
 
   modalTitle.textContent = title;
+  
+  // Показываем кнопки сортировки по ID
+  const sortByAmount = document.getElementById('generalExpenseSortByAmount');
+  const sortByDate = document.getElementById('generalExpenseSortByDate');
+  const sortByArticle = document.getElementById('generalExpenseSortByArticle');
+  const sortInfo = document.getElementById('generalExpenseSortInfo');
+  
+  if (sortByAmount) sortByAmount.style.display = 'inline-block'; // или 'block'
+  if (sortByDate) sortByDate.style.display = 'inline-block';
+  if (sortByArticle) sortByArticle.style.display = 'inline-block';
+  if (sortInfo) sortInfo.style.display = 'block';
+  
   const filteredExpenses = getFilteredGeneralExpenseExpenses();
   updateGeneralExpenseSortButtons();
   updateGeneralExpenseTable(filteredExpenses);
@@ -243334,7 +243418,7 @@ function buildChart(data, object, addresses) {
   const showCompanyExpenses = isAllObjects && isAllAddresses;
 
   if (showCompanyExpenses) {
-    categories.splice(categories.indexOf("Операционная прибыль"), 0, "Общий расход", "З/п офис");
+    categories.splice(categories.indexOf("Операционная прибыль"), 0, "Общий расход", "З/п офис", "Строительство");
   }
 
   // ВАЖНОЕ ИСПРАВЛЕНИЕ: ПРАВИЛЬНЫЙ РАСЧЕТ всех статей
@@ -243385,6 +243469,11 @@ function buildChart(data, object, addresses) {
       case "З/п офис":
         if (showCompanyExpenses) {
           return calculateSalaryForPeriod();
+        }
+        return 0;
+      case "Строительство":
+        if (showCompanyExpenses) {
+          return getConstructionExpenseForDateRange();
         }
         return 0;
       case "Операционная прибыль":
@@ -243978,7 +244067,7 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         borderColor: '#fff',
         borderWidth: 2
       };
-    } else if (category === "Прочие" || category === "Общий расход" || category === "З/п офис") {
+    } else if (category === "Прочие" || category === "Общий расход" || category === "З/п офис" || category === "Строительство") {
       itemStyle = {
         color: isPositive ? '#4CAF50' : '#F44336',
         borderColor: '#fff',
@@ -244100,6 +244189,9 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         } else if (category === "З/п офис") {
           const filteredExpenses = getFilteredSalaryOfficeExpenses();
           tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (${filteredExpenses.length} записей)</em>`;
+        } else if (category === "Строительство") {
+          const constructionTotal = getConstructionExpenseForDateRange();
+          tooltip += `<br/><em style="color: #666; font-size: 11px;">Кликните для детализации (расходы с 02.04.2026)</em>`;
         }
 
         tooltip += `</div>`;
@@ -244228,6 +244320,8 @@ function renderChart(chart, categories, waterfallData, object, addresses, showCo
         showGeneralExpenseDetails();
       } else if (category === "З/п офис") {
         showSalaryOfficeDetails();
+      } else if (category === "Строительство") {
+        showConstructionDetails();
       }
     }
   });
@@ -244434,6 +244528,191 @@ function initExportButton() {
   exportButton.onclick = function () {
     exportToCSV();
   };
+}
+
+function showConstructionDetails() {
+  const modal = document.getElementById('generalExpenseModal');
+  const modalTitle = document.getElementById('generalExpenseModalTitle');
+  
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  
+  let title = 'Детализация расходов "Строительство" (Статья = "Строительство нового объекта")';
+  if (dateFrom && dateTo) {
+    title += ` | Период: ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}`;
+  }
+  
+  modalTitle.textContent = title;
+  
+  // Скрываем кнопки сортировки
+  const sortButtons = document.querySelector('#generalExpenseModal .sort-buttons');
+  if (sortButtons) {
+    sortButtons.style.display = 'none';
+  }
+  
+  // Скрываем информацию о сортировке
+  const sortInfo = document.getElementById('generalExpenseSortInfo');
+  if (sortInfo) {
+    sortInfo.style.display = 'none';
+  }
+  
+  // Сбрасываем сортировку на дату по убыванию при открытии
+  currentConstructionSortField = 'дата';
+  currentConstructionSortDirection = 'desc';
+  
+  const filteredExpenses = getFilteredConstructionExpenses();
+  updateConstructionTable(filteredExpenses);
+  modal.style.display = 'block';
+}
+
+// Переменные для сортировки строительства
+let currentConstructionSortField = 'дата';
+let currentConstructionSortDirection = 'desc';
+
+// Обновление таблицы строительства с сортировкой
+function updateConstructionTable(filteredExpenses) {
+  const generalExpenseDetails = document.getElementById('generalExpenseDetails');
+  
+  if (filteredExpenses.length === 0) {
+    generalExpenseDetails.innerHTML = '<div class="loading">Нет данных по строительству для выбранных фильтров (учитываются расходы с 02.04.2026)</div>';
+    return;
+  }
+  
+  // Функция сортировки для строительства
+  const sortData = (data, field, direction) => {
+    return [...data].sort((a, b) => {
+      let aValue, bValue;
+      
+      if (field === 'дата') {
+        aValue = new Date(a.дата.split('.').reverse().join('-'));
+        bValue = new Date(b.дата.split('.').reverse().join('-'));
+      } else if (field === 'сумма') {
+        aValue = Math.abs(a.сумма);
+        bValue = Math.abs(b.сумма);
+      } else if (field === 'мойка') {
+        aValue = a.мойка || '';
+        bValue = b.мойка || '';
+      } else if (field === 'наименование') {
+        aValue = a.наименование || '';
+        bValue = b.наименование || '';
+      } else {
+        aValue = a[field] || '';
+        bValue = b[field] || '';
+      }
+      
+      if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+      
+      if (direction === 'asc') {
+        return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+      } else {
+        return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
+      }
+    });
+  };
+  
+  const sortedData = sortData(filteredExpenses, currentConstructionSortField, currentConstructionSortDirection);
+  
+  // Функция для отображения стрелки сортировки
+  const getSortArrow = (field) => {
+    if (currentConstructionSortField === field) {
+      return currentConstructionSortDirection === 'desc' ? ' ▼' : ' ▲';
+    }
+    return '';
+  };
+  
+  let tableHtml = `
+    <div style="margin-bottom: 10px; display: flex; gap: 10px;">
+      <button onclick="changeConstructionSort('сумма')" class="sort-btn">Сортировать по сумме${getSortArrow('сумма')}</button>
+      <button onclick="changeConstructionSort('дата')" class="sort-btn">Сортировать по дате${getSortArrow('дата')}</button>
+      <button onclick="changeConstructionSort('мойка')" class="sort-btn">Сортировать по мойке${getSortArrow('мойка')}</button>
+    </div>
+    <table class="expenses-table">
+      <thead>
+        <tr>
+          <th onclick="changeConstructionSort('дата')" style="cursor: pointer;">Дата${getSortArrow('дата')}</th>
+          <th onclick="changeConstructionSort('сумма')" style="cursor: pointer;">Сумма${getSortArrow('сумма')}</th>
+          <th onclick="changeConstructionSort('мойка')" style="cursor: pointer;">Мойка${getSortArrow('мойка')}</th>
+          <th onclick="changeConstructionSort('наименование')" style="cursor: pointer;">Наименование${getSortArrow('наименование')}</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  
+  sortedData.forEach(expense => {
+    tableHtml += `
+      <tr>
+        <td>${expense.дата}</td>
+        <td>${formatCurrency(expense.сумма)}</td>
+        <td>${expense.мойка}</td>
+        <td style="max-width: 400px; font-size: 12px;">${expense.наименование || ''}</td>
+      </tr>
+    `;
+  });
+  
+  const total = sortedData.reduce((sum, item) => sum + item.сумма, 0);
+  
+  tableHtml += `
+      </tbody>
+    </table>
+    <div style="margin-top: 15px; font-weight: bold;">
+      Итого расходов на строительство: ${formatCurrency(total)} (${sortedData.length} записей)
+    </div>
+    <div style="margin-top: 5px; color: #666; font-size: 12px;">
+      Учитываются расходы со статьей "Строительство нового объекта" начиная с 02.04.2026
+    </div>
+  `;
+  
+  generalExpenseDetails.innerHTML = tableHtml;
+}
+
+// Функция для изменения сортировки строительства
+function changeConstructionSort(field) {
+  if (currentConstructionSortField === field) {
+    currentConstructionSortDirection = currentConstructionSortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentConstructionSortField = field;
+    currentConstructionSortDirection = field === 'сумма' ? 'desc' : 'asc';
+  }
+  
+  const filteredExpenses = getFilteredConstructionExpenses();
+  updateConstructionTable(filteredExpenses);
+}
+
+function showConstructionDetails() {
+  const modal = document.getElementById('generalExpenseModal');
+  const modalTitle = document.getElementById('generalExpenseModalTitle');
+  
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  
+  let title = 'Детализация расходов "Строительство" (Статья = "Строительство нового объекта")';
+  if (dateFrom && dateTo) {
+    title += ` | Период: ${formatDateForDisplay(dateFrom)} - ${formatDateForDisplay(dateTo)}`;
+  }
+  
+  modalTitle.textContent = title;
+  
+  // Скрываем кнопки сортировки по ID
+  const sortByAmount = document.getElementById('generalExpenseSortByAmount');
+  const sortByDate = document.getElementById('generalExpenseSortByDate');
+  const sortByArticle = document.getElementById('generalExpenseSortByArticle');
+  const sortInfo = document.getElementById('generalExpenseSortInfo');
+  
+  if (sortByAmount) sortByAmount.style.display = 'none';
+  if (sortByDate) sortByDate.style.display = 'none';
+  if (sortByArticle) sortByArticle.style.display = 'none';
+  if (sortInfo) sortInfo.style.display = 'none';
+  
+  // Сбрасываем сортировку на дату по убыванию при открытии
+  currentConstructionSortField = 'дата';
+  currentConstructionSortDirection = 'desc';
+  
+  const filteredExpenses = getFilteredConstructionExpenses();
+  updateConstructionTable(filteredExpenses);
+  modal.style.display = 'block';
 }
 
 // Основная функция экспорта в CSV
