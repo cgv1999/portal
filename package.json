@@ -1,9 +1,0 @@
-{
-  "name": "portal",
-  "scripts": {
-    "build": "npx terser script.js -o script.js -c -m"
-  },
-  "devDependencies": {
-    "terser": "^5.31.0"
-  }
-}
